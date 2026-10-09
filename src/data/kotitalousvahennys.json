@@ -1,0 +1,18 @@
+{
+  "_ohje": "Kotitalousvähennyksen luvut ja tila. Lähde: eduskunnan vastaus EV 122/2026 vp. Kun laki on vahvistettu Finlexissä, vaihda status arvoon 'voimassa'. Vuodesta 2028 ilman uutta lakia: 35 % ja enintään 1 600 €.",
+  "kaytossa": true,
+  "prosentti": 40,
+  "enimmaismaaraHenkilo": 2100,
+  "enimmaismaaraPuolisot": 4200,
+  "omavastuu": 150,
+  "vuodet": [2026, 2027],
+  "status": "eduskunta_hyvaksyi",
+  "hyvaksytty": "11.9.2026",
+  "eduskunnanVastaus": "EV 122/2026 vp",
+  "eduskunnanVastausPvm": "15.9.2026",
+  "takautuvaAlkaen": "1.1.2026",
+  "korotusPaattyy": "31.12.2027",
+  "taysiVahennysTyonOsuus": 5625,
+  "esimerkit": [3000, 4500, 5625],
+  "lahde": "https://www.vero.fi/henkiloasiakkaat/verokortti-ja-veroilmoitus/tulot-ja-vahennykset/kotitalousvahennys/"
+}

@@ -8,8 +8,7 @@ import Ukk from '../../components/Ukk.astro';
 import PalveluKortti from '../../components/PalveluKortti.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
 import yritys from '../../data/yritys.json';
-import hinnasto from '../../data/hinnasto.json';
-const kv = hinnasto.kotitalousvahennys;
+import KotitalousvahennysLaatikko from '../../components/KotitalousvahennysLaatikko.astro';
 
 export async function getStaticPaths() {
   const palvelut = await getCollection('palvelut');
@@ -117,16 +116,7 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
           <a href={`/kuntoarvio/?palvelu=${palvelu.id}`} class="btn btn--block">Varaa kuntoarvio</a>
           <a href="/hintalaskuri/" class="link-arrow">Laske hinta-arvio <Icon name="nuoli" size={18} /></a>
         </div>
-        {
-          d.kotitalousvahennys && (
-            <div class="laatikko laatikko--vaalea">
-              <Icon name="vahennys" size={28} />
-              <h2>Kotitalousvähennys</h2>
-              <p>Vuosina {kv.vuodet}: {kv.prosentti} % työn osuudesta, enintään {kv.enimmaismaara.toLocaleString('fi-FI')} € henkilöä kohden, omavastuu {kv.omavastuu} €. Vain työn osuus on vähennyskelpoista, ei tarvikkeet.</p>
-              <p class="pieni">{kv.tila}</p>
-            </div>
-          )
-        }
+        {d.kotitalousvahennys && <KotitalousvahennysLaatikko palvelu={palvelu.id} />}
       </aside>
     </div>
   </section>

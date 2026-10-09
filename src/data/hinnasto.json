@@ -8,15 +8,6 @@
     "naytto": "haarukka",
     "haarukkaProsentti": 20
   },
-  "kotitalousvahennys": {
-    "_ohje": "Lähde: eduskunnan vastaus EV 122/2026 vp (hyväksytty 11.9.2026), koskee 1.1.2026 alkaen maksettuja laskuja vuosina 2026-2027. Vuodesta 2028 ilman uutta lakia: 35 %, enintään 1 600 €. Kun laki on vahvistettu Finlexissä, vaihda 'tila'-teksti.",
-    "kaytossa": true,
-    "prosentti": 40,
-    "omavastuu": 150,
-    "enimmaismaara": 2100,
-    "vuodet": "2026-2027",
-    "tila": "Eduskunta hyväksyi korotuksen 11.9.2026, ja se koskee 1.1.2026 alkaen maksettuja laskuja."
-  },
   "katot": {
     "peltiMaalaus": 20,
     "tiiliPinnoitus": 25,

@@ -3,6 +3,8 @@
  * Jos jokin tarvittava hinta puuttuu (null), laskuri ei näytä hintaa vaan ohjaa kuntoarvioon.
  */
 
+import { vertaa, type KvAsetukset } from './kotitalousvahennys.ts';
+
 type Hinta = number | null;
 
 export interface Hinnasto {
@@ -13,12 +15,8 @@ export interface Hinnasto {
     naytto: 'haarukka' | 'alkaen' | 'arvio' | string;
     haarukkaProsentti: Hinta;
   };
-  kotitalousvahennys: {
-    kaytossa: boolean;
-    prosentti: number;
-    omavastuu: number;
-    enimmaismaara: number;
-  };
+  /** Liitetään tiedostosta src/data/kotitalousvahennys.json */
+  kotitalousvahennys: KvAsetukset & { kaytossa: boolean };
   katot: Record<
     'peltiMaalaus' | 'tiiliPinnoitus' | 'ruosteenpoisto' | 'jyrkkaLisa' | 'kaksikerroksinenLisa' | 'huonoKuntoLisa' | 'kattoKerroin',
     Hinta
@@ -59,7 +57,10 @@ export interface Tulos {
   kuukausihinta: boolean;
   alaraja: number | null;
   ylaraja: number | null;
-  vahennyksenJalkeen: number | null;
+  /** Arvioitu työn osuus euroina (hinnaston tyonOsuus-prosentista) */
+  tyonOsuus: number | null;
+  /** Vähennys yhdelle ja kahdelle henkilölle, sekä parempi vaihtoehto */
+  vahennys: ReturnType<typeof vertaa> | null;
   /** Syy, miksi hintaa ei voitu laskea */
   puuttuu: 'hinnat' | 'mitat' | null;
 }
@@ -142,7 +143,7 @@ function perushinta(h: Hinnasto, s: Syote): { hinta: number | null; ala: number 
 export function laske(h: Hinnasto, s: Syote): Tulos {
   const p = perushinta(h, s);
   if (p.hinta === null) {
-    return { hinta: null, ala: p.ala, kuukausihinta: p.kk, alaraja: null, ylaraja: null, vahennyksenJalkeen: null, puuttuu: p.puuttuu };
+    return { hinta: null, ala: p.ala, kuukausihinta: p.kk, alaraja: null, ylaraja: null, tyonOsuus: null, vahennys: null, puuttuu: p.puuttuu };
   }
   let hinta = p.hinta;
   if (!p.kk) {
@@ -153,12 +154,12 @@ export function laske(h: Hinnasto, s: Syote): Tulos {
   const alaraja = pyorista(hinta * (1 - vaihtelu));
   const ylaraja = pyorista(hinta * (1 + vaihtelu));
 
-  let vahennyksenJalkeen: number | null = null;
+  let tyonOsuus: number | null = null;
+  let vahennys: Tulos['vahennys'] = null;
   const kv = h.kotitalousvahennys;
-  if (!p.kk && kv.kaytossa && on(h.yleiset.tyonOsuus)) {
-    const tyo = hinta * (h.yleiset.tyonOsuus / 100);
-    const vahennys = Math.min(Math.max(tyo * (kv.prosentti / 100) - kv.omavastuu, 0), kv.enimmaismaara);
-    vahennyksenJalkeen = pyorista(hinta - vahennys);
+  if (!p.kk && kv?.kaytossa && on(h.yleiset.tyonOsuus)) {
+    tyonOsuus = pyorista(hinta * (h.yleiset.tyonOsuus / 100));
+    vahennys = vertaa(tyonOsuus, kv);
   }
 
   return {
@@ -167,7 +168,8 @@ export function laske(h: Hinnasto, s: Syote): Tulos {
     kuukausihinta: p.kk,
     alaraja,
     ylaraja,
-    vahennyksenJalkeen,
+    tyonOsuus,
+    vahennys,
     puuttuu: null,
   };
 }

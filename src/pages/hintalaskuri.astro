@@ -2,7 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Murupolku from '../components/Murupolku.astro';
 import Icon from '../components/Icon.astro';
-import hinnasto from '../data/hinnasto.json';
+import hinnastoData from '../data/hinnasto.json';
+import kvData from '../data/kotitalousvahennys.json';
+const hinnasto = { ...hinnastoData, kotitalousvahennys: kvData };
 
 const palvelut = [
   { id: 'katot', nimi: 'Katon maalaus tai pinnoitus', ikoni: 'katto' },
@@ -315,8 +317,20 @@ const palvelut = [
       else arvio = `noin ${euro(t.hinta)}${kk}`;
       html += `<p class="tulos-hinta">${arvio}</p>`;
       if (t.ala) html += `<p class="tulos-rivi">Laskettu ${Math.round(t.ala)} m² mukaan</p>`;
-      if (t.vahennyksenJalkeen !== null)
-        html += `<p class="tulos-rivi tulos-kv">Kotitalousvähennyksen jälkeen noin <strong>${euro(t.vahennyksenJalkeen)}</strong> (yhden henkilön vähennys, jos se on vielä käyttämättä).</p>`;
+      if (t.vahennys && t.tyonOsuus !== null && t.hinta !== null) {
+        const v = t.vahennys;
+        const suositus = v.parempi.henkilot === 2 ? 'Kannattaa jakaa kahdelle' : 'Kannattaa vähentää yhdellä henkilöllä';
+        html += `<div class="tulos-kv">
+          <p class="tulos-kv-otsikko">Kotitalousvähennys, arvio</p>
+          <p class="tulos-rivi">Työn osuus noin ${euro(t.tyonOsuus)}</p>
+          <dl class="kv-vertailu">
+            <div${v.parempi.henkilot === 1 ? ' class="paras"' : ''}><dt>1 henkilö</dt><dd>${euro(v.yksi.yhteensa)}</dd></div>
+            <div${v.parempi.henkilot === 2 ? ' class="paras"' : ''}><dt>2 henkilöä</dt><dd>${euro(v.kaksi.yhteensa)}</dd></div>
+          </dl>
+          <p class="tulos-rivi"><strong>${suositus}.</strong> Hinta vähennyksen jälkeen noin ${euro(t.hinta - v.parempi.yhteensa)}.</p>
+          <p class="tulos-rivi">Arvio, lopullinen vähennys määräytyy verotuksessa. <a href="/kotitalousvahennys/">Lue lisää</a></p>
+        </div>`;
+      }
     } else if (t.puuttuu === 'mitat') {
       html += '<p class="tulos-tyhja">Täytä pinta-ala, niin lasketaan.</p><p class="tulos-rivi">Voit myös jatkaa suoraan ilman mittoja. Mittaamme kohteen kuntoarviossa.</p>';
     } else {
@@ -507,6 +521,24 @@ const palvelut = [
   .tulos-kortti :global(.tulos-otsikko) { font-size: 1.25rem; font-weight: 600; color: #fff; }
   .tulos-kortti :global(.tulos-tyhja) { font-size: 1.125rem; color: #fff; }
   .tulos-kortti :global(.tulos-rivi) { color: color-mix(in srgb, #fff 82%, transparent); font-size: 1rem; margin-top: 0.5rem; }
-  .tulos-kortti :global(.tulos-kv strong) { color: #fff; }
+  .tulos-kortti :global(.tulos-kv) {
+    display: grid;
+    gap: 0.25rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid color-mix(in srgb, #fff 18%, transparent);
+  }
+  .tulos-kortti :global(.tulos-kv-otsikko) { font-weight: 600; color: #fff; }
+  .tulos-kortti :global(.tulos-kv strong),
+  .tulos-kortti :global(.tulos-kv a) { color: #fff; }
+  .tulos-kortti :global(.kv-vertailu) { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0.5rem 0; }
+  .tulos-kortti :global(.kv-vertailu div) {
+    padding: 0.6rem 0.75rem;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, #fff 20%, transparent);
+  }
+  .tulos-kortti :global(.kv-vertailu .paras) { background: color-mix(in srgb, #fff 14%, transparent); border-color: var(--orange); }
+  .tulos-kortti :global(.kv-vertailu dt) { font-size: 0.875rem; color: color-mix(in srgb, #fff 75%, transparent); }
+  .tulos-kortti :global(.kv-vertailu dd) { margin: 0; font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; }
   .pienteksti { font-size: 0.875rem; color: color-mix(in srgb, #fff 70%, transparent); }
 </style>

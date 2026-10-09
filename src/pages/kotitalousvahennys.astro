@@ -1,0 +1,208 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Murupolku from '../components/Murupolku.astro';
+import Icon from '../components/Icon.astro';
+import Ukk from '../components/Ukk.astro';
+import CtaOsio from '../components/CtaOsio.astro';
+import { kv, kvTila, kvLuvut, euroluku } from '../lib/kv-teksti';
+import { vahennys } from '../lib/kotitalousvahennys';
+
+const esimerkit = kv.esimerkit.map((tyo) => ({ tyo, v: vahennys(tyo, 1, kv).yhteensa }));
+
+const tyot = [
+  { nimi: 'Katon korjaus, remontti ja kunnostus', huom: '' },
+  { nimi: 'Katon ja talon ulkomaalaus', huom: '' },
+  { nimi: 'Lumityöt pihalla ja lumen pudotus katolta', huom: '' },
+  { nimi: 'Nurmikon ja pensasaidan leikkuu', huom: '' },
+  { nimi: 'Katon pesu ja painepesu', huom: 'Rinnastuu kiinteistön kunnossapitotyöhön.' },
+];
+
+const ukk = [
+  {
+    k: 'Kuka voi saada kotitalousvähennyksen?',
+    v: 'Vähennyksen saa luonnollinen henkilö, joka teettää työn omassa kodissaan tai vapaa-ajan asunnossaan tai niiden pihalla. Se on henkilökohtainen, joten puolisot voivat kumpikin tehdä oman vähennyksensä.',
+  },
+  {
+    k: 'Kannattaako lasku jakaa puolison kanssa?',
+    v: `Vasta isoissa töissä. Koska omavastuu ${kv.omavastuu} € vähennetään kummaltakin, jakaminen kannattaa yleensä vasta, kun työn osuus ylittää ${euroluku(kv.taysiVahennysTyonOsuus)} €. Laskuri alla näyttää molemmat vaihtoehdot.`,
+  },
+  {
+    k: 'Mitä vähennys ei koske?',
+    v: 'Tarvikkeita, materiaaleja eikä matkakuluja. Vähennystä ei myöskään saa vuokra- tai sijoitusasunnosta, taloyhtiön teettämistä töistä eikä uudisrakentamisesta.',
+  },
+  {
+    k: 'Pitääkö yrityksen olla ennakkoperintärekisterissä?',
+    v: 'Kyllä. Vähennyksen saa vain, jos työn tehnyt yritys on ennakkoperintärekisterissä maksuhetkellä. Tarkista rekisteröinti ytj.fi-palvelusta.',
+  },
+  {
+    k: 'Miten vähennys haetaan?',
+    v: 'Ilmoitat vähennyksen OmaVerossa tai esitäytetyllä veroilmoituksella sen vuoden verotuksessa, jona maksoit laskun. Säilytä lasku ja maksutosite.',
+  },
+  {
+    k: 'Mitä tapahtuu vuoden 2027 jälkeen?',
+    v: `Korotus päättyy ${kv.korotusPaattyy}. Ellei uutta lakia säädetä, vähennys palaa vuodesta 2028 alkaen aiempaan tasoon.`,
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: ukk.map((q) => ({ '@type': 'Question', name: q.k, acceptedAnswer: { '@type': 'Answer', text: q.v } })),
+  },
+];
+---
+
+<BaseLayout
+  title="Kotitalousvähennys 2026-2027 katto- ja maalaustöistä | Holske"
+  description={`Kotitalousvähennys 2026-2027: ${kv.prosentti} % työn osuudesta, enintään ${euroluku(kv.enimmaismaaraHenkilo)} € henkilöä kohden. Laske vähennys katon, maalauksen ja lumitöiden laskusta.`}
+  schema={schema}
+>
+  <section class="section--tight alku">
+    <div class="container">
+      <Murupolku polku={[{ nimi: 'Kotitalousvähennys', href: '/kotitalousvahennys/' }]} />
+      <div class="section-head">
+        <h1>Kotitalousvähennys katto-, maalaus-, lumi- ja pihatöistä</h1>
+        <p class="lead">{kvTila} {kvLuvut}</p>
+      </div>
+
+      <div class="asettelu">
+        <div class="prose">
+          <p>
+            Puolisot voivat saada yhteensä enintään {euroluku(kv.enimmaismaaraPuolisot)} €. Korotus koskee {kv.takautuvaAlkaen} alkaen
+            maksettuja laskuja ja päättyy {kv.korotusPaattyy}.
+          </p>
+          <p>
+            Vähennys koskee vain työn osuutta omassa kodissa tai vapaa-ajan asunnossa ja sen pihalla. Se ei koske vuokra- tai
+            sijoitusasuntoa, taloyhtiön teettämiä töitä eikä uudisrakentamista.
+          </p>
+
+          <h2>Esimerkkejä yhdelle henkilölle</h2>
+          <div class="taulukko">
+            <table>
+              <thead>
+                <tr><th scope="col">Työn osuus laskussa</th><th scope="col">Kotitalousvähennys</th></tr>
+              </thead>
+              <tbody>
+                {esimerkit.map((x) => (
+                  <tr><td>{euroluku(x.tyo)} €</td><td>{euroluku(x.v)} €</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p>Täysi {euroluku(kv.enimmaismaaraHenkilo)} €:n vähennys täyttyy, kun työn osuus on {euroluku(kv.taysiVahennysTyonOsuus)} €.</p>
+
+          <h2>Mitkä Holsken työt kuuluvat vähennykseen?</h2>
+          <ul class="tyot">
+            {tyot.map((t) => (
+              <li>
+                <Icon name="check" size={20} />
+                <span>{t.nimi}{t.huom && <span class="huom"> {t.huom}</span>}</span>
+              </li>
+            ))}
+          </ul>
+          <p>
+            Lisätietoa: <a href={kv.lahde} rel="noopener" target="_blank">Kotitalousvähennys vero.fi:ssä</a>.
+          </p>
+        </div>
+
+        <aside class="laskuri" aria-labelledby="laskuri-otsikko">
+          <h2 id="laskuri-otsikko">Laske vähennys</h2>
+          <div class="field">
+            <label for="kv-tyo">Työn osuus laskussa</label>
+            <div class="yksikko">
+              <input id="kv-tyo" type="number" inputmode="decimal" min="0" step="50" value="4500" />
+              <span>€</span>
+            </div>
+            <p class="hint">Löytyy laskusta. Tarvikkeet eivät kuulu työn osuuteen.</p>
+          </div>
+          <dl class="vertailu" aria-live="polite">
+            <div data-kv="1"><dt>1 henkilö</dt><dd data-kv-arvo>-</dd></div>
+            <div data-kv="2"><dt>2 henkilöä</dt><dd data-kv-arvo>-</dd></div>
+          </dl>
+          <p class="suositus" data-kv-suositus></p>
+          <p class="hint">Arvio, lopullinen vähennys määräytyy verotuksessa.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="ukk-otsikko">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="ukk-otsikko">Usein kysyttyä</h2>
+      </div>
+      <Ukk kysymykset={ukk} />
+    </div>
+  </section>
+
+  <CtaOsio otsikko="Varaa ilmainen katon kuntoarvio" palvelu="katot" />
+</BaseLayout>
+
+<script type="application/json" id="kv-data" set:html={JSON.stringify(kv)} />
+
+<script>
+  import { vertaa } from '../lib/kotitalousvahennys.ts';
+
+  const kv = JSON.parse(document.getElementById('kv-data')!.textContent || '{}');
+  const input = document.querySelector<HTMLInputElement>('#kv-tyo')!;
+  const suositus = document.querySelector<HTMLElement>('[data-kv-suositus]')!;
+  const euro = (n: number) =>
+    new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+
+  function paivita() {
+    const tyo = parseFloat(input.value.replace(',', '.')) || 0;
+    const v = vertaa(tyo, kv);
+    for (const t of [v.yksi, v.kaksi]) {
+      const rivi = document.querySelector<HTMLElement>(`[data-kv="${t.henkilot}"]`)!;
+      rivi.querySelector('[data-kv-arvo]')!.textContent = euro(t.yhteensa);
+      rivi.classList.toggle('paras', tyo > 0 && t === v.parempi);
+    }
+    suositus.textContent =
+      tyo <= 0
+        ? ''
+        : v.parempi.henkilot === 2
+          ? `Kannattaa jakaa kahdelle: yhteensä ${euro(v.kaksi.yhteensa)}.`
+          : `Kannattaa vähentää yhdellä henkilöllä: ${euro(v.yksi.yhteensa)}.`;
+  }
+  input.addEventListener('input', paivita);
+  paivita();
+</script>
+
+<style>
+  .alku { padding-top: clamp(1.5rem, 4vw, 3rem); padding-bottom: var(--section); }
+  .asettelu { display: grid; gap: 3rem; align-items: start; }
+  @media (min-width: 64rem) {
+    .asettelu { grid-template-columns: minmax(0, 1fr) 22rem; gap: 5rem; }
+    .laskuri { position: sticky; top: calc(var(--header-h) + 1.5rem); }
+  }
+  .prose { min-width: 0; }
+  .taulukko { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; max-width: 30rem; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 0.75rem 1rem 0.75rem 0; border-bottom: 1px solid var(--line); }
+  th { font-weight: 600; color: var(--muted); font-size: var(--fs-sm); }
+  td:last-child { font-weight: 600; color: var(--green); }
+  .tyot { list-style: none; padding: 0 !important; }
+  .tyot li { display: flex; gap: 0.6rem; align-items: flex-start; }
+  .tyot :global(.icon) { flex: none; color: var(--ok); margin-top: 0.25rem; }
+  .huom { color: var(--muted); }
+  .laskuri {
+    display: grid;
+    gap: 1rem;
+    padding: 1.75rem;
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+  .laskuri h2 { font-family: var(--font-body); font-weight: 600; font-size: 1.375rem; letter-spacing: 0; }
+  .yksikko { position: relative; }
+  .yksikko input { padding-right: 2.5rem; font-variant-numeric: tabular-nums; }
+  .yksikko span { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: var(--muted); }
+  .vertailu { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .vertailu div { padding: 0.75rem 1rem; border-radius: var(--r-sm); border: 1.5px solid var(--line); }
+  .vertailu :global(.paras) { border-color: var(--green); background: var(--moss-soft); }
+  dt { font-size: var(--fs-sm); color: var(--muted); }
+  dd { margin: 0; font-weight: 600; font-size: 1.375rem; color: var(--green); font-variant-numeric: tabular-nums; }
+  .suositus { font-weight: 600; }
+</style>

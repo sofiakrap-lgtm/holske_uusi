@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro';
+import { kv, kvTila, kvLyhyt } from '../lib/kv-teksti';
+
+interface Props {
+  palvelu?: string;
+  sivupalkki?: boolean;
+}
+const { palvelu, sivupalkki = true } = Astro.props;
+
+const lisarivi: Record<string, string> = {
+  painepesu: 'Katon pesu ja painepesu rinnastuvat kiinteistön kunnossapitotyöhön.',
+  lumityot: 'Vähennys koskee pihan ja katon lumitöitä.',
+  pihatyot: 'Vähennys koskee esimerkiksi nurmikon ja pensasaidan leikkuuta.',
+  katot: 'Vähennys koskee katon korjausta, kunnostusta ja maalausta.',
+  maalaus: 'Vähennys koskee talon ulkomaalausta.',
+};
+---
+
+<div class:list={['kv-laatikko', { 'kv-laatikko--leveä': !sivupalkki }]}>
+  <Icon name="vahennys" size={28} />
+  <h2>Kotitalousvähennys</h2>
+  <p><strong>{kvLyhyt}.</strong> Omavastuu {kv.omavastuu} €. Puolisot yhteensä enintään {kv.enimmaismaaraPuolisot.toLocaleString('fi-FI')} €.</p>
+  {palvelu && lisarivi[palvelu] && <p>{lisarivi[palvelu]} Vain työn osuus on vähennyskelpoista.</p>}
+  <p class="pieni">{kvTila}</p>
+  <a href="/kotitalousvahennys/" class="link-arrow">Laske oma vähennys <Icon name="nuoli" size={18} /></a>
+</div>
+
+<style>
+  .kv-laatikko {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+    padding: 1.75rem;
+    border-radius: var(--r-lg);
+    background: var(--moss-soft);
+  }
+  .kv-laatikko > :global(.icon:first-child) { color: var(--green); }
+  h2 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: 0;
+  }
+  p { color: var(--muted); font-size: 1rem; }
+  p strong { color: var(--ink); }
+  .pieni { font-size: 0.9375rem; }
+</style>
