@@ -74,4 +74,5 @@ Hero ja H1 → mitä työ sisältää → kenelle ja milloin → miten etenee �
    - Hinnat tulevat tiedostosta `src/data/hinnasto.json`, jonka täytätte itse.
    - Niin kauan kuin hinnat puuttuvat, laskuri toimii ohjattuna tarjouspyyntönä: kerää tiedot ja vie ne valmiiksi täytettynä kuntoarviolomakkeelle.
 2. **Kuvien lähetys lomakkeella.** Web3Formsin ilmaisversio ei tue liitteitä (maksullinen versio tukee). Ehdotus: ilmaisversio, ja lomakkeella teksti "Voit lähettää kuvat vastaamalla vahvistusviestiimme". Myöhemmin voi vaihtaa maksulliseen ilman koodimuutoksia.
-3. **Puhelinnumero.** Varmistan arkistosta. Jos sitä ei löydy, tulee TODO.
+3. **Puhelinnumero:** +358 50 3233075 (löytyi vanhalta sivulta, tulee klikattavaksi).
+4. **Fontti:** vanha sivu käyttää Montserrat, DM Sans ja Forum. Ehdotus: otsikot Forum (arvokas, skandinaavinen), leipäteksti DM Sans (selkeä, hyvin luettava).
