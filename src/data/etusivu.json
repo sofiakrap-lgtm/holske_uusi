@@ -1,4 +1,6 @@
 {
-  "_ohje": "Etusivun sesonkinosto. Vaihda 'nosto' arvoon 'lumityot' talvella ja 'pihatyot' kesällä, tai null piilottaaksesi.",
-  "nosto": "lumityot"
+  "_ohje": "Etusivun sesonkimerkintä. 'nosto' = palvelu (lumityot tai pihatyot), näkyy vain päivämäärävälillä alkaa-paattyy (muoto KK-PP, vuosi ei merkitse). null piilottaa.",
+  "nosto": "lumityot",
+  "alkaa": "11-15",
+  "paattyy": "03-15"
 }

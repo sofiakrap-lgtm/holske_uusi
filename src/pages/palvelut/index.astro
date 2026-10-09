@@ -13,8 +13,8 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
 ---
 
 <BaseLayout
-  title="Palvelut: kattoremontit, katon maalaus ja talon maalaus | Holske"
-  description="Holsken palvelut omakotitaloille pääkaupunkiseudulla: kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus. Lisäksi painepesu, lumityöt, pihatyöt ja muut ulkokorjaukset."
+  title="Palvelut: kattoremontit ja maalaus | Holske"
+  description="Holsken palvelut omakotitaloille: kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus. Lisäksi painepesu, lumityöt, pihatyöt ja ulkokorjaukset."
 >
   <section class="section--tight sivun-alku">
     <div class="container">
@@ -60,27 +60,6 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
           ))
         }
       </ul>
-    </div>
-  </section>
-
-  <section class="section section--sand" id="muut-korjaukset" aria-labelledby="muut-otsikko">
-    <div class="container split">
-      <div class="prose">
-        <span class="eyebrow">Aina neuvoteltavissa</span>
-        <h2 id="muut-otsikko">Kiinteistön muut korjaustyöt</h2>
-        <p>
-          Teemme myös muita ulkokorjauksia, kuten julkisivun korjauksia ja piha-alueiden kunnostusta. Olipa kyse pienestä
-          korjauksesta tai laajemmasta remontista, meiltä löytyy osaaminen ja resurssit hoitaa se ammattitaidolla.
-        </p>
-        <p>
-          Etkö löydä tarvitsemaasi palvelua? Kerro kohteesta, niin keskustellaan, miten voimme auttaa pitämään kiinteistösi
-          hyvässä kunnossa pitkällä tähtäimellä.
-        </p>
-        <div class="btn-row">
-          <a href="/kuntoarvio/?palvelu=muu" class="btn">Kerro kohteesta <Icon name="nuoli" size={20} /></a>
-        </div>
-      </div>
-      <Kuva nimi="muut-korjaukset" alt="Julkisivun korjaustyö omakotitalossa" ikoni="korjaus" suhde="5 / 4" />
     </div>
   </section>
 

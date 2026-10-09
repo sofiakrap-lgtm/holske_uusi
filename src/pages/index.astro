@@ -34,8 +34,8 @@ const huoltovalit = [
 ---
 
 <BaseLayout
-  title="Kattoremontit ja katon maalaus | Vantaa, Espoo, Helsinki | Holske"
-  description="Kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus omakotitaloille pääkaupunkiseudulla. Perheyritys, ilmainen kuntoarvio."
+  title="Kattoremontit ja katon maalaus pääkaupunkiseudulla | Holske"
+  description="Kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus omakotitaloille Helsingissä, Espoossa ja Vantaalla. Perheyritys. Varaa ilmainen kuntoarvio."
 >
   <section class="hero">
     <div class="container hero-grid">
@@ -201,7 +201,7 @@ const huoltovalit = [
                 <span class="lisa-teksti">
                   <strong>
                     {p.data.nimi}
-                    {etusivu.nosto === p.id && <span class="sesonki">Sesonki nyt</span>}
+                    {etusivu.nosto === p.id && <span class="sesonki" data-alkaa={etusivu.alkaa} data-paattyy={etusivu.paattyy} hidden>Sesonki nyt</span>}
                   </strong>
                   <span>{p.data.kortti}</span>
                 </span>
@@ -210,16 +210,6 @@ const huoltovalit = [
             </li>
           ))
         }
-        <li>
-          <a href="/palvelut/#muut-korjaukset">
-            <Icon name="korjaus" size={26} />
-            <span class="lisa-teksti">
-              <strong>Muut korjaustyöt</strong>
-              <span>Julkisivun korjaukset ja muut ulkotyöt. Aina neuvoteltavissa.</span>
-            </span>
-            <Icon name="nuoli" size={20} />
-          </a>
-        </li>
       </ul>
     </div>
   </section>
@@ -249,6 +239,17 @@ const huoltovalit = [
 
   <CtaOsio otsikko="Varaa ilmainen katon kuntoarvio" palvelu="katot" />
 </BaseLayout>
+
+<script>
+  // Sesonkimerkintä näkyy vain päivämäärävälillä (KK-PP), myös vuodenvaihteen yli
+  document.querySelectorAll<HTMLElement>('.sesonki[data-alkaa]').forEach((el) => {
+    const d = new Date();
+    const nyt = `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const a = el.dataset.alkaa!;
+    const p = el.dataset.paattyy!;
+    el.hidden = !(a <= p ? nyt >= a && nyt <= p : nyt >= a || nyt <= p);
+  });
+</script>
 
 <style>
   .hero { padding-block: clamp(2rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem); }

@@ -1,7 +1,7 @@
 ---
 nimi: Lumityöt
 otsikko: Lumityöt katoille ja pihoille
-seoTitle: Lumityöt ja katon lumenpudotus | Espoo, Vantaa, Helsinki | Holske
+seoTitle: Lumityöt ja katon lumenpudotus | Espoo, Vantaa, Helsinki
 kuvaus: Katon lumenpudotus ja pihan lumityöt pääkaupunkiseudulla. Kertakäynti tai säännöllinen huoltosopimus. Pelti-, huopa- ja tiilikatot. Pyydä tarjous.
 ingressi: Poistamme lumet katoilta ja pihoilta joustavasti, kertakäynteinä tai säännöllisellä sopimuksella.
 kortti: Katon lumenpudotus ja pihan lumityöt, kertakäynnit ja talvisopimukset.

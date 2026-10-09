@@ -34,7 +34,6 @@ const vuosi = new Date().getFullYear();
       <h2 class="col-title">Palvelut</h2>
       <ul class="list plain">
         {palvelut.map((p) => <li><a href={`/palvelut/${p.id}/`}>{p.data.nimi}</a></li>)}
-        <li><a href="/palvelut/#muut-korjaukset">Muut korjaustyöt</a></li>
       </ul>
     </nav>
 
@@ -53,7 +52,11 @@ const vuosi = new Date().getFullYear();
   </div>
 
   <div class="container bottom">
-    <p>© {vuosi} {yritys.nimi}. Palvelualue: {yritys.palvelualue.join(', ')}.</p>
+    <p>
+      {yritys.nimi} (Y-tunnus {yritys.ytunnus}) on vantaalainen perheyritys, joka tekee kattoremontteja, katon ja talon
+      maalausta, painepesua, lumitöitä ja pihatöitä: {yritys.palvelualue.join(', ')}.
+    </p>
+    <p>© {vuosi} {yritys.nimi}</p>
   </div>
 </footer>
 
@@ -122,6 +125,8 @@ const vuosi = new Date().getFullYear();
     min-height: 44px;
   }
   .bottom {
+    display: grid;
+    gap: 0.5rem;
     margin-top: 3rem;
     padding-top: 1.5rem;
     border-top: 1px solid color-mix(in srgb, #fff 14%, transparent);

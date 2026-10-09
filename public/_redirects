@@ -19,8 +19,8 @@
 /varaa-ilmainen-kuntoarvio      /kuntoarvio/          301
 /yleispyynto/                   /kuntoarvio/          301
 /yleispyynto                    /kuntoarvio/          301
-/muut-pyynto/                   /kuntoarvio/?palvelu=muu        301
-/muut-pyynto                    /kuntoarvio/?palvelu=muu        301
+/muut-pyynto/                   /kuntoarvio/?palvelu=muut-korjaukset        301
+/muut-pyynto                    /kuntoarvio/?palvelu=muut-korjaukset        301
 /lumityot-pyynto/               /kuntoarvio/?palvelu=lumityot   301
 /lumityot-pyynto                /kuntoarvio/?palvelu=lumityot   301
 /ruoronleikkuu-hintapyynto/     /kuntoarvio/?palvelu=pihatyot   301
@@ -35,10 +35,10 @@
 /maalaustyot-mob                /palvelut/maalaus/    301
 /maalaustyo-mob/                /palvelut/maalaus/    301
 /maalaustyo-mob                 /palvelut/maalaus/    301
-/julkisivun-remontti-mob/       /palvelut/maalaus/    301
-/julkisivun-remontti-mob        /palvelut/maalaus/    301
-/julkisivu-mob/                 /palvelut/maalaus/    301
-/julkisivu-mob                  /palvelut/maalaus/    301
+/julkisivun-remontti-mob/       /palvelut/muut-korjaukset/    301
+/julkisivun-remontti-mob        /palvelut/muut-korjaukset/    301
+/julkisivu-mob/                 /palvelut/muut-korjaukset/    301
+/julkisivu-mob                  /palvelut/muut-korjaukset/    301
 /lumityot-mob/                  /palvelut/lumityot/   301
 /lumityot-mob                   /palvelut/lumityot/   301
 /ruohonleikkuu-mob/             /palvelut/pihatyot/   301

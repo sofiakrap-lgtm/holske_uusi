@@ -24,15 +24,16 @@ const ogUrl = new URL(ogImage, site).href;
 
 const localBusiness = {
   '@context': 'https://schema.org',
-  '@type': 'HomeAndConstructionBusiness',
+  '@type': ['HomeAndConstructionBusiness', 'RoofingContractor', 'HousePainter'],
   '@id': `${site.href}#yritys`,
   name: yritys.nimi,
+  legalName: yritys.nimi,
   alternateName: yritys.brandi,
   url: site.href,
-  telephone: yritys.puhelin,
+  telephone: yritys.puhelinE164,
   email: yritys.sahkoposti,
   image: new URL('/og-holske.png', site).href,
-  logo: new URL('/favicon.svg', site).href,
+  logo: new URL('/apple-touch-icon.png', site).href,
   description:
     'Kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus omakotitaloille pääkaupunkiseudulla. Lisäksi painepesu, lumityöt ja pihatyöt.',
   identifier: { '@type': 'PropertyValue', propertyID: 'Y-tunnus', value: yritys.ytunnus },
@@ -49,6 +50,7 @@ const localBusiness = {
   ],
   knowsAbout: ['Kattoremontti', 'Katon maalaus', 'Katon pinnoitus', 'Tiilikattoremontti', 'Peltikattoremontti', 'Huopakattoremontti', 'Talon maalaus'],
   knowsLanguage: 'fi',
+  ...(yritys.sameAs?.length ? { sameAs: yritys.sameAs } : {}),
 };
 ---
 

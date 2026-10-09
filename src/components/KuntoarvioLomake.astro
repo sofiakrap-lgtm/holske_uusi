@@ -8,7 +8,6 @@ const avain = import.meta.env.PUBLIC_WEB3FORMS_KEY || lomake.web3formsAvain || '
 const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
 const vaihtoehdot = [
   ...palvelut.map((p) => ({ arvo: p.id, nimi: p.data.nimi })),
-  { arvo: 'muu', nimi: 'Muu korjaustyö' },
   { arvo: 'en-tieda', nimi: 'En ole varma' },
 ];
 const site = Astro.site ?? new URL('https://holske.fi');

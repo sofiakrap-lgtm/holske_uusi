@@ -1,7 +1,7 @@
 ---
 nimi: Maalaus
 otsikko: Talon maalaus ja seinien maalaustyöt
-seoTitle: Talon maalaus ja seinien maalaustyöt | Pääkaupunkiseutu | Holske
+seoTitle: Talon ja seinien maalaustyöt | Vantaa, Espoo, Helsinki
 kuvaus: Omakotitalon ulkomaalaus ja seinien maalaustyöt käsin maalaten Helsingissä, Espoossa ja Vantaalla. Siisti työmaa ja jätteiden kierrätys. Ilmainen kuntoarvio.
 ingressi: Maalaamme talot huolellisesti käsin. Se takaa maalipinnan parhaan tarttuvuuden ja tarkan, laadukkaan lopputuloksen.
 kortti: Omakotitalon ulkoseinien ja julkisivun maalaus käsin, yhteen tai kahteen kertaan.
