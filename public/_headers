@@ -23,3 +23,6 @@ https://:project.pages.dev/*
 
 https://:version.:project.pages.dev/*
   X-Robots-Tag: noindex
+
+https://:project.:account.workers.dev/*
+  X-Robots-Tag: noindex
