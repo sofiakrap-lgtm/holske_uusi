@@ -16,3 +16,10 @@
 
 /*.svg
   Cache-Control: public, max-age=604800
+
+# Testiosoite (*.pages.dev) ei näy Googlessa, vain holske.fi
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
