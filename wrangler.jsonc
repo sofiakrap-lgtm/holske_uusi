@@ -1,6 +1,6 @@
 {
   // Cloudflare Workers -julkaisu: staattinen sivusto kansiosta dist/
-  "name": "holske",
+  "name": "holske-uusi",
   "compatibility_date": "2025-09-01",
   "assets": {
     "directory": "./dist",
