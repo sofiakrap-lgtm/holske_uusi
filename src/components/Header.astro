@@ -93,7 +93,7 @@ const tel = `tel:${yritys.puhelinE164}`;
       toggle?.focus();
     }
   });
-  window.matchMedia('(min-width: 72rem)').addEventListener('change', (e) => e.matches && setOpen(false));
+  window.matchMedia('(min-width: 80rem)').addEventListener('change', (e) => e.matches && setOpen(false));
 
   // Ohut varjo vasta kun sivua on vieritetty
   const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
@@ -220,7 +220,7 @@ const tel = `tel:${yritys.puhelinE164}`;
     .phone-text { display: none; }
   }
 
-  @media (max-width: 71.99rem) {
+  @media (max-width: 79.99rem) {
     .bar { gap: 0.5rem; }
     .menu-toggle { display: grid; }
     .cta { display: none; }

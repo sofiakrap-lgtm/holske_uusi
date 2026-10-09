@@ -4,13 +4,13 @@ import yritys from '../data/yritys.json';
 const tel = `tel:${yritys.puhelinE164}`;
 ---
 
-<div class="mobiili-cta" aria-label="Pikayhteys">
+<nav class="mobiili-cta" aria-label="Pikayhteys">
   <a href={tel} class="btn btn--secondary soita">
     <Icon name="puhelin" size={20} />
     Soita
   </a>
   <a href="/kuntoarvio/" class="btn arvio">Ilmainen kuntoarvio</a>
-</div>
+</nav>
 
 <style>
   .mobiili-cta {
