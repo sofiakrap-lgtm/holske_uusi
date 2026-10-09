@@ -6,6 +6,7 @@ kuvaus: Omakotitalon ulkomaalaus ja seinien maalaustyöt käsin maalaten Helsing
 ingressi: Maalaamme talot huolellisesti käsin. Se takaa maalipinnan parhaan tarttuvuuden ja tarkan, laadukkaan lopputuloksen.
 kortti: Omakotitalon ulkoseinien ja julkisivun maalaus käsin, yhteen tai kahteen kertaan.
 ikoni: maalaus
+ydin: true
 jarjestys: 2
 kuva: maalaus
 kuvaAlt: Puutalon seinää maalataan siveltimellä

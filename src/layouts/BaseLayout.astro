@@ -34,7 +34,7 @@ const localBusiness = {
   image: new URL('/og-holske.png', site).href,
   logo: new URL('/favicon.svg', site).href,
   description:
-    'Kiinteistöhuoltoa omakotitaloille pääkaupunkiseudulla: kattoremontit ja katon maalaus, talon maalaus, painepesu, lumityöt sekä piha- ja puutarhatyöt.',
+    'Kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus omakotitaloille pääkaupunkiseudulla. Lisäksi painepesu, lumityöt ja pihatyöt.',
   identifier: { '@type': 'PropertyValue', propertyID: 'Y-tunnus', value: yritys.ytunnus },
   address: {
     '@type': 'PostalAddress',
@@ -47,6 +47,7 @@ const localBusiness = {
     { '@type': 'AdministrativeArea', name: 'Pääkaupunkiseutu' },
     ...yritys.palvelualue.map((k) => ({ '@type': 'City', name: k })),
   ],
+  knowsAbout: ['Kattoremontti', 'Katon maalaus', 'Katon pinnoitus', 'Tiilikattoremontti', 'Peltikattoremontti', 'Huopakattoremontti', 'Talon maalaus'],
   knowsLanguage: 'fi',
 };
 ---

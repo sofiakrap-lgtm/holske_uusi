@@ -52,8 +52,8 @@ const og = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.o
   <rect width="1200" height="630" fill="${VIHREA}"/>
   <rect width="1200" height="630" fill="url(#g)"/>
   ${upota(paaValkoinen, 90, 150, 560, 125)}
-  <text x="90" y="400" font-family="'DejaVu Sans', Arial, sans-serif" font-size="40" fill="#e8e6dc">Kiinteistöhuoltoa pääkaupunkiseudulla</text>
-  <text x="90" y="470" font-family="'DejaVu Sans', Arial, sans-serif" font-size="30" fill="${ORANSSI}">Katot · Maalaus · Painepesu · Lumityöt · Pihatyöt</text>
+  <text x="90" y="400" font-family="'DejaVu Sans', Arial, sans-serif" font-size="40" fill="#e8e6dc">Kattoremontit ja katon maalaus</text>
+  <text x="90" y="470" font-family="'DejaVu Sans', Arial, sans-serif" font-size="30" fill="${ORANSSI}">Tiilikatot · Peltikatot · Huopakatot · Talon maalaus</text>
 </svg>`;
 await sharp(Buffer.from(og)).png().toFile('public/og-holske.png');
 console.log('Faviconit ja jakokuva luotu kansioon public/');

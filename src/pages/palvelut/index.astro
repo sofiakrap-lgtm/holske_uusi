@@ -8,11 +8,13 @@ import CtaOsio from '../../components/CtaOsio.astro';
 import Murupolku from '../../components/Murupolku.astro';
 
 const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
+const ydin = palvelut.filter((p) => p.data.ydin);
+const lisat = palvelut.filter((p) => !p.data.ydin);
 ---
 
 <BaseLayout
-  title="Palvelut: katot, maalaus, painepesu, lumityöt ja pihatyöt | Holske"
-  description="Holsken kiinteistöhuoltopalvelut omakotitaloille pääkaupunkiseudulla: kattoremontit ja katon maalaus, talon maalaus, painepesu, lumityöt, pihatyöt ja muut ulkokorjaukset."
+  title="Palvelut: kattoremontit, katon maalaus ja talon maalaus | Holske"
+  description="Holsken palvelut omakotitaloille pääkaupunkiseudulla: kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus. Lisäksi painepesu, lumityöt, pihatyöt ja muut ulkokorjaukset."
 >
   <section class="section--tight sivun-alku">
     <div class="container">
@@ -20,20 +22,39 @@ const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjest
       <div class="section-head">
         <h1>Palvelut</h1>
         <p class="lead">
-          Tarjoamme kattavia kiinteistön huoltopalveluita omakotitaloille: katot, maalaus- ja painepesutyöt, lumityöt sekä
-          pihan kunnossapito. Joustavasti tarpeesi mukaan, oli kyseessä yksittäinen keikka tai säännöllinen huolto.
+          Erikoisalaamme ovat kattoremontit, katon maalaus ja talon maalaus. Hoidamme samalla myös muut ulkotyöt, kuten
+          painepesun, lumityöt ja pihatyöt.
         </p>
       </div>
+      <ul class="ydin">
+        {
+          ydin.map((p) => (
+            <li>
+              <a href={`/palvelut/${p.id}/`} class="ydinkortti">
+                <Kuva nimi={p.data.kuva} alt={p.data.kuvaAlt} ikoni={p.data.ikoni} suhde="16 / 10" sizes="(min-width: 60rem) 45vw, 100vw" />
+                <div class="ydin-teksti">
+                  <span class="eyebrow">Pääpalvelu</span>
+                  <h2>{p.data.otsikko}</h2>
+                  <span class="ydin-kuvaus">{p.data.kortti}</span>
+                  <span class="link-arrow">Lue lisää <Icon name="nuoli" size={18} /></span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2 class="lisat-otsikko">Muut palvelut</h2>
       <ul class="kortit">
         {
-          palvelut.map((p) => (
+          lisat.map((p) => (
             <li>
               <PalveluKortti
                 href={`/palvelut/${p.id}/`}
                 nimi={p.data.nimi}
                 teksti={p.data.kortti}
                 ikoni={p.data.ikoni}
-                headingLevel="h2"
+                headingLevel="h3"
               />
             </li>
           ))
@@ -76,7 +97,33 @@ const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjest
     gap: 1.25rem;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
   }
-  .kortit :global(h2) {
+  .ydin {
+    list-style: none;
+    margin: 0 0 4rem;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  }
+  .ydinkortti {
+    display: grid;
+    height: 100%;
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform 260ms var(--ease-out), box-shadow 260ms var(--ease-out);
+  }
+  .ydinkortti:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .ydinkortti:active { transform: scale(0.99); }
+  .ydinkortti :global(.kuva) { border-radius: 0; }
+  .ydin-teksti { display: grid; gap: 0.75rem; padding: clamp(1.5rem, 3vw, 2.25rem); }
+  .ydin-teksti h2 { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); }
+  .ydin-kuvaus { color: var(--muted); }
+  .lisat-otsikko { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); margin-bottom: 1.5rem; }
+  .kortit :global(h3) {
     font-family: var(--font-body);
     font-weight: 600;
     font-size: 1.375rem;

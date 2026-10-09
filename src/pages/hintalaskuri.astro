@@ -36,7 +36,7 @@ const palvelut = [
               {
                 palvelut.map((p) => (
                   <label class="palvelu">
-                    <input type="radio" name="palvelu" value={p.id} />
+                    <input type="radio" name="palvelu" value={p.id} checked={p.id === 'katot'} />
                     <span class="palvelu-sisalto">
                       <Icon name={p.ikoni} size={30} />
                       <span>{p.nimi}</span>

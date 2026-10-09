@@ -4,13 +4,17 @@ import Logo from './Logo.astro';
 import yritys from '../data/yritys.json';
 
 const nav = [
-  { href: '/palvelut/', label: 'Palvelut' },
+  { href: '/palvelut/katot/', label: 'Kattoremontit' },
+  { href: '/palvelut/maalaus/', label: 'Maalaus' },
+  { href: '/palvelut/', label: 'Muut palvelut' },
   { href: '/hintalaskuri/', label: 'Hintalaskuri' },
   { href: '/meista/', label: 'Meistä' },
   { href: '/yhteystiedot/', label: 'Yhteystiedot' },
 ];
 const path = Astro.url.pathname;
-const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+const isActive = (href: string) =>
+  path === href || (href !== '/' && href !== '/palvelut/' && path.startsWith(href)) ||
+  (href === '/palvelut/' && path.startsWith('/palvelut/') && !['/palvelut/katot/', '/palvelut/maalaus/'].includes(path));
 const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
 ---
 
@@ -83,7 +87,7 @@ const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
       toggle?.focus();
     }
   });
-  window.matchMedia('(min-width: 60rem)').addEventListener('change', (e) => e.matches && setOpen(false));
+  window.matchMedia('(min-width: 72rem)').addEventListener('change', (e) => e.matches && setOpen(false));
 
   // Ohut varjo vasta kun sivua on vieritetty
   const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
@@ -133,8 +137,9 @@ const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    padding: 0.5rem 0.85rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 999px;
+    white-space: nowrap;
     color: var(--ink);
     font-weight: 500;
     text-decoration: none;
@@ -205,11 +210,11 @@ const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
   .is-open .menu-icon span:first-child { top: 5px; transform: rotate(45deg); }
   .is-open .menu-icon span:last-child { top: 5px; transform: rotate(-45deg); }
 
-  @media (max-width: 75rem) {
+  @media (max-width: 84rem) {
     .phone-text { display: none; }
   }
 
-  @media (max-width: 59.99rem) {
+  @media (max-width: 71.99rem) {
     .bar { gap: 0.5rem; }
     .menu-toggle { display: grid; }
     .cta { display: none; }

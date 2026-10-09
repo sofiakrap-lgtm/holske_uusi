@@ -1,11 +1,12 @@
 ---
 nimi: Katot
-otsikko: Kattoremontit, katon maalaus ja pinnoitus
+otsikko: Katon maalaus, pinnoitus ja kattoremontit
 seoTitle: Katon maalaus ja kattoremontti | Vantaa, Espoo, Helsinki | Holske
 kuvaus: Katon maalaus, pinnoitus ja kattoremontit tiili-, pelti- ja huopakatoille pääkaupunkiseudulla. Perheyritys, yli 25 vuoden kokemus. Ilmainen kuntoarvio.
 ingressi: Huollamme ja remontoimme tiili-, pelti- ja huopakatot siististi ja kiinteään hintaan. Kokemusta eri katemateriaaleista ja toteutustavoista on kertynyt yli 25 vuotta.
 kortti: Tiili-, pelti- ja huopakattojen remontit, maalaus ja pinnoitus kiinteään hintaan.
 ikoni: katto
+ydin: true
 jarjestys: 1
 kuva: katot
 kuvaAlt: Omakotitalon katto kunnostuksen jälkeen
@@ -40,6 +41,10 @@ Maali valitaan kohteen mukaan. Usein se on vesiohenteinen peltikattomaali, mutta
 ## Tiilikaton pinnoitus
 
 Pinnoite palauttaa tiilikaton ulkonäön ja toimintakyvyn ja voi pidentää katon käyttöikää jopa 20 vuodella. Säännöllinen huolto pitää tiilikaton hyvässä kunnossa ja estää kosteutta pääsemästä muihin kattorakenteisiin.
+
+## Mitä katon maalaus tai pinnoitus maksaa?
+
+Hinta riippuu katon koosta, materiaalista, kunnosta ja jyrkkyydestä. Suuntaa-antavan hinnan saat [hintalaskurista](/hintalaskuri/), ja tarkan, kiinteän hinnan ilmaisessa kuntoarviossa. Kotitalousvähennys pienentää työn osuuden hintaa.
 
 ## Selkeä suunnitelma ja kiinteä hinta
 

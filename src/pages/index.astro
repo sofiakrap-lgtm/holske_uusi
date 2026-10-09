@@ -1,10 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Kuva from '../components/Kuva.astro';
 import Icon from '../components/Icon.astro';
 import Edut from '../components/Edut.astro';
-import PalveluKortti from '../components/PalveluKortti.astro';
 import Vaiheet from '../components/Vaiheet.astro';
 import CtaOsio from '../components/CtaOsio.astro';
 import yritys from '../data/yritys.json';
@@ -12,41 +11,49 @@ import etusivu from '../data/etusivu.json';
 import hinnasto from '../data/hinnasto.json';
 const kv = hinnasto.kotitalousvahennys;
 
-const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
-const nosto = etusivu.nosto ? palvelut.find((p) => p.id === etusivu.nosto) : null;
+const katot = (await getEntry('palvelut', 'katot'))!;
+const maalaus = (await getEntry('palvelut', 'maalaus'))!;
+const lisapalvelut = (await getCollection('palvelut', (p) => !p.data.ydin)).sort(
+  (a, b) => a.data.jarjestys - b.data.jarjestys,
+);
 const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
 
-const nostoTekstit: Record<string, { eyebrow: string; otsikko: string; teksti: string }> = {
-  lumityot: {
-    eyebrow: 'Talvikausi',
-    otsikko: 'Lumityöt katoille ja pihoille',
-    teksti:
-      'Kasvava lumikuorma voi vaurioittaa kattorakenteita, vaikka katto olisi uusi. Pudotamme lumet turvallisesti pelti-, huopa- ja tiilikatoilta ja pidämme pihan lumettomana. Kertakäynteinä tai koko talven sopimuksella.',
-  },
-  pihatyot: {
-    eyebrow: 'Kesäkausi',
-    otsikko: 'Piha ja nurmikko kuntoon',
-    teksti: 'Pidämme pihasi vihreänä ja siistinä. Nurmikon leikkuu ja pihatyöt sovitusti, kun tarvitset.',
-  },
-};
-const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
+// Merkit ja huoltovälit vanhan sivuston katto- ja maalaussisällöstä
+const merkit = [
+  'Katolla kasvaa sammalta',
+  'Peltikatossa näkyy ruostetta',
+  'Katto vuotaa',
+  'Tiilen pinta on kulunut tai hapristunut',
+  'Katon väri on selvästi haalistunut',
+];
+const huoltovalit = [
+  { kohde: 'Uusi sinkitty peltikatto', vali: 'Ensimmäinen maalaus 2-3 vuoden kuluttua' },
+  { kohde: 'Maalattu peltikatto', vali: 'Uusi maalaus 15-20 vuoden välein' },
+  { kohde: 'Betonitiilikatto', vali: 'Pinnoitus, kun katto on 20-30 vuotta vanha' },
+  { kohde: 'Puutalon ulkoseinät', vali: 'Uusi maalaus 5-10 vuoden välein' },
+];
 ---
 
 <BaseLayout
-  title="Holske | Kiinteistöhuolto omakotitaloille pääkaupunkiseudulla"
-  description="Katon maalaus ja kattoremontit, talon maalaus, painepesu, lumityöt ja pihatyöt Helsingissä, Espoossa ja Vantaalla. Perheyritys, yli 25 vuoden kokemus. Ilmainen kuntoarvio."
+  title="Kattoremontit ja katon maalaus | Vantaa, Espoo, Helsinki | Holske"
+  description="Kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus omakotitaloille pääkaupunkiseudulla. Perheyritys, yli 25 vuoden kokemus, kiinteä hinta. Ilmainen kuntoarvio."
 >
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-text">
-        <span class="eyebrow">Kiinteistöhuoltoa pääkaupunkiseudulla</span>
-        <h1>Katot, maalaus ja lumityöt omakotitaloille</h1>
+        <span class="eyebrow">Kattoremontit ja maalaus pääkaupunkiseudulla</span>
+        <h1>Katon maalaus ja kattoremontit omakotitaloille</h1>
         <p class="lead">
-          Kattojen kunnostusta, maalaustöitä katolle ja seinille, painepesua, lumitöitä ja pihatöitä. Pieni perheyritys,
-          yli 25 vuoden kokemus.
+          Kunnostamme, maalaamme ja pinnoitamme tiili-, pelti- ja huopakatot siististi ja kiinteään hintaan. Pieni
+          perheyritys, yli 25 vuoden kokemus.
         </p>
+        <ul class="chipit" aria-label="Kattotyypit">
+          <li>Tiilikatot</li>
+          <li>Peltikatot</li>
+          <li>Huopakatot</li>
+        </ul>
         <div class="btn-row">
-          <a href="/kuntoarvio/" class="btn">Varaa ilmainen kuntoarvio <Icon name="nuoli" size={20} /></a>
+          <a href="/kuntoarvio/?palvelu=katot" class="btn">Varaa ilmainen katon kuntoarvio <Icon name="nuoli" size={20} /></a>
           <a href={tel} class="btn btn--secondary"><Icon name="puhelin" size={20} /> {yritys.puhelinNaytto}</a>
         </div>
         <p class="hero-note"><Icon name="check" size={18} /> {yritys.vastausaika}. Kuntoarvio ei sido mihinkään.</p>
@@ -54,7 +61,7 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
       <div class="hero-media">
         <Kuva
           nimi="etusivu"
-          alt="Omakotitalo, jonka katto ja seinät on juuri kunnostettu"
+          alt="Omakotitalo, jonka katto on juuri maalattu"
           ikoni="katto"
           eager
           suhde="4 / 5"
@@ -70,77 +77,86 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
     </div>
   </section>
 
-  {
-    nosto && nostoSisalto && (
-      <section class="section--tight" aria-labelledby="nosto-otsikko">
-        <div class="container">
-          <div class="nosto">
-            <div class="nosto-ikoni">
-              <Icon name={nosto.data.ikoni} size={44} />
-            </div>
-            <div class="nosto-teksti">
-              <span class="eyebrow">{nostoSisalto.eyebrow}</span>
-              <h2 id="nosto-otsikko">{nostoSisalto.otsikko}</h2>
-              <p>{nostoSisalto.teksti}</p>
-            </div>
-            <div class="btn-row nosto-napit">
-              <a href={`/kuntoarvio/?palvelu=${nosto.id}`} class="btn">
-                Pyydä tarjous
-              </a>
-              <a href={`/palvelut/${nosto.id}/`} class="btn btn--secondary">
-                Lue lisää
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  <section class="section" aria-labelledby="palvelut-otsikko">
+  <section class="section" aria-labelledby="katot-otsikko">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">Palvelut</span>
-        <h2 id="palvelut-otsikko">Kaikki ulkotyöt yhdestä paikasta</h2>
+        <span class="eyebrow">Kattopalvelut</span>
+        <h2 id="katot-otsikko">Kaikki kattotyöt yhdestä paikasta</h2>
         <p class="lead">
-          Teemme työt joustavasti tarpeesi mukaan, oli kyseessä yksittäinen keikka tai säännöllinen huolto.
+          Tunnemme eri katemateriaalit ja toteutustavat. Työ tehdään siististi, laadukkaasti ja kiinteään hintaan.
         </p>
       </div>
-      <ul class="kortit">
+      <ul class="kattokortit">
         {
-          palvelut.map((p) => (
+          katot.data.alapalvelut.map((a) => (
             <li>
-              <PalveluKortti href={`/palvelut/${p.id}/`} nimi={p.data.nimi} teksti={p.data.kortti} ikoni={p.data.ikoni} />
+              <span class="kk-ikoni"><Icon name="katto" size={26} /></span>
+              <h3>{a.nimi}</h3>
+              <p>{a.teksti}</p>
             </li>
           ))
         }
-        <li>
-          <PalveluKortti
-            href="/palvelut/#muut-korjaukset"
-            nimi="Muut korjaustyöt"
-            teksti="Julkisivun korjaukset, piha-alueiden kunnostus ja muut ulkotyöt. Aina neuvoteltavissa."
-            ikoni="korjaus"
-          />
+        <li class="kattokortti-linkki">
+          <a href="/palvelut/katot/" class="kk-linkki">
+            <span>Lue lisää kattopalveluista</span>
+            <Icon name="nuoli" size={24} />
+          </a>
         </li>
       </ul>
     </div>
   </section>
 
-  <section class="section section--sand" aria-labelledby="katto-otsikko">
+  <section class="section section--sand" aria-labelledby="merkit-otsikko">
     <div class="container split">
       <Kuva nimi="katto-huolto" alt="Peltikaton maalaus käynnissä" ikoni="katto" suhde="5 / 4" />
       <div class="prose">
-        <span class="eyebrow">Katot</span>
-        <h2 id="katto-otsikko">Kaipaako kattosi huoltoa?</h2>
+        <span class="eyebrow">Katon kunto</span>
+        <h2 id="merkit-otsikko">Mistä tiedät, että katto tarvitsee huoltoa?</h2>
+        <p>Tikkaille ei tarvitse kiivetä itse. Nämä merkit kertovat, että huolto tai remontti voi olla ajankohtainen:</p>
+        <ul class="merkit">
+          {merkit.map((m) => <li><Icon name="check" size={20} /> {m}</li>)}
+        </ul>
+        <p>Ilmaisessa kuntoarviossa selvitämme katon tilanteen puolestasi. Saat selkeän suunnitelman ja kiinteän hinnan ilman sitoutumista.</p>
+        <div class="btn-row">
+          <a href="/kuntoarvio/?palvelu=katot" class="btn">Pyydä katon kuntoarvio</a>
+          <a href="/hintalaskuri/" class="btn btn--secondary">Laske katon hinta</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="huolto-otsikko">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Huoltovälit</span>
+        <h2 id="huolto-otsikko">Milloin katto ja seinät kannattaa maalata?</h2>
+      </div>
+      <dl class="huoltovalit">
+        {
+          huoltovalit.map((h) => (
+            <div>
+              <dt>{h.kohde}</dt>
+              <dd>{h.vali}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="huomio">Pinnoitus voi pidentää tiilikaton käyttöikää jopa 20 vuodella.</p>
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="maalaus-otsikko">
+    <div class="container split split--reverse">
+      <Kuva nimi="maalaus" alt="Puutalon seinää maalataan siveltimellä" ikoni="maalaus" suhde="5 / 4" />
+      <div class="prose">
+        <span class="eyebrow">Maalaus</span>
+        <h2 id="maalaus-otsikko">{maalaus.data.otsikko}</h2>
+        <p>{maalaus.data.ingressi}</p>
         <p>
-          Sammaloituminen, ruoste tai vuodot kertovat, että huolto tai remontti voi olla ajankohtainen. Tikkaille ei
-          tarvitse kiivetä itse. Selvitämme katon tilanteen puolestasi ilmaisessa kuntoarviossa.
+          Maalaamme rakennuksen yhteen tai kahteen kertaan pinnan kunnon mukaan. Lopuksi tarkistamme työn kanssasi,
+          siivoamme työmaan ja kierrätämme jätteet asianmukaisesti.
         </p>
-        <p>
-          Teemme tiili-, pelti- ja huopakattojen remontit, maalaukset ja pinnoitukset. Yli 25 vuoden kokemus varmistaa
-          laadukkaan ja juuri sinun kattosi tarpeisiin sopivan lopputuloksen.
-        </p>
-        <a href="/palvelut/katot/" class="link-arrow">Katon maalaus ja kattoremontit <Icon name="nuoli" size={18} /></a>
+        <a href="/palvelut/maalaus/" class="link-arrow">Talon maalaus <Icon name="nuoli" size={18} /></a>
       </div>
     </div>
   </section>
@@ -149,14 +165,14 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">Näin se toimii</span>
-        <h2 id="vaiheet-otsikko">Kolme askelta valmiiseen työhön</h2>
+        <h2 id="vaiheet-otsikko">Kolme askelta valmiiseen kattoon</h2>
       </div>
       <Vaiheet />
     </div>
   </section>
 
   <section class="section" aria-labelledby="perhe-otsikko">
-    <div class="container split split--reverse">
+    <div class="container split">
       <Kuva nimi="perheyritys" alt="Holsken tiimi työmaalla" ikoni="perhe" suhde="5 / 4" />
       <div class="prose">
         <span class="eyebrow">Meistä</span>
@@ -165,12 +181,47 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
           Perhekeskeisyys on tärkeimpiä arvojamme, ja se auttaa meitä tekemään työmme tehokkaasti. Luotamme toisiimme ja
           teemme kaiken sujuvalla yhteistyöllä.
         </p>
-        <p>
-          Asiakkaan tarpeet ovat meille ensisijaisia. Joustavuus on toimintamme kulmakivi: muokkaamme palvelun sinun
-          kohteesi mukaan.
-        </p>
+        <p>Asiakkaan tarpeet ovat meille ensisijaisia. Muokkaamme palvelun sinun kohteesi mukaan.</p>
         <a href="/meista/" class="link-arrow">Tutustu meihin <Icon name="nuoli" size={18} /></a>
       </div>
+    </div>
+  </section>
+
+  <section class="section--tight lisat" aria-labelledby="lisat-otsikko">
+    <div class="container">
+      <div class="lisat-otsikko">
+        <h2 id="lisat-otsikko">Myös nämä hoituvat</h2>
+        <a href="/palvelut/" class="link-arrow">Kaikki palvelut <Icon name="nuoli" size={18} /></a>
+      </div>
+      <ul class="lisalista">
+        {
+          lisapalvelut.map((p) => (
+            <li>
+              <a href={`/palvelut/${p.id}/`}>
+                <Icon name={p.data.ikoni} size={26} />
+                <span class="lisa-teksti">
+                  <strong>
+                    {p.data.nimi}
+                    {etusivu.nosto === p.id && <span class="sesonki">Sesonki nyt</span>}
+                  </strong>
+                  <span>{p.data.kortti}</span>
+                </span>
+                <Icon name="nuoli" size={20} />
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href="/palvelut/#muut-korjaukset">
+            <Icon name="korjaus" size={26} />
+            <span class="lisa-teksti">
+              <strong>Muut korjaustyöt</strong>
+              <span>Julkisivun korjaukset ja muut ulkotyöt. Aina neuvoteltavissa.</span>
+            </span>
+            <Icon name="nuoli" size={20} />
+          </a>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -178,8 +229,8 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
     <div class="container infot">
       <article class="info">
         <Icon name="laskin" size={32} />
-        <h2>Mietityttääkö hinta?</h2>
-        <p>Hinta määräytyy työn yksityiskohtien ja määrän perusteella. Hintalaskurilla saat suuntaa ja voit lähettää tiedot suoraan meille.</p>
+        <h2>Mitä katon maalaus maksaa?</h2>
+        <p>Hinta riippuu katon koosta, materiaalista ja kunnosta. Hintalaskurilla saat suuntaa ja voit lähettää tiedot suoraan meille.</p>
         <a href="/hintalaskuri/" class="link-arrow">Hintalaskuriin <Icon name="nuoli" size={18} /></a>
       </article>
       <article class="info">
@@ -191,13 +242,13 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
       <article class="info">
         <Icon name="paikallinen" size={32} />
         <h2>Palvelualue</h2>
-        <p>Palvelemme koko pääkaupunkiseudulla: {yritys.palvelualue.join(', ')}. Kotipaikkamme on Vantaa.</p>
+        <p>Teemme kattotöitä koko pääkaupunkiseudulla: {yritys.palvelualue.join(', ')}. Kotipaikkamme on Vantaa.</p>
         <a href="/yhteystiedot/" class="link-arrow">Yhteystiedot <Icon name="nuoli" size={18} /></a>
       </article>
     </div>
   </section>
 
-  <CtaOsio />
+  <CtaOsio otsikko="Varaa ilmainen katon kuntoarvio" palvelu="katot" />
 </BaseLayout>
 
 <style>
@@ -212,10 +263,26 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
   }
   .hero-text {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.4rem;
     min-width: 0;
   }
-  .hero-text .btn-row { margin-top: 0.5rem; }
+  .chipit {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chipit li {
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    background: var(--moss-soft);
+    color: var(--green);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+  .hero-text .btn-row { margin-top: 0.25rem; }
   .hero-note {
     display: inline-flex;
     align-items: center;
@@ -234,34 +301,7 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
     background: var(--surface);
   }
 
-  .nosto {
-    display: grid;
-    gap: 1.5rem;
-    align-items: center;
-    padding: clamp(1.75rem, 5vw, 3rem);
-    border-radius: calc(var(--r-lg) + 8px);
-    background: linear-gradient(135deg, #e6ece4 0%, #f3f5f0 100%);
-    border: 1px solid #d5ddd2;
-  }
-  @media (min-width: 60rem) {
-    .nosto { grid-template-columns: auto 1fr auto; gap: 2.5rem; }
-  }
-  .nosto-ikoni {
-    display: grid;
-    place-items: center;
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-    background: var(--surface);
-    color: var(--green);
-    box-shadow: var(--shadow);
-  }
-  .nosto-teksti { display: grid; gap: 0.6rem; max-width: 40rem; min-width: 0; }
-  .nosto-teksti h2 { font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.3rem); }
-  .nosto-teksti p { color: var(--muted); }
-  .nosto-napit { flex-wrap: wrap; }
-
-  .kortit {
+  .kattokortit {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -270,8 +310,50 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
   }
   @media (min-width: 64rem) {
-    .kortit { grid-template-columns: repeat(3, 1fr); }
+    .kattokortit { grid-template-columns: repeat(3, 1fr); }
   }
+  .kattokortit > li:not(.kattokortti-linkki) {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+  .kk-ikoni {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 12px;
+    background: var(--moss-soft);
+    color: var(--green);
+    margin-bottom: 0.4rem;
+  }
+  .kattokortit h3 { font-size: 1.25rem; }
+  .kattokortit p { color: var(--muted); font-size: 1.0625rem; }
+  .kk-linkki {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 100%;
+    min-height: 10rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    border-radius: var(--r-lg);
+    background: var(--green);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 1.15;
+    text-decoration: none;
+    transition: transform 240ms var(--ease-out), background-color 200ms ease;
+  }
+  .kk-linkki:hover { background: var(--green-deep); }
+  .kk-linkki:active { transform: scale(0.985); }
+  .kk-linkki :global(.icon) { flex: none; color: var(--orange); transition: transform 220ms var(--ease-out); }
+  .kk-linkki:hover :global(.icon) { transform: translateX(4px); }
 
   .split {
     display: grid;
@@ -283,6 +365,87 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
     .split--reverse > :first-child { order: 2; }
   }
   .split .prose { min-width: 0; }
+  .merkit {
+    list-style: none;
+    padding: 0 !important;
+    display: grid;
+    gap: 0.6rem !important;
+  }
+  .merkit li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-weight: 500;
+  }
+  .merkit :global(.icon) { flex: none; color: var(--ok); margin-top: 0.2rem; }
+
+  .huoltovalit {
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  }
+  .huoltovalit div {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+    padding: 1.5rem;
+    border-top: 3px solid var(--orange);
+    background: var(--surface);
+    border-radius: 0 0 var(--r-md) var(--r-md);
+  }
+  .huoltovalit dt { font-weight: 600; color: var(--green); font-size: 1.125rem; }
+  .huoltovalit dd { margin: 0; color: var(--muted); }
+  .huomio { margin-top: 1.5rem; color: var(--muted); }
+
+  .lisat { border-top: 1px solid var(--line); }
+  .lisat-otsikko {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .lisat-otsikko h2 { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); }
+  .lisalista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  }
+  .lisalista a {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    height: 100%;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--r-md);
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color 160ms ease, transform 200ms var(--ease-out);
+  }
+  .lisalista a:hover { border-color: color-mix(in srgb, var(--green) 35%, var(--line)); }
+  .lisalista a:active { transform: scale(0.985); }
+  .lisalista a > :global(.icon:first-child) { color: var(--green); }
+  .lisalista a > :global(.icon:last-child) { color: var(--muted); }
+  .lisa-teksti { display: grid; gap: 0.15rem; min-width: 0; }
+  .lisa-teksti strong { color: var(--green); display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .lisa-teksti > span { color: var(--muted); font-size: 0.9375rem; }
+  .sesonki {
+    padding: 0.1rem 0.55rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--orange) 22%, transparent);
+    color: #6b3d05;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
 
   .infot {
     display: grid;

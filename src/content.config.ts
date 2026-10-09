@@ -12,6 +12,7 @@ const palvelut = defineCollection({
     kortti: z.string(),
     ikoni: z.string(),
     jarjestys: z.number(),
+    ydin: z.boolean().default(false),
     kuva: z.string(),
     kuvaAlt: z.string(),
     kotitalousvahennys: z.boolean().default(true),
