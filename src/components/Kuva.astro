@@ -42,7 +42,6 @@ const kuva = getKuva(nimi);
     />
   ) : (
     <div class:list={['kuva kuva--tyhja', className]} style={`aspect-ratio:${suhde}`} role="img" aria-label={alt} data-todo={`Lisää kuva: assets/kuvat/${nimi}.jpg`}>
-      <Fragment set:html={`<!-- TODO: lisää kuva assets/kuvat/${nimi}.jpg -->`} />
       <Icon name={ikoni} size={56} />
     </div>
   )

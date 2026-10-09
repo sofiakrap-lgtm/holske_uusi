@@ -13,8 +13,7 @@ const logo = getLogo(variantti === 'vaalea' ? 'logo-valkoinen' : 'logo');
   logo ? (
     <img src={logo.src} width={logo.width} height={logo.height} alt="Holske" class="logo-img" />
   ) : (
-    <span class:list={['wordmark', variantti]}>
-      <Fragment set:html="<!-- TODO: lisää oikea logo assets/logot-ja-grafiikat/logo.svg -->" />
+    <span class:list={['wordmark', variantti]} data-todo="Lisää logo: assets/logot-ja-grafiikat/logo.svg">
       <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true" focusable="false">
         <path d="M3 15.5 16 5l13 10.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
         <path d="M7 13v13.5h18V13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />

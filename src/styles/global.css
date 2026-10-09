@@ -75,6 +75,8 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+[hidden] { display: none !important; }
+
 img,
 svg,
 picture {
