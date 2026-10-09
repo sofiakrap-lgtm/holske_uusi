@@ -23,7 +23,9 @@ Kaikki muokattava sisältö on omissa tiedostoissaan. Koodiin ei tarvitse koskea
 | Palvelut (tekstit, otsikot, usein kysytyt, SEO-tekstit) | `src/content/palvelut/*.md`, yksi tiedosto per palvelu |
 | Kampanjabanneri (päälle/pois, teksti, päättymispäivä) | `src/data/kampanja.json` |
 | Hintalaskurin hinnat | `src/data/hinnasto.json` |
-| Etusivun sesonkinosto (lumityöt/pihatyöt) | `src/data/etusivu.json` |
+| Etusivun sesonkimerkintä ja sen päivät | `src/data/etusivu.json` |
+| Kotitalousvähennyksen luvut ja tila | `src/data/kotitalousvahennys.json` |
+| Kuvien alt-tekstit ja rajaus | `src/data/kuvat.json` |
 | Google Analytics- ja Facebook-pikselin tunnukset | `src/data/seuranta.json` |
 | Lomakkeen asetukset | `src/data/lomake.json` |
 
@@ -51,22 +53,22 @@ Hinnastokysely, jonka vastauksista hinnat täytetään: https://claude.ai/artifa
 
 Kuvat ja logo lisätään repon juureen, ja sivusto pakkaa ne automaattisesti AVIF- ja WebP-muotoon oikeisiin kokoihin.
 
-**Kuvat** kansioon `assets/kuvat/`. Tiedoston nimi ratkaisee, mihin kuva tulee (pääte .jpg, .png tai .webp):
+**Kuvat** kansioon `assets/kuvat/`. Tiedoston nimi ratkaisee, mihin kuva tulee (pääte .jpg, .png tai .webp). Pääaihe kuvan keskelle, vaakakuvat, luonnonvalo, ei tekstiä kuvassa.
 
-| Tiedosto | Missä näkyy |
-|---|---|
-| `etusivu.jpg` | Etusivun iso pääkuva (pystykuva, n. 4:5) |
-| `katto-huolto.jpg` | Etusivu, "Kaipaako kattosi huoltoa?" |
-| `perheyritys.jpg` | Etusivu, "Pieni perheyritys" |
-| `meista.jpg` | Meistä-sivu |
-| `katot.jpg` | Katot-sivu |
-| `maalaus.jpg` | Maalaus-sivu |
-| `painepesu.jpg` | Painepesu-sivu |
-| `lumityot.jpg` | Lumityöt-sivu |
-| `pihatyot.jpg` | Pihatyöt-sivu |
-| `muut-korjaukset.jpg` | Palvelut-sivu, muut korjaustyöt |
+| Tiedosto | Missä | Desktop | Tabletti | Mobiili | Vähintään |
+|---|---|---|---|---|---|
+| `etusivu.jpg` | Etusivun pääkuva, koko leveys | 16:9 | 4:3 | 4:5 | 3200 × 1800 |
+| `katto-huolto.jpg` | Etusivu, katon kunto, koko leveys | 21:9 | 16:9 | 4:5 | 3200 × 1372 |
+| `maalaus.jpg` | Etusivu ja Maalaus-sivu, koko leveys | 21:9 / 16:9 | 16:9 / 4:3 | 4:5 | 3200 × 1800 |
+| `perheyritys.jpg` | Etusivu, Meistä-osio | 4:5 | 4:3 | 4:5 | 2000 × 2500 |
+| `meista.jpg` | Meistä-sivu | 4:5 | 4:3 | 4:5 | 2000 × 2500 |
+| `katot.jpg` | Katot-sivun pääkuva | 16:9 | 4:3 | 4:5 | 3200 × 1800 |
+| `painepesu.jpg`, `lumityot.jpg`, `pihatyot.jpg`, `muut-korjaukset.jpg` | Palvelusivujen pääkuvat ja etusivun kortit | 16:9 | 4:3 | 4:5 | 3200 × 1800 |
+| `katot-2.jpg`, `katot-3.jpg`, `maalaus-2.jpg` (valinnaiset) | Lisäkuvat palvelusivulle | 4:3 | 4:3 | 4:3 | 2400 × 1800 |
 
-Niin kauan kuin kuvaa ei ole, sen paikalla näkyy siisti ikoni. Kuvat vähintään 2000 px leveitä.
+Mihin tahansa kuvaan voi lisätä erillisen mobiiliversion `<nimi>-mobiili.jpg` (4:5, vähintään 1600 × 2000) ja tablettiversion `<nimi>-tabletti.jpg` (4:3, vähintään 2400 × 1800). Ilman niitä pääkuva rajataan automaattisesti keskeltä.
+
+Alt-tekstit ja rajauksen kohta: `src/data/kuvat.json`. Niin kauan kuin kuvaa ei ole, sen paikalla näkyy saman muotoinen paikkamerkki.
 
 **Logo** on kansiossa `assets/logot-ja-grafiikat/`:
 - `logo.svg`: päälogo (Holske™), käytössä headerissa ja footerissa

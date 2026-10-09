@@ -31,7 +31,7 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
           ydin.map((p) => (
             <li>
               <a href={`/palvelut/${p.id}/`} class="ydinkortti">
-                <Kuva nimi={p.data.kuva} alt={p.data.kuvaAlt} ikoni={p.data.ikoni} suhde="16 / 10" sizes="(min-width: 60rem) 45vw, 100vw" />
+                <Kuva nimi={p.data.kuva} alt={p.data.kuvaAlt} ikoni={p.data.ikoni} variantti="kortti" />
                 <div class="ydin-teksti">
                   <span class="eyebrow">Pääpalvelu</span>
                   <h2>{p.data.otsikko}</h2>
@@ -97,7 +97,7 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
   }
   .ydinkortti:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
   .ydinkortti:active { transform: scale(0.99); }
-  .ydinkortti :global(.kuva) { border-radius: 0; }
+  .ydinkortti :global(.kuvapaikka) { border-radius: 0; }
   .ydin-teksti { display: grid; gap: 0.75rem; padding: clamp(1.5rem, 3vw, 2.25rem); }
   .ydin-teksti h2 { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); }
   .ydin-kuvaus { color: var(--muted); }

@@ -56,6 +56,9 @@ if (d.ukk.length) {
     })),
   });
 }
+import { getKuva } from '../../lib/kuvat';
+// Lisäkuvat näytetään vain, jos ne on lisätty kansioon (esim. katot-2.jpg, katot-3.jpg)
+const lisakuvat = [`${d.kuva}-2`, `${d.kuva}-3`].filter((n) => getKuva(n));
 const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
 ---
 
@@ -63,23 +66,33 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
   <section class="hero">
     <div class="container">
       <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }, { nimi: d.nimi, href: `/palvelut/${palvelu.id}/` }]} />
-      <div class="hero-grid">
-        <div class="hero-text">
-          <span class="ikoni"><Icon name={d.ikoni} size={34} /></span>
-          <h1>{d.otsikko}</h1>
-          <p class="lead">{d.ingressi}</p>
-          <div class="btn-row">
-            <a href={`/kuntoarvio/?palvelu=${palvelu.id}`} class="btn">Varaa ilmainen kuntoarvio <Icon name="nuoli" size={20} /></a>
-            <a href={tel} class="btn btn--secondary"><Icon name="puhelin" size={20} /> {yritys.puhelinNaytto}</a>
-          </div>
-          <p class="palvelualue">
-            <Icon name="sijainti" size={18} /> {yritys.palvelualue.join(', ')}
-          </p>
+      <div class="hero-text">
+        <span class="ikoni"><Icon name={d.ikoni} size={34} /></span>
+        <h1>{d.otsikko}</h1>
+        <p class="lead">{d.ingressi}</p>
+        <div class="btn-row">
+          <a href={`/kuntoarvio/?palvelu=${palvelu.id}`} class="btn">Varaa ilmainen kuntoarvio <Icon name="nuoli" size={20} /></a>
+          <a href={tel} class="btn btn--secondary"><Icon name="puhelin" size={20} /> {yritys.puhelinNaytto}</a>
         </div>
-        <Kuva nimi={d.kuva} alt={d.kuvaAlt} ikoni={d.ikoni} eager suhde="4 / 3" sizes="(min-width: 60rem) 45vw, 100vw" />
+        <p class="palvelualue">
+          <Icon name="sijainti" size={18} /> {yritys.palvelualue.join(', ')}
+        </p>
       </div>
     </div>
+    <div class="hero-kuva">
+      <Kuva nimi={d.kuva} alt={d.kuvaAlt} ikoni={d.ikoni} variantti="hero" eager />
+    </div>
   </section>
+
+  {
+    lisakuvat.length > 0 && (
+      <section class="section--tight" aria-label="Kuvia työstä">
+        <div class="container lisakuvat">
+          {lisakuvat.map((n) => <Kuva nimi={n} ikoni={d.ikoni} variantti="kortti" />)}
+        </div>
+      </section>
+    )
+  }
 
   {
     alapalvelut.length > 0 && (
@@ -156,15 +169,25 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
 
 <style>
   .hero { padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 7vw, 5.5rem); }
-  .hero-grid {
+  .hero-text {
     display: grid;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
+    gap: 1.25rem;
+    justify-items: center;
+    text-align: center;
+    max-width: 52rem;
+    margin: 0 auto clamp(2.5rem, 6vw, 4rem);
   }
-  @media (min-width: 60rem) {
-    .hero-grid { grid-template-columns: 1.05fr 0.95fr; }
+  .hero-text .lead { margin-inline: auto; }
+  .hero-text .btn-row { justify-content: center; }
+  .hero-kuva { padding-inline: var(--gutter); }
+  @media (min-width: 1180px) {
+    .hero-kuva { padding-inline: 0; }
   }
-  .hero-text { display: grid; gap: 1.25rem; min-width: 0; }
+  .lisakuvat {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  }
   .ikoni {
     display: grid;
     place-items: center;

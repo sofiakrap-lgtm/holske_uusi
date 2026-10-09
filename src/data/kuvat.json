@@ -1,0 +1,16 @@
+{
+  "_ohje": "Kuvien alt-tekstit ja rajauksen kohta. Kuvaile, mitä kuvassa oikeasti näkyy (esim. 'Vastamaalattu punainen tiilikatto omakotitalossa'). fokus = kohta, joka pysyy näkyvissä rajattaessa (vaaka% pysty%).",
+  "etusivu": { "alt": "Omakotitalo, jonka katto on juuri maalattu", "fokus": "50% 50%" },
+  "katto-huolto": { "alt": "Peltikaton maalaus käynnissä", "fokus": "50% 50%" },
+  "maalaus": { "alt": "Puutalon seinää maalataan siveltimellä", "fokus": "50% 50%" },
+  "perheyritys": { "alt": "Holsken tekijät työmaalla", "fokus": "50% 40%" },
+  "meista": { "alt": "Holsken tekijät", "fokus": "50% 40%" },
+  "katot": { "alt": "Omakotitalon katto kunnostuksen jälkeen", "fokus": "50% 50%" },
+  "katot-2": { "alt": "TODO: kuvaile kuva", "fokus": "50% 50%" },
+  "katot-3": { "alt": "TODO: kuvaile kuva", "fokus": "50% 50%" },
+  "maalaus-2": { "alt": "TODO: kuvaile kuva", "fokus": "50% 50%" },
+  "painepesu": { "alt": "Kivetyksen painepesu, puhdas ja likainen pinta rinnakkain", "fokus": "50% 50%" },
+  "lumityot": { "alt": "Lumista katolta pudotetaan lunta talvella", "fokus": "50% 50%" },
+  "pihatyot": { "alt": "Vastaleikattu nurmikko omakotitalon pihalla", "fokus": "50% 50%" },
+  "muut-korjaukset": { "alt": "Omakotitalon julkisivun korjaustyö", "fokus": "50% 50%" }
+}

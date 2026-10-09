@@ -38,35 +38,24 @@ const huoltovalit = [
   description="Kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus omakotitaloille Helsingissä, Espoossa ja Vantaalla. Perheyritys. Varaa ilmainen kuntoarvio."
 >
   <section class="hero">
-    <div class="container hero-grid">
-      <div class="hero-text">
-        <span class="eyebrow">Kattoremontit ja maalaus pääkaupunkiseudulla</span>
-        <h1>Katon maalaus ja kattoremontit omakotitaloille</h1>
-        <p class="lead">
-          Kunnostamme, maalaamme ja pinnoitamme tiili-, pelti- ja huopakatot siististi ja kiinteään hintaan. Pieni
-          perheyritys, tekijöillä yli 25 vuoden kokemus.
-        </p>
-        <ul class="chipit" aria-label="Kattotyypit">
-          <li>Tiilikatot</li>
-          <li>Peltikatot</li>
-          <li>Huopakatot</li>
-        </ul>
-        <div class="btn-row">
-          <a href="/kuntoarvio/?palvelu=katot" class="btn">Varaa ilmainen katon kuntoarvio <Icon name="nuoli" size={20} /></a>
-          <a href={tel} class="btn btn--secondary"><Icon name="puhelin" size={20} /> {yritys.puhelinNaytto}</a>
-        </div>
-        <p class="hero-note"><Icon name="check" size={18} /> {yritys.vastausaika}. Kuntoarvio ei sido mihinkään.</p>
+    <div class="container hero-text">
+      <span class="eyebrow">Kattoremontit ja maalaus pääkaupunkiseudulla</span>
+      <h1>Katon maalaus ja kattoremontit omakotitaloille</h1>
+      <p class="lead">
+        Kunnostamme, maalaamme ja pinnoitamme tiili-, pelti- ja huopakatot siististi ja kiinteään hintaan. Pieni
+        perheyritys, tekijöillä yli 25 vuoden kokemus.
+      </p>
+      <div class="btn-row">
+        <a href="/kuntoarvio/?palvelu=katot" class="btn">Varaa ilmainen katon kuntoarvio <Icon name="nuoli" size={20} /></a>
+        <a href={tel} class="btn btn--secondary"><Icon name="puhelin" size={20} /> {yritys.puhelinNaytto}</a>
       </div>
-      <div class="hero-media">
-        <Kuva
-          nimi="etusivu"
-          alt="Omakotitalo, jonka katto on juuri maalattu"
-          ikoni="katto"
-          eager
-          suhde="4 / 5"
-          sizes="(min-width: 60rem) 45vw, 100vw"
-        />
-      </div>
+      <p class="hero-yhteys">
+        <span><Icon name="check" size={18} /> {yritys.vastausaika}</span>
+        <a href={`mailto:${yritys.sahkoposti}`}><Icon name="sahkoposti" size={18} /> {yritys.sahkoposti}</a>
+      </p>
+    </div>
+    <div class="hero-kuva">
+      <Kuva nimi="etusivu" ikoni="katto" variantti="hero" eager />
     </div>
   </section>
 
@@ -105,17 +94,21 @@ const huoltovalit = [
     </div>
   </section>
 
-  <section class="section section--sand" aria-labelledby="merkit-otsikko">
-    <div class="container split">
-      <Kuva nimi="katto-huolto" alt="Peltikaton maalaus käynnissä" ikoni="katto" suhde="5 / 4" />
-      <div class="prose">
-        <span class="eyebrow">Katon kunto</span>
-        <h2 id="merkit-otsikko">Mistä tiedät, että katto tarvitsee huoltoa?</h2>
-        <p>Tikkaille ei tarvitse kiivetä itse. Nämä merkit kertovat, että huolto tai remontti voi olla ajankohtainen:</p>
-        <ul class="merkit">
-          {merkit.map((m) => <li><Icon name="check" size={20} /> {m}</li>)}
-        </ul>
-        <p>Ilmaisessa kuntoarviossa selvitämme katon tilanteen puolestasi. Saat selkeän suunnitelman ja kiinteän hinnan ilman sitoutumista.</p>
+  <section class="section section--sand kuvaosio" aria-labelledby="merkit-otsikko">
+    <div class="container osio-otsake">
+      <span class="eyebrow">Katon kunto</span>
+      <h2 id="merkit-otsikko">Mistä tiedät, että katto tarvitsee huoltoa?</h2>
+      <p class="lead">Tikkaille ei tarvitse kiivetä itse. Ilmaisessa kuntoarviossa selvitämme katon tilanteen puolestasi.</p>
+    </div>
+    <div class="reveal">
+      <Kuva nimi="katto-huolto" ikoni="katto" variantti="leveä" />
+    </div>
+    <div class="container merkit-rivi">
+      <ul class="merkit">
+        {merkit.map((m) => <li><Icon name="check" size={20} /> {m}</li>)}
+      </ul>
+      <div class="merkit-cta">
+        <p>Saat selkeän suunnitelman ja kiinteän hinnan ilman sitoutumista.</p>
         <div class="btn-row">
           <a href="/kuntoarvio/?palvelu=katot" class="btn">Pyydä katon kuntoarvio</a>
           <a href="/hintalaskuri/" class="btn btn--secondary">Laske katon hinta</a>
@@ -144,19 +137,21 @@ const huoltovalit = [
     </div>
   </section>
 
-  <section class="section section--sand" aria-labelledby="maalaus-otsikko">
-    <div class="container split split--reverse">
-      <Kuva nimi="maalaus" alt="Puutalon seinää maalataan siveltimellä" ikoni="maalaus" suhde="5 / 4" />
-      <div class="prose">
-        <span class="eyebrow">Maalaus</span>
-        <h2 id="maalaus-otsikko">{maalaus.data.otsikko}</h2>
-        <p>{maalaus.data.ingressi}</p>
-        <p>
-          Maalaamme rakennuksen yhteen tai kahteen kertaan pinnan kunnon mukaan. Lopuksi tarkistamme työn kanssasi,
-          siivoamme työmaan ja kierrätämme jätteet asianmukaisesti.
-        </p>
-        <a href="/palvelut/maalaus/" class="link-arrow">Talon maalaus <Icon name="nuoli" size={18} /></a>
-      </div>
+  <section class="section kuvaosio" aria-labelledby="maalaus-otsikko">
+    <div class="container osio-otsake">
+      <span class="eyebrow">Maalaus</span>
+      <h2 id="maalaus-otsikko">{maalaus.data.otsikko}</h2>
+      <p class="lead">{maalaus.data.ingressi}</p>
+    </div>
+    <div class="reveal">
+      <Kuva nimi="maalaus" ikoni="maalaus" variantti="leveä" />
+    </div>
+    <div class="container osio-alla">
+      <p>
+        Maalaamme rakennuksen yhteen tai kahteen kertaan pinnan kunnon mukaan. Lopuksi tarkistamme työn kanssasi,
+        siivoamme työmaan ja kierrätämme jätteet asianmukaisesti.
+      </p>
+      <a href="/palvelut/maalaus/" class="link-arrow">Talon maalaus <Icon name="nuoli" size={18} /></a>
     </div>
   </section>
 
@@ -172,7 +167,7 @@ const huoltovalit = [
 
   <section class="section" aria-labelledby="perhe-otsikko">
     <div class="container split">
-      <Kuva nimi="perheyritys" alt="Holsken tiimi työmaalla" ikoni="perhe" suhde="5 / 4" />
+      <Kuva nimi="perheyritys" ikoni="perhe" variantti="jaettu" />
       <div class="prose">
         <span class="eyebrow">Meistä</span>
         <h2 id="perhe-otsikko">Pieni perheyritys. Tue paikallista tekijää.</h2>
@@ -186,18 +181,18 @@ const huoltovalit = [
     </div>
   </section>
 
-  <section class="section--tight lisat" aria-labelledby="lisat-otsikko">
+  <section class="section lisat" aria-labelledby="lisat-otsikko">
     <div class="container">
       <div class="lisat-otsikko">
         <h2 id="lisat-otsikko">Myös nämä hoituvat</h2>
         <a href="/palvelut/" class="link-arrow">Kaikki palvelut <Icon name="nuoli" size={18} /></a>
       </div>
-      <ul class="lisalista">
+      <ul class="lisakortit">
         {
           lisapalvelut.map((p) => (
             <li>
-              <a href={`/palvelut/${p.id}/`}>
-                <Icon name={p.data.ikoni} size={26} />
+              <a href={`/palvelut/${p.id}/`} class="lisakortti">
+                <Kuva nimi={p.data.kuva} ikoni={p.data.ikoni} variantti="kortti" />
                 <span class="lisa-teksti">
                   <strong>
                     {p.data.nimi}
@@ -205,7 +200,6 @@ const huoltovalit = [
                   </strong>
                   <span>{p.data.kortti}</span>
                 </span>
-                <Icon name="nuoli" size={20} />
               </a>
             </li>
           ))
@@ -252,48 +246,31 @@ const huoltovalit = [
 </script>
 
 <style>
-  .hero { padding-block: clamp(2rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem); }
-  .hero-grid {
-    display: grid;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
-  }
-  @media (min-width: 60rem) {
-    .hero-grid { grid-template-columns: 1.1fr 0.9fr; }
-  }
+  .hero { padding-top: clamp(2.5rem, 7vw, 6rem); }
   .hero-text {
     display: grid;
     gap: 1.4rem;
-    min-width: 0;
+    justify-items: center;
+    text-align: center;
+    max-width: 52rem;
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
   }
-  .chipit {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .hero-text .lead { margin-inline: auto; }
+  .hero-text .btn-row { justify-content: center; }
+  .hero-yhteys {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  .chipit li {
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    background: var(--moss-soft);
-    color: var(--green);
-    font-size: var(--fs-sm);
-    font-weight: 600;
-  }
-  .hero-text .btn-row { margin-top: 0.25rem; }
-  .hero-note {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
     font-size: var(--fs-sm);
     color: var(--muted);
   }
-  .hero-note :global(.icon) { color: var(--ok); flex: none; }
-  .hero-media { min-width: 0; }
-  @media (max-width: 59.99rem) {
-    .hero-media :global(.kuva) { aspect-ratio: 4 / 3 !important; }
+  .hero-yhteys > * { display: inline-flex; align-items: center; gap: 0.45rem; min-height: 44px; }
+  .hero-yhteys :global(.icon) { color: var(--ok); flex: none; }
+  .hero-yhteys a { color: var(--green); font-weight: 600; text-decoration: none; }
+  .hero-kuva { padding-inline: var(--gutter); }
+  @media (min-width: 1180px) {
+    .hero-kuva { padding-inline: 0; }
   }
 
   .edut-osio {
@@ -355,6 +332,38 @@ const huoltovalit = [
   .kk-linkki :global(.icon) { flex: none; color: var(--orange); transition: transform 220ms var(--ease-out); }
   .kk-linkki:hover :global(.icon) { transform: translateX(4px); }
 
+  .kuvaosio .reveal { padding-inline: var(--gutter); }
+  @media (min-width: 1180px) {
+    .kuvaosio .reveal { padding-inline: 0; }
+  }
+  .osio-otsake {
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+    text-align: center;
+    max-width: 48rem;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+  .osio-otsake .lead { margin-inline: auto; }
+  .osio-alla {
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+    text-align: center;
+    max-width: 44rem;
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+  .merkit-rivi {
+    display: grid;
+    gap: 2rem;
+    margin-top: clamp(2rem, 5vw, 3.5rem);
+    align-items: start;
+  }
+  @media (min-width: 60rem) {
+    .merkit-rivi { grid-template-columns: 1fr 1fr; gap: 4rem; }
+  }
+  .merkit-cta { display: grid; gap: 1rem; }
+
   .split {
     display: grid;
     gap: clamp(2rem, 5vw, 5rem);
@@ -367,9 +376,10 @@ const huoltovalit = [
   .split .prose { min-width: 0; }
   .merkit {
     list-style: none;
-    padding: 0 !important;
+    margin: 0;
+    padding: 0;
     display: grid;
-    gap: 0.6rem !important;
+    gap: 0.75rem;
   }
   .merkit li {
     display: flex;
@@ -398,7 +408,6 @@ const huoltovalit = [
   .huoltovalit dd { margin: 0; color: var(--muted); }
   .huomio { margin-top: 1.5rem; color: var(--muted); }
 
-  .lisat { border-top: 1px solid var(--line); }
   .lisat-otsikko {
     display: flex;
     flex-wrap: wrap;
@@ -408,35 +417,32 @@ const huoltovalit = [
     margin-bottom: 1.5rem;
   }
   .lisat-otsikko h2 { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); }
-  .lisalista {
+  .lisakortit {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.75rem;
+    gap: 1.5rem;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
   }
-  .lisalista a {
+  @media (min-width: 60rem) {
+    .lisakortit { grid-template-columns: repeat(2, 1fr); }
+  }
+  .lisakortti {
     display: grid;
-    grid-template-columns: auto 1fr auto;
     gap: 1rem;
-    align-items: center;
-    height: 100%;
-    padding: 1.1rem 1.25rem;
-    border-radius: var(--r-md);
-    border: 1px solid var(--line);
-    background: var(--surface);
     color: var(--ink);
     text-decoration: none;
-    transition: border-color 160ms ease, transform 200ms var(--ease-out);
   }
-  .lisalista a:hover { border-color: color-mix(in srgb, var(--green) 35%, var(--line)); }
-  .lisalista a:active { transform: scale(0.985); }
-  .lisalista a > :global(.icon:first-child) { color: var(--green); }
-  .lisalista a > :global(.icon:last-child) { color: var(--muted); }
+  .lisakortti :global(.kuvapaikka) { transition: transform 400ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .lisakortti:hover :global(.kuvapaikka) { transform: scale(1.015); }
+    .lisakortti:hover strong { text-decoration: underline; }
+  }
+  .lisakortti:active :global(.kuvapaikka) { transform: scale(0.985); }
   .lisa-teksti { display: grid; gap: 0.15rem; min-width: 0; }
-  .lisa-teksti strong { color: var(--green); display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
-  .lisa-teksti > span { color: var(--muted); font-size: 0.9375rem; }
+  .lisa-teksti strong { color: var(--green); display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; font-size: 1.25rem; }
+  .lisa-teksti > span { color: var(--muted); }
   .sesonki {
     padding: 0.1rem 0.55rem;
     border-radius: 999px;

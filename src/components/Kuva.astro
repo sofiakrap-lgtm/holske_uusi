@@ -1,69 +1,146 @@
 ---
-import { Picture } from 'astro:assets';
+/**
+ * Kuvapaikka. Etsii kuvan nimellä kansiosta assets/kuvat/ ja tekee siitä AVIF- ja WebP-versiot oikeisiin kokoihin.
+ * Art direction: jos kansiossa on myös <nimi>-mobiili.jpg tai <nimi>-tabletti.jpg, niitä käytetään pienemmillä näytöillä.
+ * Jos kuvaa ei ole, näytetään saman muotoinen paikkamerkki, joten asettelu ei hyppää kun kuva lisätään.
+ *
+ * Variantit (desktop / tabletti / mobiili):
+ *   hero    16:9 / 4:3 / 4:5   reunasta reunaan
+ *   leveä   21:9 / 16:9 / 4:5  reunasta reunaan
+ *   jaettu  4:5 / 4:3 / 4:5    puolen leveyden kuva tekstin vieressä
+ *   kortti  4:3                kortin kuva
+ */
+import { getImage } from 'astro:assets';
 import { getKuva } from '../lib/kuvat';
+import kuvatiedot from '../data/kuvat.json';
 import Icon from './Icon.astro';
 
+type Variantti = 'hero' | 'leveä' | 'jaettu' | 'kortti';
 interface Props {
   nimi: string;
-  alt: string;
+  alt?: string;
   ikoni?: string;
-  sizes?: string;
-  widths?: number[];
+  variantti?: Variantti;
   eager?: boolean;
   class?: string;
-  suhde?: string;
 }
-const {
-  nimi,
-  alt,
-  ikoni = 'kuva',
-  sizes = '(min-width: 64rem) 50vw, 100vw',
-  widths = [480, 768, 1080, 1440, 1920],
-  eager = false,
-  class: className,
-  suhde = '4 / 3',
-} = Astro.props;
-const kuva = getKuva(nimi);
+const { nimi, alt: altProp, ikoni = 'kuva', variantti = 'kortti', eager = false, class: className } = Astro.props;
+
+const tiedot = (kuvatiedot as Record<string, { alt?: string; fokus?: string }>)[nimi] ?? {};
+const alt = tiedot.alt || altProp || '';
+const fokus = tiedot.fokus || '50% 50%';
+
+const SUHTEET: Record<Variantti, [string, string, string]> = {
+  hero: ['16 / 9', '4 / 3', '4 / 5'],
+  leveä: ['21 / 9', '16 / 9', '4 / 5'],
+  jaettu: ['4 / 5', '4 / 3', '4 / 5'],
+  kortti: ['4 / 3', '4 / 3', '4 / 3'],
+};
+const [sD, sT, sM] = SUHTEET[variantti];
+const taysi = variantti === 'hero' || variantti === 'leveä';
+const sizes = taysi
+  ? '(min-width: 1180px) min(100vw, 2560px), 100vw'
+  : variantti === 'jaettu'
+    ? '(min-width: 1024px) 50vw, 100vw'
+    : '(min-width: 1024px) 33vw, (min-width: 744px) 50vw, 100vw';
+const LEVEYDET = [480, 768, 1080, 1440, 1920, 2560, 3200];
+
+const paa = getKuva(nimi);
+const mobiili = getKuva(`${nimi}-mobiili`);
+const tabletti = getKuva(`${nimi}-tabletti`);
+
+async function lahteet(src: NonNullable<ReturnType<typeof getKuva>>) {
+  const widths = LEVEYDET.filter((w) => w <= src.width);
+  if (!widths.length) widths.push(src.width);
+  const [avif, webp] = await Promise.all(
+    (['avif', 'webp'] as const).map((format) => getImage({ src, widths, format, sizes })),
+  );
+  return { avif: avif.srcSet.attribute, webp: webp.srcSet.attribute, fallback: webp.src };
+}
+
+const kuvat = paa
+  ? {
+      paa: await lahteet(paa),
+      mobiili: mobiili ? await lahteet(mobiili) : null,
+      tabletti: tabletti ? await lahteet(tabletti) : null,
+    }
+  : null;
+
+if (!paa && import.meta.env.DEV) console.warn(`[Kuva] Puuttuu: assets/kuvat/${nimi}.jpg`);
 ---
 
-{
-  kuva ? (
-    <Picture
-      src={kuva}
-      alt={alt}
-      formats={['avif', 'webp']}
-      widths={widths.filter((w) => w <= kuva.width)}
-      sizes={sizes}
-      loading={eager ? 'eager' : 'lazy'}
-      fetchpriority={eager ? 'high' : 'auto'}
-      decoding="async"
-      class:list={['kuva', className]}
-      style={`aspect-ratio:${suhde}`}
-    />
-  ) : (
-    <div class:list={['kuva kuva--tyhja', className]} style={`aspect-ratio:${suhde}`} role="img" aria-label={alt} data-todo={`Lisää kuva: assets/kuvat/${nimi}.jpg`}>
-      <Icon name={ikoni} size={56} />
-    </div>
-  )
-}
+<div
+  class:list={['kuvapaikka', `kuvapaikka--${variantti}`, className]}
+  style={`--s-d:${sD};--s-t:${sT};--s-m:${sM};--fokus:${fokus}`}
+>
+  {
+    kuvat ? (
+      <picture>
+        {kuvat.mobiili && <source media="(max-width: 743px)" type="image/avif" srcset={kuvat.mobiili.avif} sizes={sizes} />}
+        {kuvat.mobiili && <source media="(max-width: 743px)" type="image/webp" srcset={kuvat.mobiili.webp} sizes={sizes} />}
+        {kuvat.tabletti && <source media="(max-width: 1179px)" type="image/avif" srcset={kuvat.tabletti.avif} sizes={sizes} />}
+        {kuvat.tabletti && <source media="(max-width: 1179px)" type="image/webp" srcset={kuvat.tabletti.webp} sizes={sizes} />}
+        <source type="image/avif" srcset={kuvat.paa.avif} sizes={sizes} />
+        <source type="image/webp" srcset={kuvat.paa.webp} sizes={sizes} />
+        <img
+          src={kuvat.paa.fallback}
+          alt={alt}
+          width={paa!.width}
+          height={paa!.height}
+          loading={eager ? 'eager' : 'lazy'}
+          fetchpriority={eager ? 'high' : 'auto'}
+          decoding="async"
+        />
+      </picture>
+    ) : (
+      <div class="tyhja" role="img" aria-label={alt} data-puuttuu={`assets/kuvat/${nimi}.jpg`}>
+        <Icon name={ikoni} size={64} />
+      </div>
+    )
+  }
+</div>
 
 <style>
-  .kuva {
-    display: block;
+  .kuvapaikka {
+    position: relative;
     width: 100%;
     max-width: 100%;
-    height: auto;
-    object-fit: cover;
+    aspect-ratio: var(--s-d);
+    overflow: hidden;
     border-radius: var(--r-lg);
     background: var(--sand);
   }
-  :global(picture) > .kuva { width: 100%; }
-  .kuva--tyhja {
+  @media (max-width: 1179px) {
+    .kuvapaikka { aspect-ratio: var(--s-t); }
+  }
+  @media (max-width: 743px) {
+    .kuvapaikka { aspect-ratio: var(--s-m); }
+  }
+  /* Reunasta reunaan: desktopilla ilman kulmia koko leveydellä, pienemmillä näytöillä sivumarginaalein */
+  .kuvapaikka--hero,
+  .kuvapaikka--leveä {
+    max-width: 2560px;
+    margin-inline: auto;
+  }
+  @media (min-width: 1180px) {
+    .kuvapaikka--hero,
+    .kuvapaikka--leveä { border-radius: 0; }
+  }
+  picture,
+  img,
+  .tyhja {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  img {
+    object-fit: cover;
+    object-position: var(--fokus);
+  }
+  .tyhja {
     display: grid;
     place-items: center;
-    color: color-mix(in srgb, var(--green) 55%, transparent);
-    background:
-      radial-gradient(120% 90% at 85% 10%, color-mix(in srgb, var(--orange) 16%, transparent), transparent 60%),
-      linear-gradient(160deg, var(--sand) 0%, var(--moss-soft) 100%);
+    color: color-mix(in srgb, var(--green) 15%, transparent);
+    background: linear-gradient(160deg, #ece6da, #dfe3d6);
   }
 </style>
