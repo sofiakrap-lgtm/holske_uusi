@@ -5,15 +5,15 @@ import yritys from '../data/yritys.json';
 import { getCollection } from 'astro:content';
 
 const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
-const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+const tel = `tel:${yritys.puhelinE164}`;
 const vuosi = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="container grid">
     <div class="col brand-col">
-      <a href="/" class="brand" aria-label="Holske, etusivu"><Logo variantti="vaalea" class="footer-logo" /></a>
-      <p class="tagline">Kattoremontit, katon maalaus ja talon maalaus pääkaupunkiseudulla. Pieni perheyritys, {yritys.kokemus.toLowerCase()}.</p>
+      <a href="/" class="brand" aria-label="Holske Oy, etusivu"><Logo variantti="vaalea" class="footer-logo" /></a>
+      <p class="tagline">Kattoremontit, katon maalaus ja talon maalaus pääkaupunkiseudulla. Pieni perheyritys. {yritys.kokemusLause}</p>
       <a href="/kuntoarvio/" class="btn">Varaa ilmainen kuntoarvio</a>
     </div>
 

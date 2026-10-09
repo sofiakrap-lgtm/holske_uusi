@@ -2,8 +2,8 @@
 nimi: Katot
 otsikko: Katon maalaus, pinnoitus ja kattoremontit
 seoTitle: Katon maalaus ja kattoremontti | Vantaa, Espoo, Helsinki | Holske
-kuvaus: Katon maalaus, pinnoitus ja kattoremontit tiili-, pelti- ja huopakatoille pääkaupunkiseudulla. Perheyritys, yli 25 vuoden kokemus. Ilmainen kuntoarvio.
-ingressi: Huollamme ja remontoimme tiili-, pelti- ja huopakatot siististi ja kiinteään hintaan. Kokemusta eri katemateriaaleista ja toteutustavoista on kertynyt yli 25 vuotta.
+kuvaus: Katon maalaus, pinnoitus ja kattoremontit tiili-, pelti- ja huopakatoille pääkaupunkiseudulla. Perheyritys, tekijöillä yli 25 vuoden kokemus. Ilmainen kuntoarvio.
+ingressi: Huollamme ja remontoimme tiili-, pelti- ja huopakatot siististi ja kiinteään hintaan. Tekijöillämme on yli 25 vuoden kokemus eri katemateriaaleista ja toteutustavoista.
 kortti: Tiili-, pelti- ja huopakattojen remontit, maalaus ja pinnoitus kiinteään hintaan.
 ikoni: katto
 ydin: true

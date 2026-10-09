@@ -3,13 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Murupolku from '../components/Murupolku.astro';
 import Icon from '../components/Icon.astro';
 import yritys from '../data/yritys.json';
-const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+const tel = `tel:${yritys.puhelinE164}`;
 const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${yritys.katuosoite}, ${yritys.postinumero} ${yritys.kaupunki}`)}`;
 ---
 
 <BaseLayout
   title="Yhteystiedot | Holske Oy, Vantaa"
-  description="Ota yhteyttä Holskeen: puhelin 050 323 3075, info@holske.fi. Pyörärinne 4, 01280 Vantaa. Palvelemme Helsingissä, Espoossa, Vantaalla ja Kauniaisissa."
+  description={`Ota yhteyttä Holskeen: puhelin ${yritys.puhelinNaytto}, ${yritys.sahkoposti}. ${yritys.katuosoite}, ${yritys.postinumero} ${yritys.kaupunki}. Kattoremontit ja maalaus pääkaupunkiseudulla.`}
 >
   <section class="section--tight alku">
     <div class="container">

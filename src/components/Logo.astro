@@ -23,7 +23,8 @@ const tunniste = Math.random().toString(36).slice(2, 7);
 const svg = raaka
   .replace(/id="([^"]+)"/g, `id="$1-${tunniste}"`)
   .replace(/url\(#([^)]+)\)/g, `url(#$1-${tunniste})`)
-  .replace('<svg ', '<svg class="logo-svg" focusable="false" ');
+  .replace(/\s(role|aria-label)="[^"]*"/g, '')
+  .replace('<svg ', '<svg class="logo-svg" focusable="false" aria-hidden="true" ');
 ---
 
 <span class:list={['logo', variantti, className]} set:html={svg} />

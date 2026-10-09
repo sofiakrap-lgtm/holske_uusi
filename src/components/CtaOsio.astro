@@ -12,7 +12,7 @@ const {
   palvelu,
 } = Astro.props;
 const href = palvelu ? `/kuntoarvio/?palvelu=${palvelu}` : '/kuntoarvio/';
-const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+const tel = `tel:${yritys.puhelinE164}`;
 ---
 
 <section class="section cta-osio" aria-labelledby="cta-otsikko">

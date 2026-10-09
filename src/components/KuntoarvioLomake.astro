@@ -114,7 +114,7 @@ const kuvaMailto = `mailto:${yritys.sahkoposti}?subject=${encodeURIComponent('Ku
 <div class="kiitos" data-kiitos hidden tabindex="-1">
   <span class="kiitos-ikoni"><Icon name="check" size={36} /></span>
   <h2>Kiitos, pyyntö on lähetetty</h2>
-  <p>{yritys.vastausaika}. Jos asia on kiireellinen, soita <a href={`tel:${yritys.puhelin.replace(/\s/g, '')}`}>{yritys.puhelinNaytto}</a>.</p>
+  <p>{yritys.vastausaika}. Jos asia on kiireellinen, soita <a href={`tel:${yritys.puhelinE164}`}>{yritys.puhelinNaytto}</a>.</p>
   <p>Voit lähettää kuvia kohteesta osoitteeseen <a href={kuvaMailto}>{yritys.sahkoposti}</a>.</p>
 </div>
 

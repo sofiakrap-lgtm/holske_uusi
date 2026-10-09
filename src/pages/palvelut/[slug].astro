@@ -24,7 +24,7 @@ const muut = (await getCollection('palvelut'))
   .sort((a, b) => a.data.jarjestys - b.data.jarjestys)
   .slice(0, 3);
 const site = Astro.site ?? new URL('https://holske.fi');
-const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+const tel = `tel:${yritys.puhelinE164}`;
 
 const schema: Record<string, unknown>[] = [
   {

@@ -8,8 +8,17 @@
   "katuosoite": "Pyörärinne 4",
   "postinumero": "01280",
   "kaupunki": "Vantaa",
-  "palvelualue": ["Helsinki", "Espoo", "Vantaa", "Kauniainen"],
+  "palvelualue": [
+    "Helsinki",
+    "Espoo",
+    "Vantaa",
+    "Kauniainen"
+  ],
   "palvelualueTeksti": "pääkaupunkiseutu",
   "kokemus": "Yli 25 vuoden kokemus",
-  "vastausaika": "Vastaamme 1-2 vuorokauden sisällä"
+  "vastausaika": "Vastaamme 1-2 vuorokauden sisällä",
+  "puhelinE164": "+358503233075",
+  "kokemusLause": "Tekijöillämme on yli 25 vuoden kokemus alalta.",
+  "_todo": "Vahvista: kokemuksen muotoilu ja vastausaika 1-2 vuorokautta.",
+  "sameAs": []
 }

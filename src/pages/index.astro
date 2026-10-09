@@ -16,7 +16,7 @@ const maalaus = (await getEntry('palvelut', 'maalaus'))!;
 const lisapalvelut = (await getCollection('palvelut', (p) => !p.data.ydin)).sort(
   (a, b) => a.data.jarjestys - b.data.jarjestys,
 );
-const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+const tel = `tel:${yritys.puhelinE164}`;
 
 // Merkit ja huoltovälit vanhan sivuston katto- ja maalaussisällöstä
 const merkit = [
@@ -36,7 +36,7 @@ const huoltovalit = [
 
 <BaseLayout
   title="Kattoremontit ja katon maalaus | Vantaa, Espoo, Helsinki | Holske"
-  description="Kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus omakotitaloille pääkaupunkiseudulla. Perheyritys, yli 25 vuoden kokemus, kiinteä hinta. Ilmainen kuntoarvio."
+  description="Kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus omakotitaloille pääkaupunkiseudulla. Perheyritys, ilmainen kuntoarvio."
 >
   <section class="hero">
     <div class="container hero-grid">
@@ -45,7 +45,7 @@ const huoltovalit = [
         <h1>Katon maalaus ja kattoremontit omakotitaloille</h1>
         <p class="lead">
           Kunnostamme, maalaamme ja pinnoitamme tiili-, pelti- ja huopakatot siististi ja kiinteään hintaan. Pieni
-          perheyritys, yli 25 vuoden kokemus.
+          perheyritys, tekijöillä yli 25 vuoden kokemus.
         </p>
         <ul class="chipit" aria-label="Kattotyypit">
           <li>Tiilikatot</li>

@@ -15,12 +15,12 @@ const path = Astro.url.pathname;
 const isActive = (href: string) =>
   path === href || (href !== '/' && href !== '/palvelut/' && path.startsWith(href)) ||
   (href === '/palvelut/' && path.startsWith('/palvelut/') && !['/palvelut/katot/', '/palvelut/maalaus/'].includes(path));
-const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+const tel = `tel:${yritys.puhelinE164}`;
 ---
 
 <header class="site-header" data-header>
   <div class="container bar">
-    <a href="/" class="brand" aria-label={`${yritys.brandi}, etusivu`}>
+    <a href="/" class="brand" aria-label={`${yritys.nimi}, etusivu`}>
       <Logo />
     </a>
 
@@ -39,6 +39,12 @@ const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
           <a href={tel} class="nav-phone">
             <Icon name="puhelin" size={20} />
             {yritys.puhelinNaytto}
+          </a>
+        </li>
+        <li class="nav-mobile-only">
+          <a href={`mailto:${yritys.sahkoposti}`} class="nav-phone">
+            <Icon name="sahkoposti" size={20} />
+            {yritys.sahkoposti}
           </a>
         </li>
         <li class="nav-mobile-only">

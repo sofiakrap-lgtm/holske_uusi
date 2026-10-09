@@ -4,7 +4,7 @@ import Murupolku from '../../components/Murupolku.astro';
 import KuntoarvioLomake from '../../components/KuntoarvioLomake.astro';
 import Icon from '../../components/Icon.astro';
 import yritys from '../../data/yritys.json';
-const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+const tel = `tel:${yritys.puhelinE164}`;
 ---
 
 <BaseLayout

@@ -124,9 +124,15 @@ a {
 a:hover { text-decoration-thickness: 2px; }
 
 :focus-visible {
-  outline: 3px solid var(--orange);
+  outline: 3px solid var(--green);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+.section--green :focus-visible,
+.site-footer :focus-visible,
+.tulos-kortti :focus-visible {
+  outline-color: var(--orange);
 }
 
 .visually-hidden {
