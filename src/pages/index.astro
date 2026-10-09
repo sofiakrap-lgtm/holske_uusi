@@ -9,6 +9,8 @@ import Vaiheet from '../components/Vaiheet.astro';
 import CtaOsio from '../components/CtaOsio.astro';
 import yritys from '../data/yritys.json';
 import etusivu from '../data/etusivu.json';
+import hinnasto from '../data/hinnasto.json';
+const kv = hinnasto.kotitalousvahennys;
 
 const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
 const nosto = etusivu.nosto ? palvelut.find((p) => p.id === etusivu.nosto) : null;
@@ -183,7 +185,7 @@ const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
       <article class="info">
         <Icon name="vahennys" size={32} />
         <h2>Kotitalousvähennys</h2>
-        <p>Kotitalousvähennyksen voi saada kotitaloustöistä, kuten remonteista ja kiinteistön hoidosta. Vähennys lasketaan työn osuudesta.</p>
+        <p>Vuosina {kv.vuodet} vähennys on {kv.prosentti} % työn osuudesta, enintään {kv.enimmaismaara.toLocaleString('fi-FI')} € henkilöä kohden. Omavastuu on {kv.omavastuu} €. Puolisot voivat kumpikin tehdä oman vähennyksensä.</p>
         <a href="https://www.vero.fi/henkiloasiakkaat/verokortti-ja-veroilmoitus/tulot-ja-vahennykset/kotitalousvahennys/" class="link-arrow" rel="noopener" target="_blank">Kotitalousvähennys vero.fi:ssä <Icon name="nuoli" size={18} /></a>
       </article>
       <article class="info">

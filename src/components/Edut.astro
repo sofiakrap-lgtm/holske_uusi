@@ -4,7 +4,7 @@ const edut = [
   { ikoni: 'kokemus', otsikko: 'Yli 25 vuoden kokemus', teksti: 'Tunnemme eri katemateriaalit ja toteutustavat.' },
   { ikoni: 'perhe', otsikko: 'Pieni perheyritys', teksti: 'Tue paikallista tekijää. Luotamme toisiimme ja teemme työn sujuvasti yhdessä.' },
   { ikoni: 'kuntoarvio', otsikko: 'Ilmainen kuntoarvio', teksti: 'Selkeä suunnitelma ja hinta ilman sitoutumista.' },
-  { ikoni: 'vahennys', otsikko: 'Kotitalousvähennys', teksti: 'Vähennyksen voi saada työn osuudesta.' },
+  { ikoni: 'vahennys', otsikko: 'Kotitalousvähennys', teksti: `${kv.prosentti} % työn osuudesta, enintään ${kv.enimmaismaara.toLocaleString('fi-FI')} € henkilöä kohden.` },
 ];
 ---
 

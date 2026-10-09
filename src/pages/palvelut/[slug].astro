@@ -8,6 +8,8 @@ import Ukk from '../../components/Ukk.astro';
 import PalveluKortti from '../../components/PalveluKortti.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
 import yritys from '../../data/yritys.json';
+import hinnasto from '../../data/hinnasto.json';
+const kv = hinnasto.kotitalousvahennys;
 
 export async function getStaticPaths() {
   const palvelut = await getCollection('palvelut');
@@ -120,7 +122,8 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
             <div class="laatikko laatikko--vaalea">
               <Icon name="vahennys" size={28} />
               <h2>Kotitalousvähennys</h2>
-              <p>Työn osuudesta voi saada kotitalousvähennyksen. Tarkista ajantasaiset ehdot vero.fi:stä.</p>
+              <p>Vuosina {kv.vuodet}: {kv.prosentti} % työn osuudesta, enintään {kv.enimmaismaara.toLocaleString('fi-FI')} € henkilöä kohden, omavastuu {kv.omavastuu} €. Vain työn osuus on vähennyskelpoista, ei tarvikkeet.</p>
+              <p class="pieni">{kv.tila}</p>
             </div>
           )
         }
@@ -238,6 +241,7 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
   .laatikko p { color: var(--muted); font-size: 1rem; }
   .laatikko--vaalea { background: var(--moss-soft); border-color: transparent; box-shadow: none; }
   .laatikko--vaalea :global(.icon) { color: var(--green); }
+  .laatikko .pieni { font-size: 0.875rem; }
 
   .muut { padding-bottom: var(--section); }
   .kortit {

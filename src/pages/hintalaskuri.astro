@@ -316,7 +316,7 @@ const palvelut = [
       html += `<p class="tulos-hinta">${arvio}</p>`;
       if (t.ala) html += `<p class="tulos-rivi">Laskettu ${Math.round(t.ala)} m² mukaan</p>`;
       if (t.vahennyksenJalkeen !== null)
-        html += `<p class="tulos-rivi tulos-kv">Kotitalousvähennyksen jälkeen noin <strong>${euro(t.vahennyksenJalkeen)}</strong>, jos vähennys on käytettävissä.</p>`;
+        html += `<p class="tulos-rivi tulos-kv">Kotitalousvähennyksen jälkeen noin <strong>${euro(t.vahennyksenJalkeen)}</strong> (yhden henkilön vähennys, jos se on vielä käyttämättä).</p>`;
     } else if (t.puuttuu === 'mitat') {
       html += '<p class="tulos-tyhja">Täytä pinta-ala, niin lasketaan.</p><p class="tulos-rivi">Voit myös jatkaa suoraan ilman mittoja. Mittaamme kohteen kuntoarviossa.</p>';
     } else {
