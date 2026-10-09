@@ -1,43 +1,45 @@
 ---
-import { getLogo } from '../lib/kuvat';
+/**
+ * Holsken logo SVG:nä suoraan sivulle, jolloin väri tulee CSS:n `color`-arvosta.
+ * Logotiedostot: assets/logot-ja-grafiikat/logo.svg (päälogo) ja logo-pieni.svg (H.).
+ */
+const logot = import.meta.glob<string>('/assets/logot-ja-grafiikat/logo*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
 
 interface Props {
   variantti?: 'tumma' | 'vaalea';
+  koko?: 'paa' | 'pieni';
+  class?: string;
 }
-const { variantti = 'tumma' } = Astro.props;
-// Oma logo: lisää assets/logot-ja-grafiikat/logo.svg (ja logo-valkoinen.svg footeriin)
-const logo = getLogo(variantti === 'vaalea' ? 'logo-valkoinen' : 'logo');
+const { variantti = 'tumma', koko = 'paa', class: className } = Astro.props;
+const tiedosto = koko === 'pieni' ? 'logo-pieni.svg' : 'logo.svg';
+const raaka = Object.entries(logot).find(([p]) => p.endsWith('/' + tiedosto))?.[1] ?? '';
+
+// Jokaiselle logolle omat id:t, ettei sama id toistu sivulla (header + footer)
+const tunniste = Math.random().toString(36).slice(2, 7);
+const svg = raaka
+  .replace(/id="([^"]+)"/g, `id="$1-${tunniste}"`)
+  .replace(/url\(#([^)]+)\)/g, `url(#$1-${tunniste})`)
+  .replace('<svg ', '<svg class="logo-svg" focusable="false" ');
 ---
 
-{
-  logo ? (
-    <img src={logo.src} width={logo.width} height={logo.height} alt="Holske" class="logo-img" />
-  ) : (
-    <span class:list={['wordmark', variantti]} data-todo="Lisää logo: assets/logot-ja-grafiikat/logo.svg">
-      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true" focusable="false">
-        <path d="M3 15.5 16 5l13 10.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M7 13v13.5h18V13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
-        <path d="M13 26.5v-7h6v7" fill="var(--orange)" />
-      </svg>
-      <span class="word">Holske</span>
-    </span>
-  )
-}
+<span class:list={['logo', variantti, className]} set:html={svg} />
 
 <style>
-  .logo-img { display: block; height: 2.5rem; width: auto; }
-  .wordmark {
+  .logo {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
     color: var(--green);
+    line-height: 0;
   }
-  .wordmark.vaalea { color: #fff; }
-  .word {
-    font-family: var(--font-display);
-    font-size: 1.75rem;
-    line-height: 1;
-    letter-spacing: -0.01em;
-    transform: translateY(1px);
+  .logo.vaalea { color: #fff; }
+  .logo :global(.logo-svg) {
+    display: block;
+    height: var(--logo-h, 1.75rem);
+    width: auto;
+    overflow: visible;
   }
 </style>

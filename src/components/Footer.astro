@@ -12,7 +12,7 @@ const vuosi = new Date().getFullYear();
 <footer class="site-footer">
   <div class="container grid">
     <div class="col brand-col">
-      <a href="/" class="brand" aria-label="Holske, etusivu"><Logo variantti="vaalea" /></a>
+      <a href="/" class="brand" aria-label="Holske, etusivu"><Logo variantti="vaalea" class="footer-logo" /></a>
       <p class="tagline">Pieni perheyritys. {yritys.kokemus} kiinteistöhuollosta pääkaupunkiseudulla.</p>
       <a href="/kuntoarvio/" class="btn">Varaa ilmainen kuntoarvio</a>
     </div>
@@ -80,6 +80,7 @@ const vuosi = new Date().getFullYear();
   }
   .brand { color: #fff; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   .tagline { max-width: 22rem; }
+  .brand :global(.footer-logo) { --logo-h: 2.25rem; }
   .col-title {
     font-family: var(--font-body);
     font-size: var(--fs-sm);

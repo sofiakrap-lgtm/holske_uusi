@@ -68,7 +68,12 @@ Kuvat ja logo lisätään repon juureen, ja sivusto pakkaa ne automaattisesti AV
 
 Niin kauan kuin kuvaa ei ole, sen paikalla näkyy siisti ikoni. Kuvat vähintään 2000 px leveitä.
 
-**Logo** kansioon `assets/logot-ja-grafiikat/`: `logo.svg` (header) ja `logo-valkoinen.svg` (footer, tumma tausta). Ilman niitä näkyy väliaikainen tekstilogo. Favicon ja jakokuva (Open Graph) luodaan komennolla `node scripts/luo-grafiikat.mjs`.
+**Logo** on kansiossa `assets/logot-ja-grafiikat/`:
+- `logo.svg`: päälogo (Holske™), käytössä headerissa ja footerissa
+- `logo-pieni.svg`: pieni logo (H.), käytössä faviconissa
+- `päälogo, holske.svg` ja `holske pieni.svg`: alkuperäiset tiedostot
+
+Logon väri tulee sivun CSS:stä (`color`), joten samaa tiedostoa käytetään vaaleana ja tummana. Värin vaihto: `src/components/Logo.astro`. Jos vaihdat logotiedoston, aja `node scripts/luo-grafiikat.mjs`, niin favicon ja jakokuva päivittyvät.
 
 ## 3. Julkaisu Cloudflare Pagesissa
 
