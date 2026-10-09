@@ -75,20 +75,22 @@ Niin kauan kuin kuvaa ei ole, sen paikalla näkyy siisti ikoni. Kuvat vähintä�
 
 Logon väri tulee sivun CSS:stä (`color`), joten samaa tiedostoa käytetään vaaleana ja tummana. Värin vaihto: `src/components/Logo.astro`. Jos vaihdat logotiedoston, aja `node scripts/luo-grafiikat.mjs`, niin favicon ja jakokuva päivittyvät.
 
-## 3. Julkaisu Cloudflare Pagesissa
+## 3. Julkaisu Cloudflaressa (Workers)
 
-1. Kirjaudu osoitteessa https://dash.cloudflare.com (ilmainen tili riittää).
-2. Valitse **Workers & Pages → Create → Pages → Connect to Git**.
-3. Yhdistä GitHub-tili ja valitse repo `holske_uusi`.
-4. Build-asetukset:
-   - **Production branch:** `main`
-   - **Framework preset:** Astro
+Sivusto on julkaistu Cloudflaren Workers-palvelussa nimellä `holske-uusi`. Asetukset ovat tiedostossa `wrangler.jsonc`.
+
+Jos projekti pitää joskus luoda uudelleen:
+
+1. https://dash.cloudflare.com → **Compute → Workers & Pages → Create** → yhdistä GitHub-repo `holske_uusi`.
+2. **Settings → Build → Build configuration:**
    - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-   - **Environment variables:** `NODE_VERSION` = `22` ja `PUBLIC_WEB3FORMS_KEY` (ks. kohta 5)
-5. Paina **Save and Deploy**. Sivu tulee osoitteeseen `holske-xxx.pages.dev`. Tarkista se ennen domainin kytkentää.
+   - **Deploy command:** `npx wrangler deploy`
+   - **Build variables:** `NODE_VERSION` = `22`
+3. **Deployments → Retry build**, jos ensimmäinen build epäonnistui ennen asetuksia.
 
-Tiedostot `public/_redirects` (301-ohjaukset vanhoista osoitteista) ja `public/_headers` (tietoturva ja välimuisti) toimivat Cloudflaressa automaattisesti.
+Jokainen GitHubiin pushattu muutos julkaistaan automaattisesti. Tiedostot `public/_redirects` (301-ohjaukset) ja `public/_headers` (tietoturva, välimuisti, testiosoitteen piilotus Googlelta) toimivat automaattisesti.
+
+Domain kytketään projektin **Domains**-välilehdeltä (kohta 4).
 
 ## 4. Domainin kytkentä (holske.fi)
 
@@ -103,7 +105,7 @@ Sähköposti info@holske.fi jää nykyiselle palveluntarjoajalle. **Sähköposti
 2. **Lisää domain Cloudflareen:** Cloudflaren etusivulla **Add a domain → holske.fi → Free**. Cloudflare yrittää tuoda tietueet automaattisesti.
 3. **Vertaa tietueet.** Tarkista Cloudflaren DNS-listasta, että jokainen kohdan 1 sähköpostitietue on mukana täsmälleen samana. Lisää puuttuvat käsin. Sähköpostitietueiden pilvi-ikonin pitää olla **harmaa (DNS only)**, ei oranssi.
 4. **Vaihda nimipalvelimet.** Cloudflare antaa kaksi nimipalvelinta (esim. `xxx.ns.cloudflare.com`). Vaihda ne domainin rekisteröijän hallintapaneelissa nykyisten tilalle. Muutos voi kestää muutamasta tunnista vuorokauteen.
-5. **Kytke domain sivustoon.** Cloudflare Pagesissa: projekti → **Custom domains → Set up a custom domain** → `holske.fi`, ja sama uudelleen `www.holske.fi`.
+5. **Kytke domain sivustoon.** Workers & Pages → `holske-uusi` → **Domains → Add custom domain** → `holske.fi`, ja sama uudelleen `www.holske.fi`.
 6. **Testaa.** Lähetä sähköposti osoitteeseen info@holske.fi ulkopuolisesta osoitteesta ja lähetä myös sieltä. Avaa https://holske.fi ja kokeile muutamaa vanhaa osoitetta, esim. https://holske.fi/kela-hiden/.
 
 Vinkki: ennen vaihtoa voi tarkistaa nykyiset tietueet esim. palvelulla https://mxtoolbox.com (haku `holske.fi`).
