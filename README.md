@@ -77,7 +77,7 @@ Logon väri tulee sivun CSS:stä (`color`), joten samaa tiedostoa käytetään v
 
 ## 3. Julkaisu Cloudflaressa (Workers)
 
-Sivusto on julkaistu Cloudflaren Workers-palvelussa nimellä `holske-uusi`. Asetukset ovat tiedostossa `wrangler.jsonc`.
+Sivusto on julkaistu Cloudflaren Workers-palvelussa nimellä `holske-uusi`. Testiosoite: https://holske-uusi.sofia-krap.workers.dev (ei näy Googlessa). Asetukset ovat tiedostossa `wrangler.jsonc`.
 
 Jos projekti pitää joskus luoda uudelleen:
 
