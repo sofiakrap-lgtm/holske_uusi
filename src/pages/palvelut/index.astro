@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PalveluKortti from '../../components/PalveluKortti.astro';
+import Icon from '../../components/Icon.astro';
+import Kuva from '../../components/Kuva.astro';
+import CtaOsio from '../../components/CtaOsio.astro';
+import Murupolku from '../../components/Murupolku.astro';
+
+const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
+---
+
+<BaseLayout
+  title="Palvelut: katot, maalaus, painepesu, lumityöt ja pihatyöt | Holske"
+  description="Holsken kiinteistöhuoltopalvelut omakotitaloille pääkaupunkiseudulla: kattoremontit ja katon maalaus, talon maalaus, painepesu, lumityöt, pihatyöt ja muut ulkokorjaukset."
+>
+  <section class="section--tight sivun-alku">
+    <div class="container">
+      <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }]} />
+      <div class="section-head">
+        <h1>Palvelut</h1>
+        <p class="lead">
+          Tarjoamme kattavia kiinteistön huoltopalveluita omakotitaloille: katot, maalaus- ja painepesutyöt, lumityöt sekä
+          pihan kunnossapito. Joustavasti tarpeesi mukaan, oli kyseessä yksittäinen keikka tai säännöllinen huolto.
+        </p>
+      </div>
+      <ul class="kortit">
+        {
+          palvelut.map((p) => (
+            <li>
+              <PalveluKortti
+                href={`/palvelut/${p.id}/`}
+                nimi={p.data.nimi}
+                teksti={p.data.kortti}
+                ikoni={p.data.ikoni}
+                headingLevel="h2"
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--sand" id="muut-korjaukset" aria-labelledby="muut-otsikko">
+    <div class="container split">
+      <div class="prose">
+        <span class="eyebrow">Aina neuvoteltavissa</span>
+        <h2 id="muut-otsikko">Kiinteistön muut korjaustyöt</h2>
+        <p>
+          Teemme myös muita ulkokorjauksia, kuten julkisivun korjauksia ja piha-alueiden kunnostusta. Olipa kyse pienestä
+          korjauksesta tai laajemmasta remontista, meiltä löytyy osaaminen ja resurssit hoitaa se ammattitaidolla.
+        </p>
+        <p>
+          Etkö löydä tarvitsemaasi palvelua? Kerro kohteesta, niin keskustellaan, miten voimme auttaa pitämään kiinteistösi
+          hyvässä kunnossa pitkällä tähtäimellä.
+        </p>
+        <div class="btn-row">
+          <a href="/kuntoarvio/?palvelu=muu" class="btn">Kerro kohteesta <Icon name="nuoli" size={20} /></a>
+        </div>
+      </div>
+      <Kuva nimi="muut-korjaukset" alt="Julkisivun korjaustyö omakotitalossa" ikoni="korjaus" suhde="5 / 4" />
+    </div>
+  </section>
+
+  <CtaOsio />
+</BaseLayout>
+
+<style>
+  .sivun-alku { padding-top: clamp(1.5rem, 4vw, 3rem); }
+  .kortit {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  }
+  .kortit :global(h2) {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.375rem;
+    letter-spacing: 0;
+  }
+  .split {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  @media (min-width: 60rem) {
+    .split { grid-template-columns: 1fr 1fr; }
+  }
+  .prose { min-width: 0; }
+</style>

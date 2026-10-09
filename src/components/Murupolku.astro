@@ -1,0 +1,48 @@
+---
+interface Props {
+  polku: { nimi: string; href: string }[];
+}
+const { polku } = Astro.props;
+const site = Astro.site ?? new URL('https://holske.fi');
+const kaikki = [{ nimi: 'Etusivu', href: '/' }, ...polku];
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: kaikki.map((k, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: k.nimi,
+    item: new URL(k.href, site).href,
+  })),
+};
+---
+
+<nav aria-label="Murupolku" class="murupolku">
+  <ol>
+    {
+      kaikki.map((k, i) => (
+        <li>
+          {i < kaikki.length - 1 ? <a href={k.href}>{k.nimi}</a> : <span aria-current="page">{k.nimi}</span>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<style>
+  .murupolku { margin-bottom: 1.5rem; font-size: var(--fs-sm); }
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    color: var(--muted);
+  }
+  li:not(:last-child)::after { content: '/'; margin-left: 0.4rem; opacity: 0.5; }
+  a { color: var(--muted); text-decoration: none; display: inline-block; padding-block: 0.6rem; }
+  a:hover { color: var(--green); text-decoration: underline; }
+  span { display: inline-block; padding-block: 0.6rem; }
+</style>

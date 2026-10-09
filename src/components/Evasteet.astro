@@ -1,0 +1,247 @@
+---
+import seuranta from '../data/seuranta.json';
+---
+
+<div
+  class="evasteet"
+  role="dialog"
+  aria-modal="false"
+  aria-labelledby="evaste-otsikko"
+  aria-describedby="evaste-teksti"
+  data-evasteet
+  data-ga={seuranta.googleAnalytics}
+  data-fb={seuranta.facebookPikseli}
+  hidden
+>
+  <div class="kortti">
+    <h2 id="evaste-otsikko">Evästeet</h2>
+    <p id="evaste-teksti">
+      Käytämme välttämättömiä evästeitä sivuston toimintaan. Analytiikan ja markkinoinnin evästeet otamme käyttöön vain
+      luvallasi. <a href="/tietosuojaseloste/#evasteet">Lue lisää</a>
+    </p>
+
+    <form class="valinnat" data-evaste-valinnat hidden>
+      <fieldset>
+        <legend class="visually-hidden">Valitse evästeet</legend>
+        <label class="valinta">
+          <input type="checkbox" checked disabled />
+          <span><strong>Välttämättömät evästeet</strong><br />Tallentavat evästevalintasi. Aina käytössä.</span>
+        </label>
+        <label class="valinta">
+          <input type="checkbox" name="analytiikka" />
+          <span><strong>Google Analytics</strong><br />Kävijämäärät ja se, mistä sivulle tullaan.</span>
+        </label>
+        <label class="valinta">
+          <input type="checkbox" name="markkinointi" />
+          <span><strong>Facebook-pikseli</strong><br />Facebookin kautta tulevan liikenteen seuranta.</span>
+        </label>
+      </fieldset>
+    </form>
+
+    <div class="napit">
+      <button type="button" class="btn" data-evaste="kaikki">Hyväksy kaikki</button>
+      <button type="button" class="btn btn--secondary" data-evaste="valttamattomat">Vain välttämättömät</button>
+      <button type="button" class="btn btn--secondary" data-evaste="asetukset" aria-expanded="false">Asetukset</button>
+      <button type="button" class="btn btn--secondary" data-evaste="tallenna" hidden>Tallenna valinnat</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  type Valinta = { v: 1; analytiikka: boolean; markkinointi: boolean; aika: string };
+  const AVAIN = 'holske-evasteet';
+
+  const root = document.querySelector<HTMLElement>('[data-evasteet]');
+  const valinnat = root?.querySelector<HTMLFormElement>('[data-evaste-valinnat]');
+  const btn = (n: string) => root?.querySelector<HTMLButtonElement>(`[data-evaste="${n}"]`);
+  const ga = root?.dataset.ga ?? '';
+  const fb = root?.dataset.fb ?? '';
+
+  function lue(): Valinta | null {
+    try {
+      const v = JSON.parse(localStorage.getItem(AVAIN) || 'null');
+      return v && v.v === 1 ? v : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function lataaGA() {
+    if (!ga || (window as any).__gaLoaded) return;
+    (window as any).__gaLoaded = true;
+    const w = window as any;
+    w.dataLayer = w.dataLayer || [];
+    w.gtag = function () {
+      w.dataLayer.push(arguments);
+    };
+    w.gtag('consent', 'default', {
+      analytics_storage: 'granted',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
+    w.gtag('js', new Date());
+    w.gtag('config', ga, { anonymize_ip: true });
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(ga)}`;
+    document.head.appendChild(s);
+  }
+
+  function lataaFB() {
+    if (!fb || (window as any).fbq) return;
+    const w = window as any;
+    const n: any = (w.fbq = function () {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    });
+    if (!w._fbq) w._fbq = n;
+    n.push = n;
+    n.loaded = true;
+    n.version = '2.0';
+    n.queue = [];
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://connect.facebook.net/en_US/fbevents.js';
+    document.head.appendChild(s);
+    w.fbq('init', fb);
+    w.fbq('track', 'PageView');
+  }
+
+  function kayta(v: Valinta) {
+    if (v.analytiikka) lataaGA();
+    if (v.markkinointi) lataaFB();
+  }
+
+  function tallenna(analytiikka: boolean, markkinointi: boolean) {
+    const edellinen = lue();
+    const v: Valinta = { v: 1, analytiikka, markkinointi, aika: new Date().toISOString() };
+    try {
+      localStorage.setItem(AVAIN, JSON.stringify(v));
+    } catch {}
+    // Jos lupa peruttiin, ladatut skriptit poistuvat vasta sivun uudelleenlatauksessa
+    const peruttu =
+      edellinen && ((edellinen.analytiikka && !analytiikka) || (edellinen.markkinointi && !markkinointi));
+    sulje();
+    if (peruttu) location.reload();
+    else kayta(v);
+  }
+
+  function avaa(asetukset = false) {
+    if (!root) return;
+    const v = lue();
+    if (valinnat) {
+      (valinnat.elements.namedItem('analytiikka') as HTMLInputElement).checked = !!v?.analytiikka;
+      (valinnat.elements.namedItem('markkinointi') as HTMLInputElement).checked = !!v?.markkinointi;
+    }
+    naytaAsetukset(asetukset);
+    root.hidden = false;
+    requestAnimationFrame(() => root.classList.add('is-visible'));
+  }
+
+  function sulje() {
+    if (!root) return;
+    root.classList.remove('is-visible');
+    const piilota = () => (root.hidden = true);
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) piilota();
+    else setTimeout(piilota, 260);
+  }
+
+  function naytaAsetukset(nayta: boolean) {
+    if (!valinnat) return;
+    valinnat.hidden = !nayta;
+    btn('asetukset')!.hidden = nayta;
+    btn('tallenna')!.hidden = !nayta;
+    btn('asetukset')!.setAttribute('aria-expanded', String(nayta));
+  }
+
+  btn('kaikki')?.addEventListener('click', () => tallenna(true, true));
+  btn('valttamattomat')?.addEventListener('click', () => tallenna(false, false));
+  btn('asetukset')?.addEventListener('click', () => {
+    naytaAsetukset(true);
+    (valinnat?.elements.namedItem('analytiikka') as HTMLInputElement)?.focus();
+  });
+  btn('tallenna')?.addEventListener('click', () => {
+    const a = (valinnat?.elements.namedItem('analytiikka') as HTMLInputElement).checked;
+    const m = (valinnat?.elements.namedItem('markkinointi') as HTMLInputElement).checked;
+    tallenna(a, m);
+  });
+  document.querySelectorAll('[data-evasteasetukset]').forEach((el) => el.addEventListener('click', () => avaa(true)));
+
+  const nykyinen = lue();
+  if (nykyinen) kayta(nykyinen);
+  else avaa(false);
+</script>
+
+<style>
+  .evasteet {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 60;
+    padding: 0 var(--gutter) calc(1rem + env(safe-area-inset-bottom, 0px));
+    pointer-events: none;
+  }
+  .kortti {
+    pointer-events: auto;
+    max-width: 34rem;
+    margin-left: auto;
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.5rem;
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: 0 30px 60px -20px rgb(32 38 27 / 0.35), 0 2px 6px rgb(32 38 27 / 0.06);
+    /* Nousee alareunasta ja palaa samaa reittiä */
+    transform: translateY(24px);
+    opacity: 0;
+    transition: transform 320ms var(--ease-out), opacity 220ms ease;
+  }
+  .is-visible .kortti {
+    transform: none;
+    opacity: 1;
+  }
+  h2 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+  p { font-size: 1rem; color: var(--muted); }
+  .valinnat fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .valinta {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    align-items: start;
+    font-size: 1rem;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .valinta strong { color: var(--ink); }
+  .valinta input {
+    width: 1.4rem;
+    height: 1.4rem;
+    min-height: 0;
+    margin-top: 0.15rem;
+    accent-color: var(--green);
+  }
+  .napit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .napit .btn {
+    flex: 1 1 auto;
+    min-height: 3rem;
+    padding: 0.6rem 1.1rem;
+    font-size: 1rem;
+  }
+  @media (max-width: 59.99rem) {
+    .evasteet { padding-bottom: calc(5.4rem + env(safe-area-inset-bottom, 0px)); }
+  }
+</style>

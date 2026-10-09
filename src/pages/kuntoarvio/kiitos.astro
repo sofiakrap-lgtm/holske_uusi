@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import yritys from '../../data/yritys.json';
+---
+
+<BaseLayout title="Kiitos yhteydenotosta | Holske" description="Kuntoarviopyyntösi on vastaanotettu." noindex>
+  <section class="section">
+    <div class="container kiitos">
+      <span class="ikoni"><Icon name="check" size={40} /></span>
+      <h1>Kiitos, pyyntö on lähetetty</h1>
+      <p class="lead">{yritys.vastausaika}. Jos asia on kiireellinen, soita {yritys.puhelinNaytto}.</p>
+      <div class="btn-row">
+        <a href="/" class="btn btn--secondary">Takaisin etusivulle</a>
+        <a href="/palvelut/" class="btn btn--secondary">Palvelut</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .kiitos { display: grid; gap: 1.25rem; justify-items: start; max-width: 44rem; }
+  .ikoni {
+    display: grid;
+    place-items: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--ok) 14%, transparent);
+    color: var(--ok);
+  }
+</style>

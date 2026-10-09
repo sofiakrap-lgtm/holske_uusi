@@ -1,0 +1,251 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Murupolku from '../../components/Murupolku.astro';
+import Kuva from '../../components/Kuva.astro';
+import Icon from '../../components/Icon.astro';
+import Ukk from '../../components/Ukk.astro';
+import PalveluKortti from '../../components/PalveluKortti.astro';
+import CtaOsio from '../../components/CtaOsio.astro';
+import yritys from '../../data/yritys.json';
+
+export async function getStaticPaths() {
+  const palvelut = await getCollection('palvelut');
+  return palvelut.map((p) => ({ params: { slug: p.id }, props: { palvelu: p } }));
+}
+
+const { palvelu } = Astro.props;
+const { Content } = await render(palvelu);
+const d = palvelu.data;
+const muut = (await getCollection('palvelut'))
+  .filter((p) => p.id !== palvelu.id)
+  .sort((a, b) => a.data.jarjestys - b.data.jarjestys)
+  .slice(0, 3);
+const site = Astro.site ?? new URL('https://holske.fi');
+const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+
+const schema: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: d.otsikko,
+    serviceType: d.nimi,
+    description: d.kuvaus,
+    url: new URL(`/palvelut/${palvelu.id}/`, site).href,
+    provider: { '@id': `${site.href}#yritys` },
+    areaServed: yritys.palvelualue.map((k) => ({ '@type': 'City', name: k })),
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: d.nimi,
+      itemListElement: d.alapalvelut.map((a) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: a.nimi, description: a.teksti },
+      })),
+    },
+  },
+];
+if (d.ukk.length) {
+  schema.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: d.ukk.map((q) => ({
+      '@type': 'Question',
+      name: q.k,
+      acceptedAnswer: { '@type': 'Answer', text: q.v },
+    })),
+  });
+}
+const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
+---
+
+<BaseLayout title={d.seoTitle} description={d.kuvaus} schema={schema}>
+  <section class="hero">
+    <div class="container">
+      <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }, { nimi: d.nimi, href: `/palvelut/${palvelu.id}/` }]} />
+      <div class="hero-grid">
+        <div class="hero-text">
+          <span class="ikoni"><Icon name={d.ikoni} size={34} /></span>
+          <h1>{d.otsikko}</h1>
+          <p class="lead">{d.ingressi}</p>
+          <div class="btn-row">
+            <a href={`/kuntoarvio/?palvelu=${palvelu.id}`} class="btn">Varaa ilmainen kuntoarvio <Icon name="nuoli" size={20} /></a>
+            <a href={tel} class="btn btn--secondary"><Icon name="puhelin" size={20} /> {yritys.puhelinNaytto}</a>
+          </div>
+          <p class="palvelualue">
+            <Icon name="sijainti" size={18} /> {yritys.palvelualue.join(', ')}
+          </p>
+        </div>
+        <Kuva nimi={d.kuva} alt={d.kuvaAlt} ikoni={d.ikoni} eager suhde="4 / 3" sizes="(min-width: 60rem) 45vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  {
+    alapalvelut.length > 0 && (
+      <section class="section section--sand" aria-labelledby="sisaltaa-otsikko">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="sisaltaa-otsikko">Mitä teemme</h2>
+          </div>
+          <ul class="alapalvelut">
+            {alapalvelut.map((a) => (
+              <li>
+                <Icon name="check" size={22} />
+                <div>
+                  <h3>{a.nimi}</h3>
+                  <p>{a.teksti}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="container sisalto">
+      <div class="prose">
+        <Content />
+      </div>
+      <aside class="sivupalkki" aria-label="Yhteenveto">
+        <div class="laatikko">
+          <h2>Ilmainen kuntoarvio</h2>
+          <p>Tulemme katsomaan kohteen. Saat selkeän suunnitelman ja hinnan ilman sitoutumista.</p>
+          <a href={`/kuntoarvio/?palvelu=${palvelu.id}`} class="btn btn--block">Varaa kuntoarvio</a>
+          <a href="/hintalaskuri/" class="link-arrow">Laske hinta-arvio <Icon name="nuoli" size={18} /></a>
+        </div>
+        {
+          d.kotitalousvahennys && (
+            <div class="laatikko laatikko--vaalea">
+              <Icon name="vahennys" size={28} />
+              <h2>Kotitalousvähennys</h2>
+              <p>Työn osuudesta voi saada kotitalousvähennyksen. Tarkista ajantasaiset ehdot vero.fi:stä.</p>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+  </section>
+
+  {
+    d.ukk.length > 0 && (
+      <section class="section section--tight" aria-labelledby="ukk-otsikko">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="ukk-otsikko">Usein kysyttyä</h2>
+          </div>
+          <Ukk kysymykset={d.ukk} />
+        </div>
+      </section>
+    )
+  }
+
+  <CtaOsio palvelu={palvelu.id} />
+
+  <section class="section--tight muut" aria-labelledby="muut-otsikko">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="muut-otsikko">Muut palvelut</h2>
+      </div>
+      <ul class="kortit">
+        {
+          muut.map((p) => (
+            <li>
+              <PalveluKortti href={`/palvelut/${p.id}/`} nimi={p.data.nimi} teksti={p.data.kortti} ikoni={p.data.ikoni} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 7vw, 5.5rem); }
+  .hero-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 60rem) {
+    .hero-grid { grid-template-columns: 1.05fr 0.95fr; }
+  }
+  .hero-text { display: grid; gap: 1.25rem; min-width: 0; }
+  .ikoni {
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 18px;
+    background: var(--moss-soft);
+    color: var(--green);
+  }
+  .palvelualue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .palvelualue :global(.icon) { color: var(--orange); flex: none; }
+
+  .alapalvelut {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  }
+  .alapalvelut li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem;
+    padding: 1.5rem;
+    border-radius: var(--r-md);
+    background: var(--surface);
+  }
+  .alapalvelut :global(.icon) { color: var(--ok); margin-top: 0.15rem; }
+  .alapalvelut div { display: grid; gap: 0.35rem; min-width: 0; }
+  .alapalvelut h3 { font-size: 1.1875rem; }
+  .alapalvelut p { color: var(--muted); font-size: 1.0625rem; }
+
+  .sisalto {
+    display: grid;
+    gap: 3rem;
+  }
+  @media (min-width: 64rem) {
+    .sisalto { grid-template-columns: minmax(0, 1fr) 21rem; gap: 5rem; align-items: start; }
+    .sivupalkki { position: sticky; top: calc(var(--header-h) + 1.5rem); }
+  }
+  .sivupalkki { display: grid; gap: 1rem; }
+  .laatikko {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.75rem;
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+  .laatikko h2 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: 0;
+  }
+  .laatikko p { color: var(--muted); font-size: 1rem; }
+  .laatikko--vaalea { background: var(--moss-soft); border-color: transparent; box-shadow: none; }
+  .laatikko--vaalea :global(.icon) { color: var(--green); }
+
+  .muut { padding-bottom: var(--section); }
+  .kortit {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  }
+</style>

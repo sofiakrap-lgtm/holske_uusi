@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import KampanjaBanneri from '../components/KampanjaBanneri.astro';
+import Evasteet from '../components/Evasteet.astro';
+import MobiiliCta from '../components/MobiiliCta.astro';
+import yritys from '../data/yritys.json';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  schema?: Record<string, unknown>[];
+  noindex?: boolean;
+  piilotaMobiiliCta?: boolean;
+}
+
+const { title, description, ogImage = '/og-holske.png', schema = [], noindex = false, piilotaMobiiliCta = false } =
+  Astro.props;
+const site = Astro.site ?? new URL('https://holske.fi');
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogUrl = new URL(ogImage, site).href;
+
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  '@id': `${site.href}#yritys`,
+  name: yritys.nimi,
+  alternateName: yritys.brandi,
+  url: site.href,
+  telephone: yritys.puhelin,
+  email: yritys.sahkoposti,
+  image: new URL('/og-holske.png', site).href,
+  logo: new URL('/favicon.svg', site).href,
+  description:
+    'Kiinteistöhuoltoa omakotitaloille pääkaupunkiseudulla: kattoremontit ja katon maalaus, talon maalaus, painepesu, lumityöt sekä piha- ja puutarhatyöt.',
+  identifier: { '@type': 'PropertyValue', propertyID: 'Y-tunnus', value: yritys.ytunnus },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: yritys.katuosoite,
+    postalCode: yritys.postinumero,
+    addressLocality: yritys.kaupunki,
+    addressCountry: 'FI',
+  },
+  areaServed: [
+    { '@type': 'AdministrativeArea', name: 'Pääkaupunkiseutu' },
+    ...yritys.palvelualue.map((k) => ({ '@type': 'City', name: k })),
+  ],
+  knowsLanguage: 'fi',
+};
+---
+
+<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content="#f7f4ee" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fi_FI" />
+    <meta property="og:site_name" content={yritys.nimi} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+    {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  </head>
+  <body>
+    <a class="skip-link" href="#sisalto">Siirry sisältöön</a>
+    <KampanjaBanneri />
+    <Header />
+    <main id="sisalto" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    {!piilotaMobiiliCta && <MobiiliCta />}
+    <Evasteet />
+  </body>
+</html>

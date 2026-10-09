@@ -1,0 +1,68 @@
+---
+import Icon from './Icon.astro';
+import yritys from '../data/yritys.json';
+const vaiheet = [
+  {
+    ikoni: 'kuntoarvio',
+    otsikko: 'Varaa ilmainen kuntoarvio',
+    teksti: `Kerro kohteesta lomakkeella tai soita. ${yritys.vastausaika}.`,
+  },
+  {
+    ikoni: 'tarjous',
+    otsikko: 'Saat suunnitelman ja kiinteän hinnan',
+    teksti: 'Tulemme katsomaan kohteen ja kerromme, mitä se tarvitsee. Et sitoudu mihinkään.',
+  },
+  {
+    ikoni: 'tyo',
+    otsikko: 'Teemme työn siististi',
+    teksti: 'Lopuksi tarkistamme tuloksen kanssasi, siivoamme työmaan ja kierrätämme jätteet.',
+  },
+];
+---
+
+<ol class="vaiheet">
+  {
+    vaiheet.map((v, i) => (
+      <li>
+        <span class="numero" aria-hidden="true">{i + 1}</span>
+        <Icon name={v.ikoni} size={30} />
+        <h3>{v.otsikko}</h3>
+        <p>{v.teksti}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .vaiheet {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    counter-reset: v;
+  }
+  li {
+    position: relative;
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding: 2rem 1.75rem;
+    border-radius: var(--r-lg);
+    background: color-mix(in srgb, #fff 6%, transparent);
+    border: 1px solid color-mix(in srgb, #fff 14%, transparent);
+  }
+  li :global(.icon) { color: var(--orange); }
+  .numero {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+    font-family: var(--font-display);
+    font-size: 3rem;
+    line-height: 1;
+    color: color-mix(in srgb, #fff 22%, transparent);
+  }
+  h3 { color: #fff; font-size: 1.25rem; }
+  p { color: color-mix(in srgb, #fff 80%, transparent); font-size: 1.0625rem; }
+</style>

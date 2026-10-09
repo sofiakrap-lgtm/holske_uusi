@@ -1,0 +1,39 @@
+---
+import Icon from './Icon.astro';
+import yritys from '../data/yritys.json';
+const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+---
+
+<div class="mobiili-cta" aria-label="Pikayhteys">
+  <a href={tel} class="btn btn--secondary soita">
+    <Icon name="puhelin" size={20} />
+    Soita
+  </a>
+  <a href="/kuntoarvio/" class="btn arvio">Ilmainen kuntoarvio</a>
+</div>
+
+<style>
+  .mobiili-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: none;
+    gap: 0.6rem;
+    padding: 0.65rem var(--gutter) calc(0.65rem + env(safe-area-inset-bottom, 0px));
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter: blur(18px) saturate(170%);
+    backdrop-filter: blur(18px) saturate(170%);
+    border-top: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  }
+  .soita { flex: 0 0 auto; background: var(--surface); }
+  .arvio { flex: 1 1 auto; }
+  @media (max-width: 59.99rem) {
+    .mobiili-cta { display: flex; }
+    :global(body) { padding-bottom: calc(4.6rem + env(safe-area-inset-bottom, 0px)); }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .mobiili-cta { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  }
+</style>

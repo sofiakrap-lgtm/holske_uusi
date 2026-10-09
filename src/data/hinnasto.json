@@ -1,0 +1,50 @@
+{
+  "_ohje": "Hintalaskurin hinnat. Täytä hinnastokyselyn vastausten perusteella. null = hintaa ei ole, jolloin laskuri ohjaa kuntoarvioon. Hinnat euroina, sisältävät ALV:n.",
+  "yleiset": {
+    "tyonOsuus": null,
+    "minimilasku": null,
+    "matkakulut": null,
+    "naytto": "haarukka",
+    "haarukkaProsentti": 15
+  },
+  "kotitalousvahennys": {
+    "_ohje": "TODO: tarkista vuosittain vero.fi. Arvot vuoden 2025 säännöistä.",
+    "kaytossa": true,
+    "prosentti": 35,
+    "omavastuu": 150,
+    "enimmaismaara": 1600
+  },
+  "katot": {
+    "peltiMaalaus": null,
+    "tiiliPinnoitus": null,
+    "ruosteenpoisto": null,
+    "jyrkkaLisa": null,
+    "kaksikerroksinenLisa": null,
+    "huonoKuntoLisa": null,
+    "kattoKerroin": null
+  },
+  "maalaus": {
+    "kerta1": null,
+    "kerta2": null,
+    "pohjatyot": null
+  },
+  "painepesu": {
+    "katto": null,
+    "kiveys": null,
+    "terassi": null,
+    "julkisivu": null,
+    "suojaAine": null
+  },
+  "lumityot": {
+    "kattoPieni": null,
+    "kattoIso": null,
+    "piha": null,
+    "talvisopimus": null
+  },
+  "pihatyot": {
+    "nurmiPieni": null,
+    "nurmiKeski": null,
+    "nurmiIso": null,
+    "kesasopimus": null
+  }
+}

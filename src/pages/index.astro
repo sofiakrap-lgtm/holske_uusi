@@ -1,0 +1,302 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Kuva from '../components/Kuva.astro';
+import Icon from '../components/Icon.astro';
+import Edut from '../components/Edut.astro';
+import PalveluKortti from '../components/PalveluKortti.astro';
+import Vaiheet from '../components/Vaiheet.astro';
+import CtaOsio from '../components/CtaOsio.astro';
+import yritys from '../data/yritys.json';
+import etusivu from '../data/etusivu.json';
+
+const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
+const nosto = etusivu.nosto ? palvelut.find((p) => p.id === etusivu.nosto) : null;
+const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+
+const nostoTekstit: Record<string, { eyebrow: string; otsikko: string; teksti: string }> = {
+  lumityot: {
+    eyebrow: 'Talvikausi',
+    otsikko: 'Lumityöt katoille ja pihoille',
+    teksti:
+      'Kasvava lumikuorma voi vaurioittaa kattorakenteita, vaikka katto olisi uusi. Pudotamme lumet turvallisesti pelti-, huopa- ja tiilikatoilta ja pidämme pihan lumettomana. Kertakäynteinä tai koko talven sopimuksella.',
+  },
+  pihatyot: {
+    eyebrow: 'Kesäkausi',
+    otsikko: 'Piha ja nurmikko kuntoon',
+    teksti: 'Pidämme pihasi vihreänä ja siistinä. Nurmikon leikkuu ja pihatyöt kertakäynteinä tai säännöllisesti.',
+  },
+};
+const nostoSisalto = nosto ? nostoTekstit[nosto.id] : null;
+---
+
+<BaseLayout
+  title="Holske | Kiinteistöhuolto omakotitaloille pääkaupunkiseudulla"
+  description="Katon maalaus ja kattoremontit, talon maalaus, painepesu, lumityöt ja pihatyöt Helsingissä, Espoossa ja Vantaalla. Perheyritys, yli 25 vuoden kokemus. Ilmainen kuntoarvio."
+>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <span class="eyebrow">Kiinteistöhuoltoa pääkaupunkiseudulla</span>
+        <h1>Katot, maalaus ja lumityöt omakotitaloille</h1>
+        <p class="lead">
+          Kattojen kunnostusta, maalaustöitä katolle ja seinille, painepesua, lumitöitä ja pihatöitä. Pieni perheyritys,
+          yli 25 vuoden kokemus.
+        </p>
+        <div class="btn-row">
+          <a href="/kuntoarvio/" class="btn">Varaa ilmainen kuntoarvio <Icon name="nuoli" size={20} /></a>
+          <a href={tel} class="btn btn--secondary"><Icon name="puhelin" size={20} /> {yritys.puhelinNaytto}</a>
+        </div>
+        <p class="hero-note"><Icon name="check" size={18} /> {yritys.vastausaika}. Kuntoarvio ei sido mihinkään.</p>
+      </div>
+      <div class="hero-media">
+        <Kuva
+          nimi="etusivu"
+          alt="Omakotitalo, jonka katto ja seinät on juuri kunnostettu"
+          ikoni="katto"
+          eager
+          suhde="4 / 5"
+          sizes="(min-width: 60rem) 45vw, 100vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight edut-osio" aria-label="Miksi Holske">
+    <div class="container">
+      <Edut />
+    </div>
+  </section>
+
+  {
+    nosto && nostoSisalto && (
+      <section class="section--tight" aria-labelledby="nosto-otsikko">
+        <div class="container">
+          <div class="nosto">
+            <div class="nosto-ikoni">
+              <Icon name={nosto.data.ikoni} size={44} />
+            </div>
+            <div class="nosto-teksti">
+              <span class="eyebrow">{nostoSisalto.eyebrow}</span>
+              <h2 id="nosto-otsikko">{nostoSisalto.otsikko}</h2>
+              <p>{nostoSisalto.teksti}</p>
+            </div>
+            <div class="btn-row nosto-napit">
+              <a href={`/kuntoarvio/?palvelu=${nosto.id}`} class="btn">
+                Pyydä tarjous
+              </a>
+              <a href={`/palvelut/${nosto.id}/`} class="btn btn--secondary">
+                Lue lisää
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section" aria-labelledby="palvelut-otsikko">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Palvelut</span>
+        <h2 id="palvelut-otsikko">Kaikki ulkotyöt yhdestä paikasta</h2>
+        <p class="lead">
+          Teemme työt joustavasti tarpeesi mukaan, oli kyseessä yksittäinen keikka tai säännöllinen huolto.
+        </p>
+      </div>
+      <ul class="kortit">
+        {
+          palvelut.map((p) => (
+            <li>
+              <PalveluKortti href={`/palvelut/${p.id}/`} nimi={p.data.nimi} teksti={p.data.kortti} ikoni={p.data.ikoni} />
+            </li>
+          ))
+        }
+        <li>
+          <PalveluKortti
+            href="/palvelut/#muut-korjaukset"
+            nimi="Muut korjaustyöt"
+            teksti="Julkisivun korjaukset, piha-alueiden kunnostus ja muut ulkotyöt. Aina neuvoteltavissa."
+            ikoni="korjaus"
+          />
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="katto-otsikko">
+    <div class="container split">
+      <Kuva nimi="katto-huolto" alt="Peltikaton maalaus käynnissä" ikoni="katto" suhde="5 / 4" />
+      <div class="prose">
+        <span class="eyebrow">Katot</span>
+        <h2 id="katto-otsikko">Kaipaako kattosi huoltoa?</h2>
+        <p>
+          Sammaloituminen, ruoste tai vuodot kertovat, että huolto tai remontti voi olla ajankohtainen. Tikkaille ei
+          tarvitse kiivetä itse. Selvitämme katon tilanteen puolestasi ilmaisessa kuntoarviossa.
+        </p>
+        <p>
+          Teemme tiili-, pelti- ja huopakattojen remontit, maalaukset ja pinnoitukset. Yli 25 vuoden kokemus varmistaa
+          laadukkaan ja juuri sinun kattosi tarpeisiin sopivan lopputuloksen.
+        </p>
+        <a href="/palvelut/katot/" class="link-arrow">Katon maalaus ja kattoremontit <Icon name="nuoli" size={18} /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--green" aria-labelledby="vaiheet-otsikko">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Näin se toimii</span>
+        <h2 id="vaiheet-otsikko">Kolme askelta valmiiseen työhön</h2>
+      </div>
+      <Vaiheet />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="perhe-otsikko">
+    <div class="container split split--reverse">
+      <Kuva nimi="perheyritys" alt="Holsken tiimi työmaalla" ikoni="perhe" suhde="5 / 4" />
+      <div class="prose">
+        <span class="eyebrow">Meistä</span>
+        <h2 id="perhe-otsikko">Pieni perheyritys. Tue paikallista tekijää.</h2>
+        <p>
+          Perhekeskeisyys on tärkeimpiä arvojamme, ja se auttaa meitä tekemään työmme tehokkaasti. Luotamme toisiimme ja
+          teemme kaiken sujuvalla yhteistyöllä.
+        </p>
+        <p>
+          Asiakkaan tarpeet ovat meille ensisijaisia. Joustavuus on toimintamme kulmakivi: muokkaamme palvelun sinun
+          kohteesi mukaan.
+        </p>
+        <a href="/meista/" class="link-arrow">Tutustu meihin <Icon name="nuoli" size={18} /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight" aria-label="Hinta ja palvelualue">
+    <div class="container infot">
+      <article class="info">
+        <Icon name="laskin" size={32} />
+        <h2>Mietityttääkö hinta?</h2>
+        <p>Hinta määräytyy työn yksityiskohtien ja määrän perusteella. Hintalaskurilla saat suuntaa ja voit lähettää tiedot suoraan meille.</p>
+        <a href="/hintalaskuri/" class="link-arrow">Hintalaskuriin <Icon name="nuoli" size={18} /></a>
+      </article>
+      <article class="info">
+        <Icon name="vahennys" size={32} />
+        <h2>Kotitalousvähennys</h2>
+        <p>Kotitalousvähennyksen voi saada kotitaloustöistä, kuten remonteista ja kiinteistön hoidosta. Vähennys lasketaan työn osuudesta.</p>
+        <a href="https://www.vero.fi/henkiloasiakkaat/verokortti-ja-veroilmoitus/tulot-ja-vahennykset/kotitalousvahennys/" class="link-arrow" rel="noopener" target="_blank">Kotitalousvähennys vero.fi:ssä <Icon name="nuoli" size={18} /></a>
+      </article>
+      <article class="info">
+        <Icon name="paikallinen" size={32} />
+        <h2>Palvelualue</h2>
+        <p>Palvelemme koko pääkaupunkiseudulla: {yritys.palvelualue.join(', ')}. Kotipaikkamme on Vantaa.</p>
+        <a href="/yhteystiedot/" class="link-arrow">Yhteystiedot <Icon name="nuoli" size={18} /></a>
+      </article>
+    </div>
+  </section>
+
+  <CtaOsio />
+</BaseLayout>
+
+<style>
+  .hero { padding-block: clamp(2rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem); }
+  .hero-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 60rem) {
+    .hero-grid { grid-template-columns: 1.1fr 0.9fr; }
+  }
+  .hero-text {
+    display: grid;
+    gap: 1.5rem;
+    min-width: 0;
+  }
+  .hero-text .btn-row { margin-top: 0.5rem; }
+  .hero-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .hero-note :global(.icon) { color: var(--ok); flex: none; }
+  .hero-media { min-width: 0; }
+  @media (max-width: 59.99rem) {
+    .hero-media :global(.kuva) { aspect-ratio: 4 / 3 !important; }
+  }
+
+  .edut-osio {
+    border-block: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .nosto {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+    padding: clamp(1.75rem, 5vw, 3rem);
+    border-radius: calc(var(--r-lg) + 8px);
+    background: linear-gradient(135deg, #e6ece4 0%, #f3f5f0 100%);
+    border: 1px solid #d5ddd2;
+  }
+  @media (min-width: 60rem) {
+    .nosto { grid-template-columns: auto 1fr auto; gap: 2.5rem; }
+  }
+  .nosto-ikoni {
+    display: grid;
+    place-items: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--green);
+    box-shadow: var(--shadow);
+  }
+  .nosto-teksti { display: grid; gap: 0.6rem; max-width: 40rem; min-width: 0; }
+  .nosto-teksti h2 { font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.3rem); }
+  .nosto-teksti p { color: var(--muted); }
+  .nosto-napit { flex-wrap: wrap; }
+
+  .kortit {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  }
+  @media (min-width: 64rem) {
+    .kortit { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .split {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  @media (min-width: 60rem) {
+    .split { grid-template-columns: 1fr 1fr; }
+    .split--reverse > :first-child { order: 2; }
+  }
+  .split .prose { min-width: 0; }
+
+  .infot {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+  .info {
+    display: grid;
+    gap: 0.8rem;
+    align-content: start;
+    padding: 2rem;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .info :global(.icon) { color: var(--orange); }
+  .info h2 { font-family: var(--font-body); font-weight: 600; font-size: 1.375rem; letter-spacing: 0; }
+  .info p { color: var(--muted); font-size: 1.0625rem; }
+</style>

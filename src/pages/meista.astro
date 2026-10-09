@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Murupolku from '../components/Murupolku.astro';
+import Kuva from '../components/Kuva.astro';
+import Icon from '../components/Icon.astro';
+import CtaOsio from '../components/CtaOsio.astro';
+import yritys from '../data/yritys.json';
+
+const arvot = [
+  { ikoni: 'perhe', nimi: 'Perhekeskeisyys', teksti: 'Luotamme toisiimme ja teemme kaiken sujuvalla yhteistyöllä.' },
+  { ikoni: 'kuntoarvio', nimi: 'Asiakas ensin', teksti: 'Asiakkaidemme tarpeet ovat meille ensisijaisia.' },
+  { ikoni: 'nopea', nimi: 'Joustavuus', teksti: 'Muokkaamme palvelun kohteesi ja tarpeidesi mukaan.' },
+  { ikoni: 'paikallinen', nimi: 'Paikallisuus', teksti: 'Suomalainen perheyritys pääkaupunkiseudulta.' },
+];
+---
+
+<BaseLayout
+  title="Meistä: perheyritys pääkaupunkiseudulta | Holske"
+  description="Holske Oy on suomalainen perheyritys pääkaupunkiseudulta. Yli 25 vuoden kokemus kiinteistöhuollosta, kattoremonteista ja maalaustöistä. Tue paikallista tekijää."
+>
+  <section class="section--tight alku">
+    <div class="container">
+      <Murupolku polku={[{ nimi: 'Meistä', href: '/meista/' }]} />
+      <div class="split">
+        <div class="prose">
+          <span class="eyebrow">Keitä olemme</span>
+          <h1>Pieni perheyritys pääkaupunkiseudulta</h1>
+          <p class="lead">
+            Olemme suomalainen perheyritys, joka tarjoaa ylpeänä laadukkaita kiinteistöhuoltopalveluita. Kokemusta alalta on
+            kertynyt yli 25 vuotta.
+          </p>
+          <p>
+            Asiakkaidemme tarpeet ovat meille ensisijaisia, ja pyrimme aina ylittämään odotukset ammattitaidollamme ja
+            palvelullamme. Joustavuus on toimintamme kulmakivi: muokkaamme palveluamme asiakkaan tarpeiden mukaan, jotta
+            löydämme parhaan mahdollisen ratkaisun.
+          </p>
+          <p>Valitsemalla meidät tuet paikallista tekijää.</p>
+        </div>
+        <Kuva nimi="meista" alt="Holsken perheyrityksen tekijät" ikoni="perhe" eager suhde="4 / 5" sizes="(min-width: 60rem) 45vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="arvot-otsikko">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Arvomme</span>
+        <h2 id="arvot-otsikko">Mihin voit luottaa</h2>
+      </div>
+      <ul class="arvot">
+        {
+          arvot.map((a) => (
+            <li>
+              <Icon name={a.ikoni} size={30} />
+              <h3>{a.nimi}</h3>
+              <p>{a.teksti}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section--tight" aria-labelledby="yritys-otsikko">
+    <div class="container tiedot">
+      <h2 id="yritys-otsikko">Yrityksen tiedot</h2>
+      <dl>
+        <div><dt>Yritys</dt><dd>{yritys.nimi}</dd></div>
+        <div><dt>Y-tunnus</dt><dd>{yritys.ytunnus}</dd></div>
+        <div><dt>Osoite</dt><dd>{yritys.katuosoite}, {yritys.postinumero} {yritys.kaupunki}</dd></div>
+        <div><dt>Palvelualue</dt><dd>{yritys.palvelualue.join(', ')}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <CtaOsio otsikko="Ota rohkeasti yhteyttä" teksti="Kysy, kerro kohteestasi tai varaa suoraan ilmainen kuntoarvio." />
+</BaseLayout>
+
+<style>
+  .alku { padding-top: clamp(1.5rem, 4vw, 3rem); padding-bottom: var(--section); }
+  .split {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  @media (min-width: 60rem) {
+    .split { grid-template-columns: 1.1fr 0.9fr; }
+  }
+  .prose { min-width: 0; }
+  .prose h1 { margin-block: 0.25rem 0.5rem; }
+  .arvot {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  }
+  .arvot li {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 1.75rem;
+    border-radius: var(--r-lg);
+    background: var(--surface);
+  }
+  .arvot :global(.icon) { color: var(--orange); }
+  .arvot h3 { font-size: 1.25rem; }
+  .arvot p { color: var(--muted); font-size: 1.0625rem; }
+  .tiedot { display: grid; gap: 1.5rem; padding-block: var(--section) 0; }
+  dl { margin: 0; display: grid; gap: 0; max-width: 40rem; border-top: 1px solid var(--line); }
+  dl div {
+    display: grid;
+    grid-template-columns: minmax(7rem, 10rem) 1fr;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  dt { color: var(--muted); }
+  dd { margin: 0; font-weight: 500; min-width: 0; overflow-wrap: anywhere; }
+</style>

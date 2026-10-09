@@ -1,0 +1,44 @@
+---
+import Icon from './Icon.astro';
+const edut = [
+  { ikoni: 'kokemus', otsikko: 'Yli 25 vuoden kokemus', teksti: 'Tunnemme eri katemateriaalit ja toteutustavat.' },
+  { ikoni: 'perhe', otsikko: 'Pieni perheyritys', teksti: 'Tue paikallista tekijää. Luotamme toisiimme ja teemme työn sujuvasti yhdessä.' },
+  { ikoni: 'kuntoarvio', otsikko: 'Ilmainen kuntoarvio', teksti: 'Selkeä suunnitelma ja hinta ilman sitoutumista.' },
+  { ikoni: 'vahennys', otsikko: 'Kotitalousvähennys', teksti: 'Vähennyksen voi saada työn osuudesta.' },
+];
+---
+
+<ul class="edut">
+  {
+    edut.map((e) => (
+      <li>
+        <Icon name={e.ikoni} size={28} />
+        <div>
+          <strong>{e.otsikko}</strong>
+          <span>{e.teksti}</span>
+        </div>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .edut {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  }
+  li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem;
+    align-items: start;
+  }
+  li :global(.icon) { color: var(--orange); margin-top: 0.1rem; }
+  div { display: grid; gap: 0.2rem; min-width: 0; }
+  strong { color: var(--green); font-weight: 600; font-size: 1.125rem; }
+  span { color: var(--muted); font-size: 1rem; }
+</style>

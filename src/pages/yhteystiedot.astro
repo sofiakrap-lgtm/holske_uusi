@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Murupolku from '../components/Murupolku.astro';
+import Icon from '../components/Icon.astro';
+import yritys from '../data/yritys.json';
+const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${yritys.katuosoite}, ${yritys.postinumero} ${yritys.kaupunki}`)}`;
+---
+
+<BaseLayout
+  title="Yhteystiedot | Holske Oy, Vantaa"
+  description="Ota yhteyttä Holskeen: puhelin 050 323 3075, info@holske.fi. Pyörärinne 4, 01280 Vantaa. Palvelemme Helsingissä, Espoossa, Vantaalla ja Kauniaisissa."
+>
+  <section class="section--tight alku">
+    <div class="container">
+      <Murupolku polku={[{ nimi: 'Yhteystiedot', href: '/yhteystiedot/' }]} />
+      <div class="section-head">
+        <h1>Yhteystiedot</h1>
+        <p class="lead">Soita, lähetä sähköpostia tai varaa ilmainen kuntoarvio lomakkeella. {yritys.vastausaika}.</p>
+      </div>
+
+      <div class="kortit">
+        <a href={tel} class="kortti kortti--paa">
+          <Icon name="puhelin" size={30} />
+          <span class="otsake">Puhelin</span>
+          <span class="arvo">{yritys.puhelinNaytto}</span>
+        </a>
+        <a href={`mailto:${yritys.sahkoposti}`} class="kortti">
+          <Icon name="sahkoposti" size={30} />
+          <span class="otsake">Sähköposti</span>
+          <span class="arvo">{yritys.sahkoposti}</span>
+        </a>
+        <a href={kartta} class="kortti" target="_blank" rel="noopener">
+          <Icon name="sijainti" size={30} />
+          <span class="otsake">Osoite</span>
+          <span class="arvo">{yritys.katuosoite}<br />{yritys.postinumero} {yritys.kaupunki}</span>
+          <span class="pieni">Avaa kartalla</span>
+        </a>
+      </div>
+
+      <div class="alaosa">
+        <div class="laatikko">
+          <h2>Ilmainen kuntoarvio</h2>
+          <p>Kerro kohteesta lomakkeella, niin tulemme katsomaan sen. Saat suunnitelman ja hinnan ilman sitoutumista.</p>
+          <a href="/kuntoarvio/" class="btn">Varaa kuntoarvio <Icon name="nuoli" size={20} /></a>
+        </div>
+        <dl class="tiedot">
+          <div><dt>Yritys</dt><dd>{yritys.nimi}</dd></div>
+          <div><dt>Y-tunnus</dt><dd>{yritys.ytunnus}</dd></div>
+          <div><dt>Palvelualue</dt><dd>Pääkaupunkiseutu: {yritys.palvelualue.join(', ')}</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .alku { padding-top: clamp(1.5rem, 4vw, 3rem); padding-bottom: var(--section); }
+  .kortit {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  }
+  .kortti {
+    display: grid;
+    gap: 0.4rem;
+    align-content: start;
+    padding: 2rem;
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform 240ms var(--ease-out), box-shadow 240ms var(--ease-out);
+  }
+  .kortti:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .kortti:active { transform: scale(0.985); }
+  .kortti :global(.icon) { color: var(--orange); margin-bottom: 0.75rem; }
+  .kortti--paa { background: var(--green); border-color: var(--green); color: #fff; }
+  .kortti--paa .otsake { color: color-mix(in srgb, #fff 75%, transparent); }
+  .otsake { color: var(--muted); font-size: var(--fs-sm); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+  .arvo { font-size: 1.375rem; font-weight: 600; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+  .pieni { font-size: var(--fs-sm); color: var(--green); font-weight: 600; margin-top: 0.4rem; }
+  .alaosa {
+    margin-top: 3rem;
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (min-width: 60rem) {
+    .alaosa { grid-template-columns: 1fr 1fr; }
+  }
+  .laatikko {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    padding: 2rem;
+    border-radius: var(--r-lg);
+    background: var(--moss-soft);
+  }
+  .laatikko p { color: var(--muted); }
+  .tiedot { margin: 0; border-top: 1px solid var(--line); }
+  .tiedot div {
+    display: grid;
+    grid-template-columns: minmax(7rem, 9rem) 1fr;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  dt { color: var(--muted); }
+  dd { margin: 0; font-weight: 500; min-width: 0; }
+</style>

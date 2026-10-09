@@ -1,0 +1,47 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  kysymykset: { k: string; v: string }[];
+}
+const { kysymykset } = Astro.props;
+---
+
+<div class="ukk">
+  {
+    kysymykset.map((q) => (
+      <details>
+        <summary>
+          <span>{q.k}</span>
+          <Icon name="plus" size={22} />
+        </summary>
+        <p>{q.v}</p>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .ukk {
+    display: grid;
+    border-top: 1px solid var(--line);
+    max-width: 48rem;
+  }
+  details { border-bottom: 1px solid var(--line); }
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    min-height: 3.5rem;
+    padding: 1.1rem 0;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: var(--green);
+    list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary :global(.icon) { flex: none; transition: transform 260ms var(--ease-out); }
+  details[open] summary :global(.icon) { transform: rotate(45deg); }
+  p { padding: 0 0 1.4rem; color: var(--muted); max-width: var(--measure); }
+</style>

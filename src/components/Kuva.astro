@@ -1,0 +1,70 @@
+---
+import { Picture } from 'astro:assets';
+import { getKuva } from '../lib/kuvat';
+import Icon from './Icon.astro';
+
+interface Props {
+  nimi: string;
+  alt: string;
+  ikoni?: string;
+  sizes?: string;
+  widths?: number[];
+  eager?: boolean;
+  class?: string;
+  suhde?: string;
+}
+const {
+  nimi,
+  alt,
+  ikoni = 'kuva',
+  sizes = '(min-width: 64rem) 50vw, 100vw',
+  widths = [480, 768, 1080, 1440, 1920],
+  eager = false,
+  class: className,
+  suhde = '4 / 3',
+} = Astro.props;
+const kuva = getKuva(nimi);
+---
+
+{
+  kuva ? (
+    <Picture
+      src={kuva}
+      alt={alt}
+      formats={['avif', 'webp']}
+      widths={widths.filter((w) => w <= kuva.width)}
+      sizes={sizes}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+      decoding="async"
+      class:list={['kuva', className]}
+      style={`aspect-ratio:${suhde}`}
+    />
+  ) : (
+    <div class:list={['kuva kuva--tyhja', className]} style={`aspect-ratio:${suhde}`} role="img" aria-label={alt} data-todo={`Lisää kuva: assets/kuvat/${nimi}.jpg`}>
+      <Fragment set:html={`<!-- TODO: lisää kuva assets/kuvat/${nimi}.jpg -->`} />
+      <Icon name={ikoni} size={56} />
+    </div>
+  )
+}
+
+<style>
+  .kuva {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: var(--r-lg);
+    background: var(--sand);
+  }
+  :global(picture) > .kuva { width: 100%; }
+  .kuva--tyhja {
+    display: grid;
+    place-items: center;
+    color: color-mix(in srgb, var(--green) 55%, transparent);
+    background:
+      radial-gradient(120% 90% at 85% 10%, color-mix(in srgb, var(--orange) 16%, transparent), transparent 60%),
+      linear-gradient(160deg, var(--sand) 0%, var(--moss-soft) 100%);
+  }
+</style>

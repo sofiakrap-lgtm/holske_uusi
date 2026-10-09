@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Murupolku from '../../components/Murupolku.astro';
+import KuntoarvioLomake from '../../components/KuntoarvioLomake.astro';
+import Icon from '../../components/Icon.astro';
+import yritys from '../../data/yritys.json';
+const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+---
+
+<BaseLayout
+  title="Varaa ilmainen kuntoarvio | Holske, pääkaupunkiseutu"
+  description="Varaa ilmainen kuntoarvio katolle, maalaukselle, painepesulle, lumitöille tai pihatöille. Tulemme katsomaan kohteen ja saat selkeän suunnitelman ja hinnan ilman sitoutumista."
+  piilotaMobiiliCta
+>
+  <section class="section--tight alku">
+    <div class="container">
+      <Murupolku polku={[{ nimi: 'Ilmainen kuntoarvio', href: '/kuntoarvio/' }]} />
+      <div class="asettelu">
+        <div class="intro">
+          <h1>Varaa ilmainen kuntoarvio</h1>
+          <p class="lead">
+            Tulemme katsomaan kohteen ja kerromme, mitä se tarvitsee. Saat selkeän suunnitelman ja hinnan ilman
+            sitoutumista.
+          </p>
+          <ol class="seuraavaksi">
+            <li>
+              <span class="nro">1</span>
+              <div><strong>Täytä lomake</strong><span>Vie noin kaksi minuuttia.</span></div>
+            </li>
+            <li>
+              <span class="nro">2</span>
+              <div><strong>Otamme yhteyttä</strong><span>{yritys.vastausaika}.</span></div>
+            </li>
+            <li>
+              <span class="nro">3</span>
+              <div><strong>Katsomme kohteen</strong><span>Sovitaan sinulle sopiva aika.</span></div>
+            </li>
+          </ol>
+          <div class="suoraan">
+            <p>Haluatko mieluummin soittaa?</p>
+            <a href={tel} class="puhelin"><Icon name="puhelin" size={22} /> {yritys.puhelinNaytto}</a>
+            <a href={`mailto:${yritys.sahkoposti}`} class="sposti"><Icon name="sahkoposti" size={20} /> {yritys.sahkoposti}</a>
+          </div>
+        </div>
+        <div class="kortti">
+          <KuntoarvioLomake />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .alku { padding-top: clamp(1.5rem, 4vw, 3rem); padding-bottom: var(--section); }
+  .asettelu {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  @media (min-width: 62rem) {
+    .asettelu { grid-template-columns: 0.85fr 1.15fr; }
+    .intro { position: sticky; top: calc(var(--header-h) + 2rem); }
+  }
+  .intro { display: grid; gap: 1.5rem; min-width: 0; }
+  .seuraavaksi {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .seuraavaksi li { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; }
+  .nro {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  .seuraavaksi div { display: grid; min-width: 0; }
+  .seuraavaksi strong { color: var(--green); }
+  .seuraavaksi span:not(.nro) { color: var(--muted); font-size: 1rem; }
+  .suoraan {
+    display: grid;
+    gap: 0.35rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .suoraan p { color: var(--muted); }
+  .puhelin, .sposti {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    font-weight: 600;
+    text-decoration: none;
+    width: fit-content;
+  }
+  .puhelin { font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+  .kortti {
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    border-radius: calc(var(--r-lg) + 4px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    min-width: 0;
+  }
+</style>

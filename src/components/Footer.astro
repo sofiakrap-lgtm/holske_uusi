@@ -1,0 +1,129 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import yritys from '../data/yritys.json';
+import { getCollection } from 'astro:content';
+
+const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
+const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+const vuosi = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container grid">
+    <div class="col brand-col">
+      <a href="/" class="brand" aria-label="Holske, etusivu"><Logo variantti="vaalea" /></a>
+      <p class="tagline">Pieni perheyritys. {yritys.kokemus} kiinteistöhuollosta pääkaupunkiseudulla.</p>
+      <a href="/kuntoarvio/" class="btn">Varaa ilmainen kuntoarvio</a>
+    </div>
+
+    <div class="col">
+      <h2 class="col-title">Yhteystiedot</h2>
+      <ul class="list">
+        <li><Icon name="puhelin" size={20} /><a href={tel}>{yritys.puhelinNaytto}</a></li>
+        <li><Icon name="sahkoposti" size={20} /><a href={`mailto:${yritys.sahkoposti}`}>{yritys.sahkoposti}</a></li>
+        <li>
+          <Icon name="sijainti" size={20} />
+          <span>{yritys.katuosoite}, {yritys.postinumero} {yritys.kaupunki}</span>
+        </li>
+        <li><Icon name="yritys" size={20} /><span>{yritys.nimi}, Y-tunnus {yritys.ytunnus}</span></li>
+      </ul>
+    </div>
+
+    <nav class="col" aria-label="Palvelut">
+      <h2 class="col-title">Palvelut</h2>
+      <ul class="list plain">
+        {palvelut.map((p) => <li><a href={`/palvelut/${p.id}/`}>{p.data.nimi}</a></li>)}
+        <li><a href="/palvelut/#muut-korjaukset">Muut korjaustyöt</a></li>
+      </ul>
+    </nav>
+
+    <nav class="col" aria-label="Sivusto">
+      <h2 class="col-title">Holske</h2>
+      <ul class="list plain">
+        <li><a href="/hintalaskuri/">Hintalaskuri</a></li>
+        <li><a href="/kuntoarvio/">Ilmainen kuntoarvio</a></li>
+        <li><a href="/meista/">Meistä</a></li>
+        <li><a href="/yhteystiedot/">Yhteystiedot</a></li>
+        <li><a href="/tietosuojaseloste/">Tietosuojaseloste</a></li>
+        <li><button type="button" class="linklike" data-evasteasetukset>Evästeasetukset</button></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container bottom">
+    <p>© {vuosi} {yritys.nimi}. Palvelualue: {yritys.palvelualue.join(', ')}.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--green-deep);
+    color: color-mix(in srgb, #fff 80%, transparent);
+    padding-block: clamp(3.5rem, 8vw, 5.5rem) 2rem;
+    font-size: 1.0625rem;
+  }
+  .grid {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  }
+  .brand-col {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+    justify-items: start;
+    grid-column: span 1;
+  }
+  @media (min-width: 64rem) {
+    .grid { grid-template-columns: 1.4fr 1.3fr 1fr 1fr; }
+  }
+  .brand { color: #fff; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .tagline { max-width: 22rem; }
+  .col-title {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, #fff 60%, transparent);
+    margin-bottom: 1rem;
+  }
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .list li {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-height: 44px;
+  }
+  .list :global(.icon) { flex: none; color: var(--orange); }
+  .list a,
+  .linklike {
+    color: #fff;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+  .list a:hover,
+  .linklike:hover { text-decoration: underline; }
+  .linklike {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  .bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, #fff 14%, transparent);
+    font-size: var(--fs-sm);
+    color: color-mix(in srgb, #fff 62%, transparent);
+  }
+</style>

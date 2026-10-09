@@ -1,0 +1,20 @@
+{
+  "nimi": "Holske Oy",
+  "brandi": "Holske",
+  "ytunnus": "3419162-6",
+  "puhelin": "+358 50 3233075",
+  "puhelinNaytto": "050 323 3075",
+  "sahkoposti": "info@holske.fi",
+  "katuosoite": "Pyörärinne 4",
+  "postinumero": "01280",
+  "kaupunki": "Vantaa",
+  "palvelualue": ["Helsinki", "Espoo", "Vantaa", "Kauniainen"],
+  "palvelualueTeksti": "pääkaupunkiseutu",
+  "kokemus": "Yli 25 vuoden kokemus",
+  "vastausaika": "Vastaamme 1-2 vuorokauden sisällä",
+  "aukioloajat": "TODO: aukioloajat / puhelinajat",
+  "some": {
+    "facebook": "",
+    "instagram": ""
+  }
+}

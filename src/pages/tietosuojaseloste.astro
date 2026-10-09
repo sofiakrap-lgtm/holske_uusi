@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Murupolku from '../components/Murupolku.astro';
+import yritys from '../data/yritys.json';
+---
+
+<BaseLayout
+  title="Tietosuojaseloste ja evästeet | Holske Oy"
+  description="Holske Oy:n tietosuojaseloste: mitä henkilötietoja keräämme, miksi ja miten niitä käsitellään. Tietoa evästeistä ja niiden asetuksista."
+>
+  <section class="section--tight alku">
+    <div class="container">
+      <Murupolku polku={[{ nimi: 'Tietosuojaseloste', href: '/tietosuojaseloste/' }]} />
+      <article class="prose seloste">
+        <h1>Tietosuojaseloste</h1>
+        <p class="paivitetty">Viimeksi päivitetty 9.10.2026</p>
+
+        <h2>Rekisterinpitäjä</h2>
+        <p>
+          {yritys.nimi}<br />
+          Y-tunnus {yritys.ytunnus}<br />
+          {yritys.katuosoite}, {yritys.postinumero} {yritys.kaupunki}
+        </p>
+
+        <h2>Yhteyshenkilö rekisteriasioissa</h2>
+        <p>Sofia Kraptsak<br /><a href={`mailto:${yritys.sahkoposti}`}>{yritys.sahkoposti}</a></p>
+
+        <h2>Rekisterin perustiedot</h2>
+        <p>Rekisteri sisältää Holske Oy:n myyntiin, markkinointiin ja asiakassuhteisiin liittyviä henkilötietoja.</p>
+
+        <h2>Miksi keräämme henkilötietoja ja millä perusteella?</h2>
+        <p>Keräämme tietoja seuraaviin tarkoituksiin:</p>
+        <ul>
+          <li>tarjouspyyntöjen, kuntoarviopyyntöjen ja yhteydenottojen käsittely</li>
+          <li>asiakassuhteen hoitaminen</li>
+          <li>markkinointi</li>
+        </ul>
+        <p>
+          Käsittelyn oikeusperuste on EU:n yleisen tietosuoja-asetuksen 6 artiklan 1 kohdan a alakohta, eli rekisteröidyn oma
+          suostumus yhteen tai useampaan käyttötarkoitukseen.
+        </p>
+
+        <h2>Mitä tietoja rekisteri sisältää?</h2>
+        <p>Asiakas-, myynti- ja markkinointirekisterimme voi sisältää seuraavia tietoja:</p>
+        <ul>
+          <li>nimi</li>
+          <li>osoite</li>
+          <li>sähköpostiosoite</li>
+          <li>puhelinnumero</li>
+          <li>IP-osoite</li>
+          <li>markkinointilupaa tai -kieltoa koskevat tiedot</li>
+          <li>urakan takuutiedot ja muut korjaustiedot</li>
+          <li>laskutus- ja maksutiedot</li>
+          <li>mielipidekyselyistä sekä viestintä- ja muiden palveluiden käytöstä syntyvät tiedot</li>
+        </ul>
+
+        <h2>Kuka tietoja käsittelee?</h2>
+        <p>
+          Tietoja käsittelee Holske Oy. Voimme käyttää tietojen käsittelyssä kolmansien osapuolten palveluita. Ne käsittelevät
+          tietoja vain meidän toimeksiannostamme ja lukuumme, ja varmistamme, että käsittely on lainmukaista. Tällä hetkellä
+          käytämme seuraavia palveluita:
+        </p>
+        <ul>
+          <li>Web3Forms: verkkosivun kuntoarviolomakkeen lähettäminen sähköpostiimme</li>
+          <li>Cloudflare: verkkosivuston julkaisu</li>
+          <li>Google Analytics: kävijätilastot, vain suostumuksellasi</li>
+          <li>Meta (Facebook-pikseli): Facebookin kautta tulevan liikenteen seuranta, vain suostumuksellasi</li>
+        </ul>
+
+        <h2>Siirretäänkö tietoja EU:n tai ETA:n ulkopuolelle?</h2>
+        <p>Osa käyttämistämme palveluista voi toimia EU:n tai ETA:n ulkopuolella.</p>
+
+        <h2>Kuinka kauan tietoja säilytetään?</h2>
+        <p>
+          Säilytämme henkilötietoja niin kauan kuin ne ovat tarpeen siihen tarkoitukseen, jota varten ne on kerätty.
+          Säilytysaikaan vaikuttaa esimerkiksi työn takuuajan pituus.
+        </p>
+        <Fragment set:html="<!-- TODO: vanhassa selosteessa luki 'Tietoja ei välttämättä erikseen poisteta ikinä.' Tämä on poistettu, koska se on GDPR:n vastainen. Määrittäkää tarkka säilytysaika. -->" />
+
+        <h2>Sinun oikeutesi</h2>
+        <p>Tietosuoja-asetuksen mukaan sinulla on oikeus:</p>
+        <ul>
+          <li>
+            <strong>Saada pääsy tietoihisi ja oikaista ne.</strong> Saat maksutta jäljennöksen sinusta tallennetuista tiedoista.
+            Voit vaatia, että korjaamme virheelliset tiedot viipymättä.
+          </li>
+          <li>
+            <strong>Poistaa tietosi.</strong> Voit pyytää tietojesi poistamista, jos niitä ei enää tarvita alkuperäiseen
+            tarkoitukseen eikä niiden säilyttämiselle ole esimerkiksi sopimukseen tai lakiin perustuvaa syytä.
+          </li>
+          <li>
+            <strong>Rajoittaa käsittelyä.</strong> Voit pyytää, että tietojasi vain säilytetään, esimerkiksi jos ne ovat
+            virheellisiä, käsittely on lainvastaista tai tarvitset tietoja oikeudellisen vaateen vuoksi.
+          </li>
+          <li>
+            <strong>Siirtää tietosi.</strong> Voit saada meille antamasi tiedot siirrettyä toiseen järjestelmään, kun käsittely
+            perustuu suostumukseen tai sopimukseen.
+          </li>
+          <li>
+            <strong>Peruuttaa suostumuksesi.</strong> Voit peruuttaa suostumuksesi milloin tahansa. Peruutus ei vaikuta sitä
+            ennen tehdyn käsittelyn lainmukaisuuteen.
+          </li>
+          <li>
+            <strong>Vastustaa käsittelyä</strong> ja olla joutumatta automaattisen päätöksenteon kohteeksi.
+          </li>
+          <li>
+            <strong>Tehdä valitus valvontaviranomaiselle.</strong> Suomessa valvontaviranomainen on tietosuojavaltuutettu
+            (<a href="https://tietosuoja.fi" rel="noopener" target="_blank">tietosuoja.fi</a>).
+          </li>
+        </ul>
+        <p>Voit käyttää oikeuksiasi lähettämällä sähköpostia osoitteeseen <a href={`mailto:${yritys.sahkoposti}`}>{yritys.sahkoposti}</a>.</p>
+
+        <h2>Miten tiedot suojataan?</h2>
+        <p>
+          Me ja puolestamme henkilötietoja käsittelevät palveluntarjoajat käsittelemme ja suojaamme tietoja voimassa olevan
+          lainsäädännön mukaisesti. Yhteys selaimesta palvelimelle on salattu. Sähköisesti käsiteltävät tiedot ovat palomuurein,
+          salasanoin ja muilla teknisillä keinoilla suojatuissa järjestelmissä. Pääsy tietoihin on vain niillä, jotka tarvitsevat
+          niitä työssään, ja käyttö edellyttää käyttäjätunnusta ja salasanaa.
+        </p>
+
+        <h2 id="evasteet">Evästeet</h2>
+        <p>
+          Eväste on pieni tekstitiedosto, jonka verkkosivusto tallentaa selaimeesi. Evästeet eivät voi vahingoittaa laitettasi.
+          Sivustollamme on kahdenlaisia evästeitä:
+        </p>
+        <ul>
+          <li>
+            <strong>Välttämättömät evästeet</strong> tallentavat evästevalintasi, jotta emme kysy sitä jokaisella käynnillä. Ne
+            ovat aina käytössä.
+          </li>
+          <li>
+            <strong>Analytiikka- ja markkinointievästeet</strong> (Google Analytics ja Facebook-pikseli) kertovat esimerkiksi
+            kävijämääristä ja siitä, mistä sivulle on tultu. Ne otetaan käyttöön vain, jos annat siihen luvan. Googlelle
+            lähetettävä tieto on anonymisoitua.
+          </li>
+        </ul>
+        <p>Kun vierailet sivuilla, voidaan kerätä esimerkiksi tietoja laitteen tyypistä, IP-osoitteesta ja selaimesta.</p>
+        <p><button type="button" class="btn btn--secondary" data-evasteasetukset>Muuta evästeasetuksia</button></p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .alku { padding-top: clamp(1.5rem, 4vw, 3rem); padding-bottom: var(--section); }
+  .seloste { max-width: 44rem; }
+  .seloste h1 { margin-bottom: 0.25rem; }
+  .seloste h2 { font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.75rem); margin-top: 1.75rem; }
+  .paivitetty { color: var(--muted); font-size: var(--fs-sm); }
+  .seloste li { padding-left: 0.2rem; }
+</style>

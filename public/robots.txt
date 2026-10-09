@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /kuntoarvio/kiitos/
+
+Sitemap: https://holske.fi/sitemap-index.xml

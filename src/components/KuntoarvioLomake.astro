@@ -1,0 +1,304 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+import lomake from '../data/lomake.json';
+import yritys from '../data/yritys.json';
+
+const avain = import.meta.env.PUBLIC_WEB3FORMS_KEY || lomake.web3formsAvain || '';
+const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
+const vaihtoehdot = [
+  ...palvelut.map((p) => ({ arvo: p.id, nimi: p.data.nimi })),
+  { arvo: 'muu', nimi: 'Muu korjaustyö' },
+  { arvo: 'en-tieda', nimi: 'En ole varma' },
+];
+const site = Astro.site ?? new URL('https://holske.fi');
+const kuvaMailto = `mailto:${yritys.sahkoposti}?subject=${encodeURIComponent('Kuvia kuntoarviota varten')}`;
+---
+
+<form
+  class="lomake"
+  action="https://api.web3forms.com/submit"
+  method="POST"
+  novalidate
+  data-lomake
+  data-avain={avain ? '1' : '0'}
+>
+  <input type="hidden" name="access_key" value={avain} />
+  <input type="hidden" name="subject" value={lomake.aihe} />
+  <input type="hidden" name="from_name" value="holske.fi" />
+  <input type="hidden" name="redirect" value={new URL('/kuntoarvio/kiitos/', site).href} />
+  <input type="hidden" name="hinta_arvio" value="" data-hinta-arvio />
+  <!-- Roskapostisuoja: ihminen ei näe tätä kenttää, botti täyttää sen -->
+  <div class="hunaja" aria-hidden="true">
+    <label for="botcheck">Älä täytä tätä kenttää</label>
+    <input type="checkbox" name="botcheck" id="botcheck" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="field">
+    <label for="palvelu">Mitä työtä tarvitset?</label>
+    <select id="palvelu" name="palvelu" required data-palvelu>
+      <option value="" disabled selected>Valitse palvelu</option>
+      {vaihtoehdot.map((v) => <option value={v.arvo}>{v.nimi}</option>)}
+    </select>
+    <p class="field-error" id="palvelu-virhe" hidden>Valitse palvelu. Jos et ole varma, valitse "En ole varma".</p>
+  </div>
+
+  <div class="field">
+    <label for="viesti">Kerro kohteesta <span class="optional">(vapaaehtoinen)</span></label>
+    <textarea
+      id="viesti"
+      name="viesti"
+      rows="5"
+      aria-describedby="viesti-vihje"
+      placeholder="Esimerkiksi katon materiaali ja koko, talon koko tai mitä pitäisi tehdä."
+    ></textarea>
+    <p class="hint" id="viesti-vihje">Mitä tarkemmin kerrot, sitä paremmin osaamme valmistautua.</p>
+  </div>
+
+  <div class="rivi">
+    <div class="field">
+      <label for="nimi">Nimi</label>
+      <input id="nimi" name="nimi" type="text" autocomplete="name" required />
+      <p class="field-error" id="nimi-virhe" hidden>Kirjoita nimesi.</p>
+    </div>
+    <div class="field">
+      <label for="puhelin">Puhelin</label>
+      <input id="puhelin" name="puhelin" type="tel" autocomplete="tel" inputmode="tel" required />
+      <p class="field-error" id="puhelin-virhe" hidden>Kirjoita puhelinnumero, esimerkiksi 040 123 4567.</p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="email">Sähköposti</label>
+    <input id="email" name="email" type="email" autocomplete="email" required />
+    <p class="field-error" id="email-virhe" hidden>Kirjoita sähköposti muodossa nimi@esimerkki.fi.</p>
+  </div>
+
+  <div class="field">
+    <label for="osoite">Kohteen osoite tai alue</label>
+    <input
+      id="osoite"
+      name="osoite"
+      type="text"
+      autocomplete="street-address"
+      required
+      aria-describedby="osoite-vihje"
+    />
+    <p class="hint" id="osoite-vihje">Katuosoite tai kaupunginosa, esimerkiksi Tikkurila, Vantaa.</p>
+    <p class="field-error" id="osoite-virhe" hidden>Kirjoita osoite tai alue.</p>
+  </div>
+
+  <div class="field">
+    <label for="ajankohta">Milloin sopii, että tulemme katsomaan kohdetta? <span class="optional">(vapaaehtoinen)</span></label>
+    <input id="ajankohta" name="ajankohta" type="text" placeholder="Esimerkiksi arkisin klo 16 jälkeen" />
+  </div>
+
+  <div class="kuvat">
+    <Icon name="kuva" size={24} />
+    <p>
+      <strong>Onko sinulla kuvia kohteesta?</strong> Ne nopeuttavat arviota. Lähetä kuvat sähköpostilla osoitteeseen
+      <a href={kuvaMailto}>{yritys.sahkoposti}</a> lomakkeen lähettämisen jälkeen.
+    </p>
+  </div>
+
+  <p class="tietosuoja">
+    Käytämme tietoja vain yhteydenottoon ja tarjouksen tekemiseen. Lue <a href="/tietosuojaseloste/">tietosuojaseloste</a>.
+  </p>
+
+  <button type="submit" class="btn btn--block laheta" data-laheta>
+    <span data-laheta-teksti>Lähetä kuntoarviopyyntö</span>
+  </button>
+  <p class="lomake-virhe" role="alert" data-lomake-virhe hidden></p>
+</form>
+
+<div class="kiitos" data-kiitos hidden tabindex="-1">
+  <span class="kiitos-ikoni"><Icon name="check" size={36} /></span>
+  <h2>Kiitos, pyyntö on lähetetty</h2>
+  <p>{yritys.vastausaika}. Jos asia on kiireellinen, soita <a href={`tel:${yritys.puhelin.replace(/\s/g, '')}`}>{yritys.puhelinNaytto}</a>.</p>
+  <p>Voit lähettää kuvia kohteesta osoitteeseen <a href={kuvaMailto}>{yritys.sahkoposti}</a>.</p>
+</div>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-lomake]');
+  const kiitos = document.querySelector<HTMLElement>('[data-kiitos]');
+  const virhe = document.querySelector<HTMLElement>('[data-lomake-virhe]');
+  const laheta = document.querySelector<HTMLButtonElement>('[data-laheta]');
+  const lahetaTeksti = document.querySelector<HTMLElement>('[data-laheta-teksti]');
+
+  if (form) {
+    // Esivalinta osoitteesta ?palvelu=katot tai hintalaskurilta
+    const params = new URLSearchParams(location.search);
+    const valinta = params.get('palvelu');
+    const select = form.querySelector<HTMLSelectElement>('[data-palvelu]');
+    if (valinta && select && [...select.options].some((o) => o.value === valinta)) select.value = valinta;
+
+    try {
+      const laskuri = JSON.parse(sessionStorage.getItem('holske-laskuri') || 'null');
+      if (laskuri && params.get('lahde') === 'laskuri') {
+        if (select && laskuri.palvelu) select.value = laskuri.palvelu;
+        const viesti = form.querySelector<HTMLTextAreaElement>('#viesti');
+        if (viesti && laskuri.yhteenveto) viesti.value = laskuri.yhteenveto;
+        const hidden = form.querySelector<HTMLInputElement>('[data-hinta-arvio]');
+        if (hidden && laskuri.arvio) hidden.value = laskuri.arvio;
+      }
+    } catch {}
+
+    const kentat: Record<string, (el: HTMLInputElement | HTMLSelectElement) => boolean> = {
+      palvelu: (el) => el.value !== '',
+      nimi: (el) => el.value.trim().length >= 2,
+      puhelin: (el) => el.value.replace(/[^\d+]/g, '').length >= 6,
+      email: (el) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()),
+      osoite: (el) => el.value.trim().length >= 2,
+    };
+
+    const tarkista = (nimi: string, nayta = true) => {
+      const el = form.elements.namedItem(nimi) as HTMLInputElement | HTMLSelectElement;
+      const ok = kentat[nimi](el);
+      const err = document.getElementById(`${nimi}-virhe`);
+      if (nayta) {
+        el.setAttribute('aria-invalid', String(!ok));
+        if (err) {
+          err.hidden = ok;
+          if (el.dataset.vihje === undefined) el.dataset.vihje = el.getAttribute('aria-describedby') ?? '';
+          const kuvaus = [el.dataset.vihje, ok ? '' : err.id].filter(Boolean).join(' ');
+          if (kuvaus) el.setAttribute('aria-describedby', kuvaus);
+          else el.removeAttribute('aria-describedby');
+        }
+      }
+      return ok;
+    };
+
+    // Virhe näytetään vasta kun kentästä poistutaan, ja se poistuu heti kun kenttä on kunnossa
+    Object.keys(kentat).forEach((nimi) => {
+      const el = form.elements.namedItem(nimi) as HTMLElement;
+      el.addEventListener('blur', () => {
+        if ((el as HTMLInputElement).value !== '') tarkista(nimi);
+      });
+      el.addEventListener('input', () => {
+        if (el.getAttribute('aria-invalid') === 'true') tarkista(nimi);
+      });
+      el.addEventListener('change', () => {
+        if (el.getAttribute('aria-invalid') === 'true') tarkista(nimi);
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (virhe) virhe.hidden = true;
+      const virheelliset = Object.keys(kentat).filter((n) => !tarkista(n));
+      if (virheelliset.length) {
+        (form.elements.namedItem(virheelliset[0]) as HTMLElement).focus();
+        return;
+      }
+      if (form.dataset.avain !== '1') {
+        if (virhe) {
+          virhe.textContent = 'Lomake ei ole vielä käytössä. Soita tai lähetä sähköpostia, niin palaamme asiaan pian.';
+          virhe.hidden = false;
+        }
+        return;
+      }
+      if (laheta && lahetaTeksti) {
+        laheta.disabled = true;
+        lahetaTeksti.textContent = 'Lähetetään…';
+      }
+      try {
+        const data = Object.fromEntries(new FormData(form).entries());
+        delete (data as Record<string, unknown>).redirect;
+        const select = form.querySelector<HTMLSelectElement>('[data-palvelu]');
+        if (select) data.palvelu = select.options[select.selectedIndex].text;
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || json.success === false) throw new Error(json.message || 'Lähetys epäonnistui');
+        try {
+          sessionStorage.removeItem('holske-laskuri');
+        } catch {}
+        form.hidden = true;
+        if (kiitos) {
+          kiitos.hidden = false;
+          kiitos.focus();
+        }
+        (window as any).gtag?.('event', 'generate_lead', { form: 'kuntoarvio' });
+        (window as any).fbq?.('track', 'Lead');
+      } catch {
+        if (virhe) {
+          virhe.textContent =
+            'Lähetys ei onnistunut. Tarkista verkkoyhteys ja yritä uudelleen, tai soita meille.';
+          virhe.hidden = false;
+        }
+      } finally {
+        if (laheta && lahetaTeksti) {
+          laheta.disabled = false;
+          lahetaTeksti.textContent = 'Lähetä kuntoarviopyyntö';
+        }
+      }
+    });
+  }
+</script>
+
+<style>
+  .lomake {
+    display: grid;
+    gap: 1.4rem;
+  }
+  .rivi {
+    display: grid;
+    gap: 1.4rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  }
+  .hunaja {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .kuvat {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--r-md);
+    background: var(--moss-soft);
+    font-size: 1rem;
+  }
+  .kuvat :global(.icon) { color: var(--green); margin-top: 0.1rem; }
+  .kuvat p { min-width: 0; overflow-wrap: anywhere; }
+  .tietosuoja { font-size: var(--fs-sm); color: var(--muted); }
+  .laheta { min-height: 3.5rem; font-size: 1.125rem; }
+  .laheta[disabled] { opacity: 0.7; cursor: progress; }
+  .lomake-virhe {
+    padding: 1rem 1.25rem;
+    border-radius: var(--r-sm);
+    background: color-mix(in srgb, var(--danger) 10%, transparent);
+    color: var(--danger);
+    font-weight: 500;
+  }
+  .kiitos {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    outline: none;
+  }
+  .kiitos-ikoni {
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--ok) 14%, transparent);
+    color: var(--ok);
+  }
+  .kiitos h2 { font-size: clamp(1.7rem, 1.3rem + 1.4vw, 2.2rem); }
+  .kiitos p { color: var(--muted); }
+  @media (prefers-reduced-motion: no-preference) {
+    .kiitos:not([hidden]) { animation: nouse 420ms var(--ease-out) both; }
+    @keyframes nouse {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
+  }
+</style>

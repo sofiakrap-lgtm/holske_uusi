@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<BaseLayout title="Sivua ei löytynyt | Holske" description="Etsimääsi sivua ei löytynyt." noindex>
+  <section class="section">
+    <div class="container sisalto">
+      <span class="eyebrow">404</span>
+      <h1>Sivua ei löytynyt</h1>
+      <p class="lead">Sivu on ehkä siirtynyt uuteen osoitteeseen. Näistä pääset eteenpäin:</p>
+      <div class="btn-row">
+        <a href="/" class="btn">Etusivulle <Icon name="nuoli" size={20} /></a>
+        <a href="/palvelut/" class="btn btn--secondary">Palvelut</a>
+        <a href="/kuntoarvio/" class="btn btn--secondary">Ilmainen kuntoarvio</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sisalto { display: grid; gap: 1.25rem; justify-items: start; }
+</style>

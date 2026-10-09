@@ -1,0 +1,265 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import yritys from '../data/yritys.json';
+
+const nav = [
+  { href: '/palvelut/', label: 'Palvelut' },
+  { href: '/hintalaskuri/', label: 'Hintalaskuri' },
+  { href: '/meista/', label: 'Meistä' },
+  { href: '/yhteystiedot/', label: 'Yhteystiedot' },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+---
+
+<header class="site-header" data-header>
+  <div class="container bar">
+    <a href="/" class="brand" aria-label={`${yritys.brandi}, etusivu`}>
+      <Logo />
+    </a>
+
+    <nav class="nav" aria-label="Päävalikko">
+      <ul id="paavalikko" class="nav-list" data-nav>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="nav-mobile-only">
+          <a href={tel} class="nav-phone">
+            <Icon name="puhelin" size={20} />
+            {yritys.puhelinNaytto}
+          </a>
+        </li>
+        <li class="nav-mobile-only">
+          <a href="/kuntoarvio/" class="btn btn--block">Varaa ilmainen kuntoarvio</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a href={tel} class="phone" aria-label={`Soita ${yritys.puhelinNaytto}`}>
+        <Icon name="puhelin" size={20} />
+        <span class="phone-text">{yritys.puhelinNaytto}</span>
+      </a>
+      <a href="/kuntoarvio/" class="btn cta">Ilmainen kuntoarvio</a>
+      <button
+        type="button"
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="paavalikko"
+        data-menu-toggle
+      >
+        <span class="visually-hidden" data-menu-label>Avaa valikko</span>
+        <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
+
+  const setOpen = (open: boolean) => {
+    if (!header || !toggle) return;
+    header.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    if (label) label.textContent = open ? 'Sulje valikko' : 'Avaa valikko';
+    document.documentElement.classList.toggle('menu-open', open);
+  };
+
+  toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && header?.classList.contains('is-open')) {
+      setOpen(false);
+      toggle?.focus();
+    }
+  });
+  window.matchMedia('(min-width: 60rem)').addEventListener('change', (e) => e.matches && setOpen(false));
+
+  // Ohut varjo vasta kun sivua on vieritetty
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    -webkit-backdrop-filter: blur(18px) saturate(170%);
+    backdrop-filter: blur(18px) saturate(170%);
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+  .site-header.is-scrolled {
+    border-bottom-color: color-mix(in srgb, var(--line) 80%, transparent);
+    box-shadow: 0 6px 24px -18px rgb(32 38 27 / 0.35);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: var(--header-h);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    color: var(--green);
+    text-decoration: none;
+    flex: none;
+    min-height: 44px;
+  }
+  .nav { margin-left: auto; }
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .nav-list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    border-radius: 999px;
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 150ms ease;
+  }
+  .nav-list a:hover { background: color-mix(in srgb, var(--green) 8%, transparent); }
+  .nav-list a[aria-current='page'] {
+    color: var(--green);
+    background: color-mix(in srgb, var(--green) 10%, transparent);
+  }
+  .nav-mobile-only { display: none; }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    min-width: 44px;
+    justify-content: center;
+    color: var(--green);
+    font-weight: 600;
+    text-decoration: none;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .phone:hover { text-decoration: underline; }
+  .cta {
+    min-height: 2.9rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+
+  .menu-toggle {
+    display: none;
+    width: 48px;
+    height: 48px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--green);
+    cursor: pointer;
+    place-items: center;
+  }
+  .menu-toggle:active { background: color-mix(in srgb, var(--green) 10%, transparent); }
+  .menu-icon {
+    position: relative;
+    display: block;
+    width: 22px;
+    height: 12px;
+  }
+  .menu-icon span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 280ms var(--ease-out), top 280ms var(--ease-out);
+  }
+  .menu-icon span:first-child { top: 0; }
+  .menu-icon span:last-child { top: 10px; }
+  .is-open .menu-icon span:first-child { top: 5px; transform: rotate(45deg); }
+  .is-open .menu-icon span:last-child { top: 5px; transform: rotate(-45deg); }
+
+  @media (max-width: 75rem) {
+    .phone-text { display: none; }
+  }
+
+  @media (max-width: 59.99rem) {
+    .bar { gap: 0.5rem; }
+    .menu-toggle { display: grid; }
+    .cta { display: none; }
+    .actions { margin-left: auto; gap: 0.25rem; }
+    .nav { margin: 0; }
+    .nav-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.25rem;
+      padding: 0.75rem var(--gutter) 1.5rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 24px 40px -24px rgb(32 38 27 / 0.35);
+      /* Valikko laskeutuu headerista, josta se avattiin, ja palaa samaa reittiä */
+      transform-origin: top center;
+      transform: translateY(-8px);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        transform 320ms var(--ease-out),
+        opacity 200ms ease,
+        visibility 0s linear 320ms;
+    }
+    .is-open .nav-list {
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+      transition:
+        transform 320ms var(--ease-out),
+        opacity 200ms ease,
+        visibility 0s;
+    }
+    .nav-list a {
+      min-height: 3.25rem;
+      padding-inline: 0.75rem;
+      font-size: 1.1875rem;
+      border-radius: var(--r-sm);
+    }
+    .nav-mobile-only { display: block; }
+    .nav-mobile-only:first-of-type { margin-top: 0.5rem; border-top: 1px solid var(--line); padding-top: 0.75rem; }
+    .nav-phone { gap: 0.6rem; color: var(--green) !important; font-weight: 600 !important; }
+    .nav-list .btn { margin-top: 0.5rem; color: var(--orange-ink); justify-content: center; }
+    .nav-list .btn:hover { background: var(--orange-hover); }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .site-header { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  }
+</style>

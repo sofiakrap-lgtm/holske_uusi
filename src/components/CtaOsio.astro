@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro';
+import yritys from '../data/yritys.json';
+interface Props {
+  otsikko?: string;
+  teksti?: string;
+  palvelu?: string;
+}
+const {
+  otsikko = 'Varaa ilmainen kuntoarvio',
+  teksti = `Tulemme katsomaan kohteen ja kerromme, mitä se tarvitsee. Saat selkeän suunnitelman ja kiinteän hinnan ilman sitoutumista.`,
+  palvelu,
+} = Astro.props;
+const href = palvelu ? `/kuntoarvio/?palvelu=${palvelu}` : '/kuntoarvio/';
+const tel = `tel:${yritys.puhelin.replace(/\s/g, '')}`;
+---
+
+<section class="section cta-osio" aria-labelledby="cta-otsikko">
+  <div class="container">
+    <div class="laatikko">
+      <div class="teksti">
+        <h2 id="cta-otsikko">{otsikko}</h2>
+        <p class="lead">{teksti}</p>
+      </div>
+      <div class="btn-row">
+        <a href={href} class="btn">Varaa kuntoarvio <Icon name="nuoli" size={20} /></a>
+        <a href={tel} class="btn btn--secondary"><Icon name="puhelin" size={20} /> {yritys.puhelinNaytto}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .laatikko {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    padding: clamp(2rem, 6vw, 4rem);
+    border-radius: calc(var(--r-lg) + 8px);
+    background:
+      radial-gradient(90% 120% at 100% 0%, color-mix(in srgb, var(--orange) 16%, transparent), transparent 55%),
+      var(--moss-soft);
+  }
+  @media (min-width: 60rem) {
+    .laatikko { grid-template-columns: 1.4fr auto; }
+  }
+  .teksti { display: grid; gap: 1rem; }
+</style>

@@ -1,0 +1,54 @@
+---
+import kampanja from '../data/kampanja.json';
+
+// Piilotetaan jo buildissa, jos kampanja on pois päältä tai päättynyt.
+const tanaan = new Date().toISOString().slice(0, 10);
+const nayta = kampanja.paalla && kampanja.teksti && (!kampanja.paattyy || tanaan <= kampanja.paattyy);
+---
+
+{
+  nayta && (
+    <aside class="kampanja" data-paattyy={kampanja.paattyy} aria-label="Ajankohtaista">
+      <div class="container inner">
+        <p>{kampanja.teksti}</p>
+        {kampanja.linkki && (
+          <a href={kampanja.linkki} class="link">
+            {kampanja.linkkiTeksti}
+          </a>
+        )}
+      </div>
+    </aside>
+  )
+}
+
+{
+  nayta && (
+    <script is:inline>
+      {`(function(){var b=document.querySelector('.kampanja');if(!b)return;var p=b.getAttribute('data-paattyy');if(p&&new Date().toISOString().slice(0,10)>p)b.remove();})();`}
+    </script>
+  )
+}
+
+<style>
+  .kampanja {
+    background: var(--green-deep);
+    color: var(--green-text-on);
+    font-size: var(--fs-sm);
+  }
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem 1rem;
+    padding-block: 0.6rem;
+    text-align: center;
+  }
+  .link {
+    color: #fff;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+</style>

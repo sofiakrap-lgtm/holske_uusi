@@ -1,0 +1,4 @@
+{
+  "_ohje": "Etusivun sesonkinosto. Vaihda 'nosto' arvoon 'lumityot' talvella ja 'pihatyot' kesällä, tai null piilottaaksesi.",
+  "nosto": "lumityot"
+}
