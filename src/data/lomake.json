@@ -1,6 +1,6 @@
 {
   "_ohje": "Web3Forms-avain. Ensisijaisesti ympäristömuuttuja PUBLIC_WEB3FORMS_KEY (ks. README). Jos sitä ei ole asetettu, käytetään tätä arvoa.",
-  "web3formsAvain": "",
+  "web3formsAvain": "60b211af-c245-4af4-b3c6-a24176656196",
   "vastaanottaja": "info@holske.fi",
   "aihe": "Uusi kuntoarviopyyntö holske.fi"
 }

@@ -2,7 +2,7 @@
 
 ## Odottaa teiltä
 1. **Omat hinnat**: laskurissa on nyt väliaikaiset alan keskihinnat (`src/data/hinnasto.json`). Korvataan kyselyn vastauksilla (suomi: https://claude.ai/artifact/XrQRG5UxsHqbSjNit7ykYM, venäjä: https://claude.ai/artifact/1ERZELWpZwrJAaDoqgpYuZ).
-2. **Web3Forms-avain** lomakkeelle (README kohta 5). Ilman avainta lomake pyytää soittamaan.
+2. **Lomakkeen testaus**: Web3Forms-avain on lisätty. Lähetä julkaisun jälkeen yksi testipyyntö ja tarkista, että se tulee osoitteeseen info@holske.fi.
 3. **Kuvat** kansioon `assets/kuvat/` (10 kuvaa, nimet README:ssä).
 4. **Logo** kansioon `assets/logot-ja-grafiikat/`: `logo.svg` ja `logo-valkoinen.svg`. Sen jälkeen `node scripts/luo-grafiikat.mjs`.
 5. **Kotitalousvähennyksen luvut** (35 %, omavastuu 150 €, enintään 1 600 €): tarkistetaan vero.fi:stä ja päivitetään `src/data/hinnasto.json`.
