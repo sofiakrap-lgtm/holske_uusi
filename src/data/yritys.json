@@ -11,10 +11,5 @@
   "palvelualue": ["Helsinki", "Espoo", "Vantaa", "Kauniainen"],
   "palvelualueTeksti": "pääkaupunkiseutu",
   "kokemus": "Yli 25 vuoden kokemus",
-  "vastausaika": "Vastaamme 1-2 vuorokauden sisällä",
-  "aukioloajat": "TODO: aukioloajat / puhelinajat",
-  "some": {
-    "facebook": "",
-    "instagram": ""
-  }
+  "vastausaika": "Vastaamme 1-2 vuorokauden sisällä"
 }

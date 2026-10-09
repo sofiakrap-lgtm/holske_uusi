@@ -26,7 +26,7 @@ export interface Hinnasto {
   maalaus: Record<'kerta1' | 'kerta2' | 'pohjatyot', Hinta>;
   painepesu: Record<'katto' | 'kiveys' | 'terassi' | 'julkisivu' | 'suojaAine', Hinta>;
   lumityot: Record<'kattoPieni' | 'kattoIso' | 'piha' | 'talvisopimus', Hinta>;
-  pihatyot: Record<'nurmiPieni' | 'nurmiKeski' | 'nurmiIso' | 'kesasopimus', Hinta>;
+  pihatyot: Record<'nurmiPieni' | 'nurmiKeski' | 'nurmiIso', Hinta>;
 }
 
 export type Syote =
@@ -131,11 +131,6 @@ function perushinta(h: Hinnasto, s: Syote): { hinta: number | null; ala: number 
       return { hinta: osat.reduce<number>((a, b) => a + (b as number), 0), ala: null, puuttuu: null, kk: false };
     }
     case 'pihatyot': {
-      if (s.sopimus) {
-        return on(h.pihatyot.kesasopimus)
-          ? { hinta: h.pihatyot.kesasopimus, ala: null, puuttuu: null, kk: true }
-          : { hinta: null, ala: null, puuttuu: 'hinnat', kk: true };
-      }
       const y = { pieni: h.pihatyot.nurmiPieni, keski: h.pihatyot.nurmiKeski, iso: h.pihatyot.nurmiIso }[s.nurmi];
       return on(y)
         ? { hinta: y, ala: null, puuttuu: null, kk: false }

@@ -1,11 +1,12 @@
 {
-  "_ohje": "Hintalaskurin hinnat. Täytä hinnastokyselyn vastausten perusteella. null = hintaa ei ole, jolloin laskuri ohjaa kuntoarvioon. Hinnat euroina, sisältävät ALV:n.",
+  "_ohje": "Hintalaskurin hinnat euroina, sis. ALV. null = hintaa ei ole, jolloin laskuri ohjaa kuntoarvioon. HUOM: nykyiset luvut ovat VÄLIAIKAISIA alan keskihintoja pääkaupunkiseudulla. Korvaa omilla hinnoilla hinnastokyselyn vastausten perusteella.",
+  "_valiaikainen": true,
   "yleiset": {
-    "tyonOsuus": null,
-    "minimilasku": null,
+    "tyonOsuus": 70,
+    "minimilasku": 150,
     "matkakulut": null,
     "naytto": "haarukka",
-    "haarukkaProsentti": 15
+    "haarukkaProsentti": 20
   },
   "kotitalousvahennys": {
     "_ohje": "TODO: tarkista vuosittain vero.fi. Arvot vuoden 2025 säännöistä.",
@@ -15,36 +16,35 @@
     "enimmaismaara": 1600
   },
   "katot": {
-    "peltiMaalaus": null,
-    "tiiliPinnoitus": null,
-    "ruosteenpoisto": null,
-    "jyrkkaLisa": null,
-    "kaksikerroksinenLisa": null,
-    "huonoKuntoLisa": null,
-    "kattoKerroin": null
+    "peltiMaalaus": 20,
+    "tiiliPinnoitus": 25,
+    "ruosteenpoisto": 4,
+    "jyrkkaLisa": 15,
+    "kaksikerroksinenLisa": 10,
+    "huonoKuntoLisa": 15,
+    "kattoKerroin": 1.3
   },
   "maalaus": {
-    "kerta1": null,
-    "kerta2": null,
-    "pohjatyot": null
+    "kerta1": 25,
+    "kerta2": 35,
+    "pohjatyot": 8
   },
   "painepesu": {
-    "katto": null,
-    "kiveys": null,
-    "terassi": null,
-    "julkisivu": null,
-    "suojaAine": null
+    "katto": 7,
+    "kiveys": 6,
+    "terassi": 7,
+    "julkisivu": 6,
+    "suojaAine": 4
   },
   "lumityot": {
-    "kattoPieni": null,
-    "kattoIso": null,
-    "piha": null,
+    "kattoPieni": 250,
+    "kattoIso": 400,
+    "piha": 80,
     "talvisopimus": null
   },
   "pihatyot": {
-    "nurmiPieni": null,
-    "nurmiKeski": null,
-    "nurmiIso": null,
-    "kesasopimus": null
+    "nurmiPieni": 60,
+    "nurmiKeski": 90,
+    "nurmiIso": 130
   }
 }

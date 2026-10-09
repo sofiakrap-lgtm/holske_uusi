@@ -166,13 +166,6 @@ const palvelut = [
                   <label><input type="radio" name="nurmi_koko" value="iso" /><span>Yli 1 000 m²</span></label>
                 </div>
               </div>
-              <div class="field">
-                <span class="label" id="nurmi-sopimus">Kertakäynti vai koko kesä?</span>
-                <div class="segmentti" role="radiogroup" aria-labelledby="nurmi-sopimus">
-                  <label><input type="radio" name="nurmi_sopimus" value="ei" checked /><span>Kertakäynti</span></label>
-                  <label><input type="radio" name="nurmi_sopimus" value="kylla" /><span>Kesäsopimus</span></label>
-                </div>
-              </div>
             </div>
           </fieldset>
         </form>
@@ -254,7 +247,7 @@ const palvelut = [
           sopimus: arvo('lumi_sopimus') === 'kylla',
         };
       case 'pihatyot':
-        return { palvelu: 'pihatyot', nurmi: (arvo('nurmi_koko') || 'pieni') as 'pieni' | 'keski' | 'iso', sopimus: arvo('nurmi_sopimus') === 'kylla' };
+        return { palvelu: 'pihatyot', nurmi: (arvo('nurmi_koko') || 'pieni') as 'pieni' | 'keski' | 'iso', sopimus: false };
       default:
         return null;
     }
@@ -290,7 +283,6 @@ const palvelut = [
     }
     if (s.palvelu === 'pihatyot') {
       r.push(`Nurmikko: ${{ pieni: 'alle 500 m²', keski: '500-1 000 m²', iso: 'yli 1 000 m²' }[s.nurmi]}`);
-      r.push(s.sopimus ? 'Kesäsopimus' : 'Kertakäynti');
     }
     return r.join('\n');
   }
