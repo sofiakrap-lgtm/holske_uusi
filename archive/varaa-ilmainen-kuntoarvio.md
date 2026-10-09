@@ -1,12 +1,12 @@
 ---
-original_url: https://holske.fi/katon-maalaus-hintalaskuri/
+original_url: https://holske.fi/varaa-ilmainen-kuntoarvio/
 http_status: 200
-title: "katon maalaus, hintalaskuri - Kiinteistöhuoltoa ympäri Pääkaupunkiseutua"
+title: "Varaa ilmainen kuntoarvio - Kiinteistöhuoltoa ympäri Pääkaupunkiseutua"
 meta_description: ""
 og_image: 
 archived: 2026-10-09 (Apify web-fetch, raw HTML)
 ---
-## **Katon maalaustyön hinta-arviopyyntö**
+## Varaa ilmainen kuntoarvio
 
 > **Lomake** (WPForms, id 1647)
 >

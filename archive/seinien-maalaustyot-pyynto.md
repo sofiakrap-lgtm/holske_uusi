@@ -1,12 +1,12 @@
 ---
-original_url: https://holske.fi/katon-maalaus-hintalaskuri/
+original_url: https://holske.fi/seinien-maalaustyot-pyynto/
 http_status: 200
-title: "katon maalaus, hintalaskuri - Kiinteistöhuoltoa ympäri Pääkaupunkiseutua"
+title: "seinien maalaustyöt, pyyntö - Kiinteistöhuoltoa ympäri Pääkaupunkiseutua"
 meta_description: ""
 og_image: 
 archived: 2026-10-09 (Apify web-fetch, raw HTML)
 ---
-## **Katon maalaustyön hinta-arviopyyntö**
+## **Seinien maalaustyön hinta-arviopyyntö**
 
 > **Lomake** (WPForms, id 1647)
 >
