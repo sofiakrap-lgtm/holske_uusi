@@ -11,22 +11,22 @@
 /palvelut-2                     /palvelut/            301
 /tiimi/                         /palvelut/            301
 /tiimi                          /palvelut/            301
-/hinta-laskuri/                 /hintalaskuri/        301
-/hinta-laskuri                  /hintalaskuri/        301
-/katon-maalaus-hintalaskuri/    /hintalaskuri/        301
-/katon-maalaus-hintalaskuri     /hintalaskuri/        301
-/varaa-ilmainen-kuntoarvio/     /kuntoarvio/          301
-/varaa-ilmainen-kuntoarvio      /kuntoarvio/          301
-/yleispyynto/                   /kuntoarvio/          301
-/yleispyynto                    /kuntoarvio/          301
-/muut-pyynto/                   /kuntoarvio/?palvelu=muut-korjaukset        301
-/muut-pyynto                    /kuntoarvio/?palvelu=muut-korjaukset        301
-/lumityot-pyynto/               /kuntoarvio/?palvelu=lumityot   301
-/lumityot-pyynto                /kuntoarvio/?palvelu=lumityot   301
-/ruoronleikkuu-hintapyynto/     /kuntoarvio/?palvelu=pihatyot   301
-/ruoronleikkuu-hintapyynto      /kuntoarvio/?palvelu=pihatyot   301
-/seinien-maalaustyot-pyynto/    /kuntoarvio/?palvelu=maalaus    301
-/seinien-maalaustyot-pyynto     /kuntoarvio/?palvelu=maalaus    301
+/hinta-laskuri/                 /yhteystiedot/        301
+/hinta-laskuri                  /yhteystiedot/        301
+/katon-maalaus-hintalaskuri/    /yhteystiedot/        301
+/katon-maalaus-hintalaskuri     /yhteystiedot/        301
+/varaa-ilmainen-kuntoarvio/     /yhteystiedot/          301
+/varaa-ilmainen-kuntoarvio      /yhteystiedot/          301
+/yleispyynto/                   /yhteystiedot/          301
+/yleispyynto                    /yhteystiedot/          301
+/muut-pyynto/                   /palvelut/muut-korjaukset/        301
+/muut-pyynto                    /palvelut/muut-korjaukset/        301
+/lumityot-pyynto/               /palvelut/lumityot/   301
+/lumityot-pyynto                /palvelut/lumityot/   301
+/ruoronleikkuu-hintapyynto/     /palvelut/pihatyot/   301
+/ruoronleikkuu-hintapyynto      /palvelut/pihatyot/   301
+/seinien-maalaustyot-pyynto/    /palvelut/maalaus/    301
+/seinien-maalaustyot-pyynto     /palvelut/maalaus/    301
 /tietosuojaseloste-sivu/        /tietosuojaseloste/   301
 /tietosuojaseloste-sivu         /tietosuojaseloste/   301
 /painepesu-mob/                 /palvelut/painepesu/  301
@@ -47,6 +47,17 @@
 /pakettitarjoukset              /palvelut/            301
 /pakettitarjoukset-2/           /palvelut/            301
 /pakettitarjoukset-2            /palvelut/            301
+
+# Laajan version sivut, joita yksinkertaisessa ei ole
+/hintalaskuri/                  /yhteystiedot/        301
+/hintalaskuri                   /yhteystiedot/        301
+/kuntoarvio/kiitos/             /yhteystiedot/        301
+/kuntoarvio/*                   /yhteystiedot/        301
+/kuntoarvio                     /yhteystiedot/        301
+/kotitalousvahennys/            /                     301
+/kotitalousvahennys             /                     301
+/meista/                        /#meista              301
+/meista                         /#meista              301
 
 # WordPressin oletusosoitteet
 /sitemap_index.xml              /sitemap-index.xml    301

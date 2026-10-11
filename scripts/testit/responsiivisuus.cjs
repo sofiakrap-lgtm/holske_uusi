@@ -5,7 +5,7 @@ const { chromium } = require(process.env.PW);
 const fs = require('fs');
 const AXE = fs.readFileSync(process.env.AXE, 'utf8');
 const BASE = 'http://127.0.0.1:8787';
-const SIVUT = ['/', '/palvelut/', '/palvelut/katot/', '/palvelut/maalaus/', '/palvelut/painepesu/', '/palvelut/lumityot/', '/palvelut/pihatyot/', '/palvelut/muut-korjaukset/', '/hintalaskuri/', '/kuntoarvio/', '/kotitalousvahennys/', '/meista/', '/yhteystiedot/', '/tietosuojaseloste/', '/404.html'];
+const SIVUT = ['/', '/palvelut/', '/palvelut/katot/', '/palvelut/maalaus/', '/palvelut/painepesu/', '/palvelut/lumityot/', '/palvelut/pihatyot/', '/palvelut/muut-korjaukset/', '/yhteystiedot/', '/tietosuojaseloste/', '/404.html'];
 const LEV = [[360,780],[390,844],[430,932],[744,1133],[768,1024],[810,1080],[820,1180],[834,1194],[1024,1366],[1080,810],[1180,820],[1194,834],[1366,1024],[1440,900],[1920,1080]];
 (async () => {
   const b = await chromium.launch();
@@ -30,7 +30,7 @@ const LEV = [[360,780],[390,844],[430,932],[744,1133],[768,1024],[810,1080],[820
     }
     // etusivu: CTA näkyvissä ilman vieritystä
     await p.goto(BASE + '/', { waitUntil: 'networkidle' });
-    const cta = await p.evaluate(() => { const e = document.querySelector('.hero-text .btn'); const r = e.getBoundingClientRect(); return r.bottom <= window.innerHeight; });
+    const cta = await p.evaluate(() => { const e = document.querySelector('.hero-teksti .btn'); const r = e.getBoundingClientRect(); return r.bottom <= window.innerHeight; });
     if (!cta) virheet.push(`${w} /: hero-CTA ei näy ilman vieritystä`);
     // valikko kosketuksella
     const toggle = p.locator('[data-menu-toggle]');

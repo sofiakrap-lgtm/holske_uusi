@@ -2,7 +2,7 @@
   "_ohje": "Kampanjabanneri sivun yläreunassa. paalla: true näyttää bannerin. Banneri piiloutuu automaattisesti päättymispäivän jälkeen (muoto VVVV-KK-PP). Jätä linkki tyhjäksi, jos et halua nappia.",
   "paalla": false,
   "teksti": "Varaa ilmainen kuntoarvio ja suunnitellaan työ hyvissä ajoin.",
-  "linkkiTeksti": "Varaa kuntoarvio",
-  "linkki": "/kuntoarvio/",
+  "linkkiTeksti": "Yhteystiedot",
+  "linkki": "/yhteystiedot/",
   "paattyy": "2026-12-31"
 }

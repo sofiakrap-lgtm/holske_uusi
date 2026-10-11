@@ -14,7 +14,7 @@ const vuosi = new Date().getFullYear();
     <div class="col brand-col">
       <a href="/" class="brand" aria-label="Holske Oy, etusivu"><Logo variantti="vaalea" class="footer-logo" /></a>
       <p class="tagline">Kattoremontit, katon maalaus ja talon maalaus pääkaupunkiseudulla. Pieni perheyritys. {yritys.kokemusLause}</p>
-      <a href="/kuntoarvio/" class="btn">Varaa ilmainen kuntoarvio</a>
+      <a href={tel} class="btn">Soita {yritys.puhelinNaytto}</a>
     </div>
 
     <div class="col">
@@ -40,10 +40,7 @@ const vuosi = new Date().getFullYear();
     <nav class="col" aria-label="Sivusto">
       <h2 class="col-title">Holske</h2>
       <ul class="list plain">
-        <li><a href="/hintalaskuri/">Hintalaskuri</a></li>
-        <li><a href="/kotitalousvahennys/">Kotitalousvähennys</a></li>
-        <li><a href="/kuntoarvio/">Ilmainen kuntoarvio</a></li>
-        <li><a href="/meista/">Meistä</a></li>
+        <li><a href="/#meista">Meistä</a></li>
         <li><a href="/yhteystiedot/">Yhteystiedot</a></li>
         <li><a href="/tietosuojaseloste/">Tietosuojaseloste</a></li>
         <li><button type="button" class="linklike" data-evasteasetukset>Evästeasetukset</button></li>

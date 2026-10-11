@@ -2,7 +2,7 @@
 nimi: Pihatyöt
 otsikko: Piha- ja puutarhatyöt
 seoTitle: Pihatyöt ja ruohonleikkuu | Pääkaupunkiseutu | Holske
-kuvaus: Ruohonleikkuu, nurmikon hoito ja pihatyöt omakotitaloille Helsingissä, Espoossa ja Vantaalla. Ilmainen kuntoarvio ja kotitalousvähennys.
+kuvaus: Ruohonleikkuu, nurmikon hoito ja pihatyöt omakotitaloille Helsingissä, Espoossa ja Vantaalla. Kertakäynnit sovitusti, ilmainen kuntoarvio.
 ingressi: Pidämme pihasi vihreänä ja siistinä. Nurmikon leikkuu ja pihatyöt hoituvat sovitusti, kun tarvitset.
 kortti: Ruohonleikkuu ja pihan hoito tarpeesi mukaan.
 ikoni: piha
@@ -21,6 +21,3 @@ ukk: []
 
 Pidämme huolta pihasi vihreydestä ja siisteydestä. Tarjoamme nurmikon leikkuuta ja pihatöitä joustavasti asiakkaan tarpeiden mukaan.
 
-## Kotitalousvähennys pihatöistä
-
-Kotitalousvähennyksen voi saada kotitaloustöistä, kuten kiinteistön hoidosta. Vähennys lasketaan työn osuudesta.

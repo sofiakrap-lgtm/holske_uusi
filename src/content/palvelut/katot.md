@@ -44,7 +44,7 @@ Pinnoite palauttaa tiilikaton ulkonäön ja toimintakyvyn ja voi pidentää kato
 
 ## Mitä katon maalaus tai pinnoitus maksaa?
 
-Hinta riippuu katon koosta, materiaalista, kunnosta ja jyrkkyydestä. Suuntaa-antavan hinnan saat [hintalaskurista](/hintalaskuri/), ja tarkan, kiinteän hinnan ilmaisessa kuntoarviossa. Kotitalousvähennys pienentää työn osuuden hintaa.
+Hinta riippuu katon koosta, materiaalista, kunnosta ja jyrkkyydestä. Saat tarkan, kiinteän hinnan ilmaisen kuntoarvion jälkeen. Soita, niin sovitaan aika.
 
 ## Selkeä suunnitelma ja kiinteä hinta
 

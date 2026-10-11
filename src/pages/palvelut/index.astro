@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PalveluKortti from '../../components/PalveluKortti.astro';
 import Icon from '../../components/Icon.astro';
 import Kuva from '../../components/Kuva.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
@@ -16,50 +15,50 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
   title="Palvelut: kattoremontit ja maalaus | Holske"
   description="Holsken palvelut omakotitaloille: kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus. Lisäksi painepesu, lumityöt, pihatyöt ja ulkokorjaukset."
 >
-  <section class="section--tight sivun-alku">
+  <section class="section--tight alku">
     <div class="container">
       <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }]} />
-      <div class="section-head">
+      <div class="otsake">
         <h1>Palvelut</h1>
         <p class="lead">
-          Erikoisalaamme ovat kattoremontit, katon maalaus ja talon maalaus. Hoidamme samalla myös muut ulkotyöt, kuten
-          painepesun, lumityöt ja pihatyöt.
+          Erikoisalaamme ovat kattoremontit, katon maalaus ja talon maalaus. Hoidamme samalla myös muut omakotitalon
+          ulkotyöt.
         </p>
       </div>
+
       <ul class="ydin">
         {
           ydin.map((p) => (
             <li>
               <a href={`/palvelut/${p.id}/`} class="ydinkortti">
                 <Kuva nimi={p.data.kuva} alt={p.data.kuvaAlt} ikoni={p.data.ikoni} variantti="kortti" />
-                <div class="ydin-teksti">
-                  <span class="eyebrow">Pääpalvelu</span>
-                  <h2>{p.data.otsikko}</h2>
-                  <span class="ydin-kuvaus">{p.data.kortti}</span>
-                  <span class="link-arrow">Lue lisää <Icon name="nuoli" size={18} /></span>
-                </div>
+                <h2>{p.data.otsikko}</h2>
+                <p>{p.data.kortti}</p>
+                <span class="link-arrow">Lue lisää <Icon name="nuoli" size={18} /></span>
               </a>
             </li>
           ))
         }
       </ul>
 
-      <h2 class="lisat-otsikko">Muut palvelut</h2>
-      <ul class="kortit">
-        {
-          lisat.map((p) => (
-            <li>
-              <PalveluKortti
-                href={`/palvelut/${p.id}/`}
-                nimi={p.data.nimi}
-                teksti={p.data.kortti}
-                ikoni={p.data.ikoni}
-                headingLevel="h3"
-              />
-            </li>
-          ))
-        }
-      </ul>
+      <div class="kaksi">
+        <h2 class="pieni-otsikko">Muut palvelut</h2>
+        <ul class="linkkirivit">
+          {
+            lisat.map((p) => (
+              <li>
+                <a href={`/palvelut/${p.id}/`}>
+                  <span>
+                    <strong>{p.data.nimi}</strong>
+                    <span class="kuvaus">{p.data.kortti}</span>
+                  </span>
+                  <Icon name="nuoli" size={22} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -67,54 +66,44 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
 </BaseLayout>
 
 <style>
-  .sivun-alku { padding-top: clamp(1.5rem, 4vw, 3rem); }
-  .kortit {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 1.25rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
-  }
+  .alku { padding-top: clamp(1.5rem, 4vw, 3rem); padding-bottom: var(--section); }
+  .otsake { display: grid; gap: 1rem; max-width: 46rem; margin-bottom: clamp(2.5rem, 6vw, 4rem); }
   .ydin {
     list-style: none;
-    margin: 0 0 4rem;
+    margin: 0 0 var(--section);
     padding: 0;
     display: grid;
-    gap: 1.5rem;
+    gap: clamp(2.5rem, 5vw, 3rem);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
   }
-  .ydinkortti {
-    display: grid;
-    height: 100%;
-    border-radius: var(--r-lg);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    overflow: hidden;
+  .ydinkortti { display: grid; gap: 1rem; color: var(--ink); text-decoration: none; }
+  .ydinkortti h2 { font-size: clamp(1.7rem, 1.3rem + 1.4vw, 2.3rem); margin-top: 0.5rem; }
+  .ydinkortti p { color: var(--muted); }
+  .ydinkortti :global(.kuvapaikka) { transition: transform 500ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .ydinkortti:hover :global(.kuvapaikka) { transform: scale(1.012); }
+  }
+  .kaksi { display: grid; gap: 2rem; align-items: start; }
+  @media (min-width: 60rem) {
+    .kaksi { grid-template-columns: 0.85fr 1.15fr; gap: 5rem; }
+  }
+  .pieni-otsikko { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); }
+  .linkkirivit { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .linkkirivit a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
     color: var(--ink);
     text-decoration: none;
-    transition: transform 260ms var(--ease-out), box-shadow 260ms var(--ease-out);
   }
-  .ydinkortti:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-  .ydinkortti:active { transform: scale(0.99); }
-  .ydinkortti :global(.kuvapaikka) { border-radius: 0; }
-  .ydin-teksti { display: grid; gap: 0.75rem; padding: clamp(1.5rem, 3vw, 2.25rem); }
-  .ydin-teksti h2 { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); }
-  .ydin-kuvaus { color: var(--muted); }
-  .lisat-otsikko { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); margin-bottom: 1.5rem; }
-  .kortit :global(h3) {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 1.375rem;
-    letter-spacing: 0;
+  .linkkirivit a > span { display: grid; gap: 0.25rem; min-width: 0; }
+  .linkkirivit strong { font-size: 1.25rem; font-weight: 600; color: var(--green); }
+  .kuvaus { color: var(--muted); }
+  .linkkirivit :global(.icon) { flex: none; color: var(--green); transition: transform 300ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .linkkirivit a:hover :global(.icon) { transform: translateX(6px); }
   }
-  .split {
-    display: grid;
-    gap: clamp(2rem, 5vw, 5rem);
-    align-items: center;
-  }
-  @media (min-width: 60rem) {
-    .split { grid-template-columns: 1fr 1fr; }
-  }
-  .prose { min-width: 0; }
 </style>

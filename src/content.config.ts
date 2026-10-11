@@ -15,7 +15,6 @@ const palvelut = defineCollection({
     ydin: z.boolean().default(false),
     kuva: z.string(),
     kuvaAlt: z.string(),
-    kotitalousvahennys: z.boolean().default(true),
     alapalvelut: z
       .array(z.object({ nimi: z.string(), teksti: z.string(), ikoni: z.string().optional() }))
       .default([]),

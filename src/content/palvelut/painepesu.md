@@ -2,7 +2,7 @@
 nimi: Painepesu
 otsikko: Painepesu katoille, kiveyksille ja julkisivuille
 seoTitle: Painepesu ja katon pesu | Helsinki, Espoo, Vantaa | Holske
-kuvaus: Katon pesu sekä kiveysten, terassien ja julkisivujen painepesu pääkaupunkiseudulla. Suojakäsittely tarvittaessa. Kotitalousvähennys työn osuudesta.
+kuvaus: Katon pesu sekä kiveysten, terassien ja julkisivujen painepesu pääkaupunkiseudulla. Suojakäsittely tarvittaessa, ilmainen kuntoarvio.
 ingressi: Tehokas ja ympäristöystävällinen painepesu palauttaa pintojen alkuperäisen ilmeen ja pidentää niiden käyttöikää.
 kortti: Katot, laatoitukset, kivetykset ja julkisivut puhtaiksi. Suojakäsittely tarvittaessa.
 ikoni: painepesu
@@ -17,8 +17,6 @@ alapalvelut:
   - nimi: Laatoitukset ja kivetykset
     teksti: Pesemme pihan laatoitukset ja kivetykset, jotta ne pysyvät siisteinä ja kestävinä.
 ukk:
-  - k: Saako katon pesusta kotitalousvähennyksen?
-    v: Kyllä, katonpesutyöstä voi saada kotitalousvähennyksen.
   - k: Mitä suoja-aine tekee?
     v: Suoja-aine estää happamoitumista ja kasvuston leviämistä. Se suojaa myös kosteudelta ja saasteilta ja ehkäisee homevaurioita.
 ---

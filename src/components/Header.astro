@@ -7,8 +7,6 @@ const nav = [
   { href: '/palvelut/katot/', label: 'Kattoremontit' },
   { href: '/palvelut/maalaus/', label: 'Maalaus' },
   { href: '/palvelut/', label: 'Muut palvelut' },
-  { href: '/hintalaskuri/', label: 'Hintalaskuri' },
-  { href: '/meista/', label: 'Meistä' },
   { href: '/yhteystiedot/', label: 'Yhteystiedot' },
 ];
 const path = Astro.url.pathname;
@@ -48,7 +46,7 @@ const tel = `tel:${yritys.puhelinE164}`;
           </a>
         </li>
         <li class="nav-mobile-only">
-          <a href="/kuntoarvio/" class="btn btn--block">Varaa ilmainen kuntoarvio</a>
+          <a href={tel} class="btn btn--block">Soita {yritys.puhelinNaytto}</a>
         </li>
       </ul>
     </nav>
@@ -56,9 +54,8 @@ const tel = `tel:${yritys.puhelinE164}`;
     <div class="actions">
       <a href={tel} class="phone" aria-label={`Soita ${yritys.puhelinNaytto}`}>
         <Icon name="puhelin" size={20} />
-        <span class="phone-text">{yritys.puhelinNaytto}</span>
       </a>
-      <a href="/kuntoarvio/" class="btn cta">Ilmainen kuntoarvio</a>
+      <a href={tel} class="btn cta">Soita {yritys.puhelinNaytto}</a>
       <button
         type="button"
         class="menu-toggle"
@@ -93,7 +90,7 @@ const tel = `tel:${yritys.puhelinE164}`;
       toggle?.focus();
     }
   });
-  window.matchMedia('(min-width: 80rem)').addEventListener('change', (e) => e.matches && setOpen(false));
+  window.matchMedia('(min-width: 64rem)').addEventListener('change', (e) => e.matches && setOpen(false));
 
   // Ohut varjo vasta kun sivua on vieritetty
   const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
@@ -216,11 +213,11 @@ const tel = `tel:${yritys.puhelinE164}`;
   .is-open .menu-icon span:first-child { top: 5px; transform: rotate(45deg); }
   .is-open .menu-icon span:last-child { top: 5px; transform: rotate(-45deg); }
 
-  @media (max-width: 84rem) {
-    .phone-text { display: none; }
+  @media (min-width: 64rem) {
+    .phone { display: none; }
   }
 
-  @media (max-width: 79.99rem) {
+  @media (max-width: 63.99rem) {
     .bar { gap: 0.5rem; }
     .menu-toggle { display: grid; }
     .cta { display: none; }

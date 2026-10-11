@@ -1,7 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import yritys from '../data/yritys.json';
-import { kvTila, kvLuvut } from '../lib/kv-teksti';
 
 // Tiivis kuvaus sivustosta tekoälyhakuja varten (llms.txt). Generoidaan yritys.json:sta.
 export const GET: APIRoute = async ({ site }) => {
@@ -16,9 +15,8 @@ export const GET: APIRoute = async ({ site }) => {
     ...palvelut.map((p) => `- [${p.data.otsikko}](${base}/palvelut/${p.id}/): ${p.data.kortti}`),
     '',
     '## Tilaaminen',
-    `- [Ilmainen kuntoarvio](${base}/kuntoarvio/): lomake, ${yritys.vastausaika.toLowerCase()}.`,
-    `- [Hintalaskuri](${base}/hintalaskuri/): suuntaa-antava hinta.`,
-    `- [Kotitalousvähennys](${base}/kotitalousvahennys/): ${kvTila} ${kvLuvut}`,
+    `- Ilmainen kuntoarvio: soita ${yritys.puhelinNaytto} tai lähetä sähköpostia ${yritys.sahkoposti}.`,
+    `- [Yhteystiedot](${base}/yhteystiedot/)`,
     '',
     '## Yhteystiedot',
     `- Puhelin: ${yritys.puhelinNaytto} (${yritys.puhelinE164})`,

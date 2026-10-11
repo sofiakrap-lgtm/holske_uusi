@@ -5,10 +5,8 @@ import Murupolku from '../../components/Murupolku.astro';
 import Kuva from '../../components/Kuva.astro';
 import Icon from '../../components/Icon.astro';
 import Ukk from '../../components/Ukk.astro';
-import PalveluKortti from '../../components/PalveluKortti.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
 import yritys from '../../data/yritys.json';
-import KotitalousvahennysLaatikko from '../../components/KotitalousvahennysLaatikko.astro';
 
 export async function getStaticPaths() {
   const palvelut = await getCollection('palvelut');
@@ -21,7 +19,7 @@ const d = palvelu.data;
 const muut = (await getCollection('palvelut'))
   .filter((p) => p.id !== palvelu.id)
   .sort((a, b) => a.data.jarjestys - b.data.jarjestys)
-  .slice(0, 3);
+  .slice(0, 4);
 const site = Astro.site ?? new URL('https://holske.fi');
 const tel = `tel:${yritys.puhelinE164}`;
 
@@ -66,23 +64,37 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
   <section class="hero">
     <div class="container">
       <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }, { nimi: d.nimi, href: `/palvelut/${palvelu.id}/` }]} />
-      <div class="hero-text">
-        <span class="ikoni"><Icon name={d.ikoni} size={34} /></span>
+      <div class="hero-teksti">
         <h1>{d.otsikko}</h1>
         <p class="lead">{d.ingressi}</p>
-        <div class="btn-row">
-          <a href={`/kuntoarvio/?palvelu=${palvelu.id}`} class="btn">Varaa ilmainen kuntoarvio <Icon name="nuoli" size={20} /></a>
-          <a href={tel} class="btn btn--secondary"><Icon name="puhelin" size={20} /> {yritys.puhelinNaytto}</a>
+        <div class="toiminnot">
+          <a href={tel} class="btn"><Icon name="puhelin" size={20} /> Soita {yritys.puhelinNaytto}</a>
+          <a href={`mailto:${yritys.sahkoposti}`} class="sposti-linkki">{yritys.sahkoposti}</a>
         </div>
-        <p class="palvelualue">
-          <Icon name="sijainti" size={18} /> {yritys.palvelualue.join(', ')}
-        </p>
       </div>
     </div>
-    <div class="hero-kuva">
+    <div class="taysi">
       <Kuva nimi={d.kuva} alt={d.kuvaAlt} ikoni={d.ikoni} variantti="hero" eager />
     </div>
   </section>
+
+  {
+    alapalvelut.length > 0 && (
+      <section class="section" aria-labelledby="sisaltaa-otsikko">
+        <div class="container kaksi">
+          <h2 id="sisaltaa-otsikko">Mitä teemme</h2>
+          <dl class="rivit">
+            {alapalvelut.map((a) => (
+              <div>
+                <dt>{a.nimi}</dt>
+                <dd>{a.teksti}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+    )
+  }
 
   {
     lisakuvat.length > 0 && (
@@ -94,71 +106,39 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
     )
   }
 
-  {
-    alapalvelut.length > 0 && (
-      <section class="section section--sand" aria-labelledby="sisaltaa-otsikko">
-        <div class="container">
-          <div class="section-head">
-            <h2 id="sisaltaa-otsikko">Mitä teemme</h2>
-          </div>
-          <ul class="alapalvelut">
-            {alapalvelut.map((a) => (
-              <li>
-                <Icon name="check" size={22} />
-                <div>
-                  <h3>{a.nimi}</h3>
-                  <p>{a.teksti}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    )
-  }
-
-  <section class="section">
-    <div class="container sisalto">
+  <section class="section section--sand">
+    <div class="container kaksi">
+      <div></div>
       <div class="prose">
         <Content />
       </div>
-      <aside class="sivupalkki" aria-label="Yhteenveto">
-        <div class="laatikko">
-          <h2>Ilmainen kuntoarvio</h2>
-          <p>Tulemme katsomaan kohteen. Saat selkeän suunnitelman ja hinnan ilman sitoutumista.</p>
-          <a href={`/kuntoarvio/?palvelu=${palvelu.id}`} class="btn btn--block">Varaa kuntoarvio</a>
-          <a href="/hintalaskuri/" class="link-arrow">Laske hinta-arvio <Icon name="nuoli" size={18} /></a>
-        </div>
-        {d.kotitalousvahennys && <KotitalousvahennysLaatikko palvelu={palvelu.id} />}
-      </aside>
     </div>
   </section>
 
   {
     d.ukk.length > 0 && (
-      <section class="section section--tight" aria-labelledby="ukk-otsikko">
-        <div class="container">
-          <div class="section-head">
-            <h2 id="ukk-otsikko">Usein kysyttyä</h2>
-          </div>
+      <section class="section" aria-labelledby="ukk-otsikko">
+        <div class="container kaksi">
+          <h2 id="ukk-otsikko">Usein kysyttyä</h2>
           <Ukk kysymykset={d.ukk} />
         </div>
       </section>
     )
   }
 
-  <CtaOsio palvelu={palvelu.id} />
+  <CtaOsio />
 
-  <section class="section--tight muut" aria-labelledby="muut-otsikko">
-    <div class="container">
-      <div class="section-head">
-        <h2 id="muut-otsikko">Muut palvelut</h2>
-      </div>
-      <ul class="kortit">
+  <section class="section--tight" aria-labelledby="muut-otsikko">
+    <div class="container kaksi">
+      <h2 id="muut-otsikko" class="pieni-otsikko">Muut palvelut</h2>
+      <ul class="linkkirivit">
         {
           muut.map((p) => (
             <li>
-              <PalveluKortti href={`/palvelut/${p.id}/`} nimi={p.data.nimi} teksti={p.data.kortti} ikoni={p.data.ikoni} />
+              <a href={`/palvelut/${p.id}/`}>
+                <strong>{p.data.nimi}</strong>
+                <Icon name="nuoli" size={22} />
+              </a>
             </li>
           ))
         }
@@ -168,101 +148,56 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
 </BaseLayout>
 
 <style>
-  .hero { padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 7vw, 5.5rem); }
-  .hero-text {
+  .hero { padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 7vw, 5rem); }
+  .hero-teksti {
     display: grid;
-    gap: 1.25rem;
+    gap: 1.4rem;
     justify-items: center;
     text-align: center;
     max-width: 52rem;
-    margin: 0 auto clamp(2.5rem, 6vw, 4rem);
+    margin: clamp(1rem, 3vw, 2rem) auto clamp(3rem, 6vw, 4.5rem);
   }
-  .hero-text .lead { margin-inline: auto; }
-  .hero-text .btn-row { justify-content: center; }
-  .hero-kuva { padding-inline: var(--gutter); }
-  @media (min-width: 1180px) {
-    .hero-kuva { padding-inline: 0; }
-  }
-  .lisakuvat {
-    display: grid;
-    gap: 1.25rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-  }
-  .ikoni {
-    display: grid;
-    place-items: center;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 18px;
-    background: var(--moss-soft);
-    color: var(--green);
-  }
-  .palvelualue {
-    display: inline-flex;
+  .hero-teksti .lead { margin-inline: auto; }
+  .toiminnot {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.45rem;
-    font-size: var(--fs-sm);
-    color: var(--muted);
+    justify-content: center;
+    gap: 0.75rem 1.75rem;
   }
-  .palvelualue :global(.icon) { color: var(--orange); flex: none; }
-
-  .alapalvelut {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 1.25rem 2.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  .sposti-linkki { display: inline-flex; align-items: center; min-height: 48px; font-weight: 600; font-size: var(--fs-lg); }
+  .taysi { padding-inline: var(--gutter); }
+  @media (min-width: 1180px) {
+    .taysi { padding-inline: 0; }
   }
-  .alapalvelut li {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.9rem;
-    padding: 1.5rem;
-    border-radius: var(--r-md);
-    background: var(--surface);
+  .kaksi { display: grid; gap: 2rem; align-items: start; }
+  @media (min-width: 60rem) {
+    .kaksi { grid-template-columns: 0.85fr 1.15fr; gap: 5rem; }
   }
-  .alapalvelut :global(.icon) { color: var(--ok); margin-top: 0.15rem; }
-  .alapalvelut div { display: grid; gap: 0.35rem; min-width: 0; align-content: start; }
-  .alapalvelut h3 { font-size: 1.1875rem; }
-  .alapalvelut p { color: var(--muted); font-size: 1.0625rem; }
-
-  .sisalto {
-    display: grid;
-    gap: 3rem;
+  .prose { min-width: 0; }
+  .rivit { margin: 0; border-top: 1px solid var(--line); }
+  .rivit div { display: grid; gap: 0.35rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+  @media (min-width: 44rem) {
+    .rivit div { grid-template-columns: 13rem 1fr; gap: 2rem; }
   }
-  @media (min-width: 64rem) {
-    .sisalto { grid-template-columns: minmax(0, 1fr) 21rem; gap: 5rem; align-items: start; }
-    .sivupalkki { position: sticky; top: calc(var(--header-h) + 1.5rem); }
+  .rivit dt { font-weight: 600; color: var(--green); font-size: 1.125rem; }
+  .rivit dd { margin: 0; color: var(--muted); }
+  .lisakuvat { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+  .pieni-otsikko { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); }
+  .linkkirivit { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .linkkirivit a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
   }
-  .sivupalkki { display: grid; gap: 1rem; }
-  .laatikko {
-    display: grid;
-    gap: 0.9rem;
-    padding: 1.75rem;
-    border-radius: var(--r-lg);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow);
-  }
-  .laatikko h2 {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 1.25rem;
-    letter-spacing: 0;
-  }
-  .laatikko p { color: var(--muted); font-size: 1rem; }
-  .laatikko--vaalea { background: var(--moss-soft); border-color: transparent; box-shadow: none; }
-  .laatikko--vaalea :global(.icon) { color: var(--green); }
-  .laatikko .pieni { font-size: 0.875rem; }
-
-  .muut { padding-bottom: var(--section); }
-  .kortit {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 1.25rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  .linkkirivit strong { font-size: 1.1875rem; font-weight: 600; color: var(--green); }
+  .linkkirivit :global(.icon) { flex: none; color: var(--green); transition: transform 300ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .linkkirivit a:hover :global(.icon) { transform: translateX(6px); }
   }
 </style>

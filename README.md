@@ -1,5 +1,7 @@
 # holske.fi
 
+> **Haarat:** `yksinkertainen` on julkaistava esittelysivu (ei lomaketta, ei laskureita). `laaja-versio` sisältää hintalaskurin, kuntoarviolomakkeen ja kotitalousvähennyssivun myöhempää käyttöä varten.
+
 Holske Oy:n verkkosivut. Staattinen [Astro](https://astro.build)-sivusto, joka julkaistaan ilmaiseksi Cloudflare Pagesissa. Sivusto ei tarvitse omaa palvelinta eikä tietokantaa.
 
 ## 1. Sivun ajaminen omalla koneella
@@ -22,12 +24,9 @@ Kaikki muokattava sisältö on omissa tiedostoissaan. Koodiin ei tarvitse koskea
 | Puhelin, sähköposti, osoite, Y-tunnus, palvelualue | `src/data/yritys.json` |
 | Palvelut (tekstit, otsikot, usein kysytyt, SEO-tekstit) | `src/content/palvelut/*.md`, yksi tiedosto per palvelu |
 | Kampanjabanneri (päälle/pois, teksti, päättymispäivä) | `src/data/kampanja.json` |
-| Hintalaskurin hinnat | `src/data/hinnasto.json` |
 | Etusivun sesonkimerkintä ja sen päivät | `src/data/etusivu.json` |
-| Kotitalousvähennyksen luvut ja tila | `src/data/kotitalousvahennys.json` |
 | Kuvien alt-tekstit ja rajaus | `src/data/kuvat.json` |
 | Google Analytics- ja Facebook-pikselin tunnukset | `src/data/seuranta.json` |
-| Lomakkeen asetukset | `src/data/lomake.json` |
 
 ### Kampanjabanneri
 
@@ -42,12 +41,6 @@ Kaikki muokattava sisältö on omissa tiedostoissaan. Koodiin ei tarvitse koskea
 ```
 
 Banneri näkyy kaikkien sivujen yläreunassa, kun `paalla` on `true`. Se piiloutuu itsestään päättymispäivän jälkeen.
-
-### Hintalaskuri
-
-Hinnat täytetään tiedostoon `src/data/hinnasto.json`. Arvo `null` tarkoittaa, että hintaa ei ole. Silloin laskuri ei näytä hintaa, vaan ohjaa asiakkaan kuntoarvioon ja vie hänen vastauksensa valmiiksi lomakkeelle. Hinnat ovat euroja ja sisältävät ALV:n.
-
-Hinnastokysely, jonka vastauksista hinnat täytetään: https://claude.ai/artifact/XrQRG5UxsHqbSjNit7ykYM
 
 ### Kuvat ja logo
 
@@ -88,6 +81,7 @@ Jos projekti pitää joskus luoda uudelleen:
    - **Build command:** `npm run build`
    - **Deploy command:** `npx wrangler deploy`
    - **Build variables:** `NODE_VERSION` = `22`
+   - **Production branch** (Settings → Build → Branch control): `yksinkertainen`
 3. **Deployments → Retry build**, jos ensimmäinen build epäonnistui ennen asetuksia.
 
 Jokainen GitHubiin pushattu muutos julkaistaan automaattisesti. Tiedostot `public/_redirects` (301-ohjaukset) ja `public/_headers` (tietoturva, välimuisti, testiosoitteen piilotus Googlelta) toimivat automaattisesti.
@@ -112,18 +106,6 @@ Sähköposti info@holske.fi jää nykyiselle palveluntarjoajalle. **Sähköposti
 
 Vinkki: ennen vaihtoa voi tarkistaa nykyiset tietueet esim. palvelulla https://mxtoolbox.com (haku `holske.fi`).
 
-## 5. Lomakkeen avain (Web3Forms)
-
-Kuntoarviolomake lähettää viestit osoitteeseen info@holske.fi Web3Forms-palvelun kautta ilman omaa palvelinta.
-
-1. Mene osoitteeseen https://web3forms.com, syötä `info@holske.fi` ja paina **Create Access Key**. Avain tulee sähköpostiin.
-2. Lisää avain Cloudflare Pagesissa: projekti → **Settings → Variables and Secrets** → nimi `PUBLIC_WEB3FORMS_KEY`, arvo avaimesi. Tee sama sekä Production- että Preview-ympäristöön.
-3. Julkaise sivu uudelleen (**Deployments → Retry deployment**).
-
-Paikallisesti: kopioi `.env.example` nimelle `.env` ja lisää avain sinne. Vaihtoehtoisesti avaimen voi kirjoittaa tiedostoon `src/data/lomake.json` kenttään `web3formsAvain`. Avain ei ole salainen, sillä se näkyy joka tapauksessa sivun koodissa.
-
-Ilmaisversio ei tue liitetiedostoja, joten lomake ohjaa lähettämään kuvat sähköpostilla. Roskapostisuojana on piilotettu kenttä (honeypot).
-
 ## Rakenne
 
 ```
@@ -134,5 +116,5 @@ public/                       _redirects, _headers, robots.txt, favicon
 src/content/palvelut/         palvelusivujen sisältö
 src/data/                     yhteystiedot, hinnat, kampanja, seuranta
 src/pages/                    sivut
-src/components/               sivujen osat (header, footer, lomake, ikonit)
+src/components/               sivujen osat (header, footer, ikonit, kuvat)
 ```
