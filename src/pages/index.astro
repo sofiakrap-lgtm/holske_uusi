@@ -146,7 +146,13 @@ const merkit = [
           muut.map((p) => (
             <li>
               <a href={`/palvelut/${p.id}/`} class="muu">
-                {getKuva(p.data.kuva) && <Kuva nimi={p.data.kuva} variantti="kortti" />}
+                {getKuva(p.data.kuva) ? (
+                  <Kuva nimi={p.data.kuva} variantti="kortti" />
+                ) : (
+                  <span class="kuvaton" aria-hidden="true">
+                    <Icon name={p.data.ikoni} size={48} />
+                  </span>
+                )}
                 <span class="muu-teksti">
                   <strong>
                     {p.data.nimi} <Icon name="nuoli" size={20} />
@@ -198,12 +204,12 @@ const merkit = [
     inset: 0;
     z-index: -1;
     background:
-      linear-gradient(to top, rgb(10 20 14 / 0.82) 0%, rgb(10 20 14 / 0.45) 45%, rgb(10 20 14 / 0) 75%),
-      linear-gradient(to right, rgb(10 20 14 / 0.45), rgb(10 20 14 / 0) 60%);
+      linear-gradient(to top, rgb(24 23 20 / 0.88) 0%, rgb(24 23 20 / 0.6) 40%, rgb(24 23 20 / 0) 78%),
+      linear-gradient(to right, rgb(24 23 20 / 0.55), rgb(24 23 20 / 0) 62%);
   }
   @media (max-width: 48rem) {
     .hero--kuva::before {
-      background: linear-gradient(to top, rgb(10 20 14 / 0.9) 0%, rgb(10 20 14 / 0.7) 55%, rgb(10 20 14 / 0.25) 100%);
+      background: linear-gradient(to top, rgb(24 23 20 / 0.9) 0%, rgb(24 23 20 / 0.7) 55%, rgb(24 23 20 / 0.25) 100%);
     }
   }
   .hero-sisus { display: grid; gap: 1.25rem; justify-items: start; }
@@ -218,7 +224,7 @@ const merkit = [
     font-size: var(--fs-lg);
     color: #fff;
   }
-  .hero :focus-visible { outline-color: var(--orange); }
+  .hero :focus-visible { outline-color: var(--green-text-on); }
 
   /* 2. Bento */
   .bento { display: grid; gap: 1rem; grid-template-columns: 1fr; }
@@ -236,7 +242,7 @@ const merkit = [
   .solu--esittely h2 { color: #fff; font-size: clamp(1.85rem, 1.4rem + 1.4vw, 2.5rem); }
   .solu--esittely p { color: var(--green-text-on); }
   .solu--esittely .link-arrow { color: #fff; margin-top: 0.5rem; }
-  .solu--esittely :focus-visible { outline-color: var(--orange); }
+  .solu--esittely :focus-visible { outline-color: var(--green-text-on); }
   .solu--kuva { padding: 0; overflow: hidden; box-shadow: none; }
   .solu--p2, .solu--p4 { background: var(--sand); box-shadow: none; }
   @media (min-width: 48rem) {
@@ -325,6 +331,13 @@ const merkit = [
     transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
   }
   .muu :global(.kuvapaikka) { border-radius: 0; }
+  .kuvaton {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    background: var(--green-fill);
+    color: var(--green-text-on);
+  }
   .muu :global(img) { transition: transform 600ms var(--ease-out); }
   .muu-teksti { display: grid; gap: 0.4rem; align-content: start; padding: 1.4rem 1.5rem 1.6rem; }
   .muu strong {

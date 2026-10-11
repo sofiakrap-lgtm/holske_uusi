@@ -61,7 +61,7 @@ Mihin tahansa kuvaan voi lisätä erillisen mobiiliversion `<nimi>-mobiili.jpg` 
 
 Alt-tekstit ja rajauksen kohta: `src/data/kuvat.json`. Jos kuvaa ei ole, sen paikka jätetään pois ja sivu toimii ilman sitä.
 
-**Väliaikaiset tekoälykuvat (Canva, 10/2026):** etusivu, katot, katto-huolto ja maalaus on tehty Canvalla. Ne eivät ole Holsken omia töitä, joten vaihda ne omiin kuviin, kun niitä on. Lataa ne Canvasta täysikokoisina ja tallenna yllä olevilla nimillä.
+**Tekoälykuvat (10/2026):** nykyiset kuvat on generoitu, eivätkä ne ole Holsken omia töitä. Vaihda ne omiin kuviin samoilla nimillä, kun niitä on. `muut-korjaukset.jpg` puuttuu vielä, joten sen kortissa näkyy ikoni. Tallenna tiedostot nimellä `nimi.jpg`, ei `nimi.jpg.jpg`.
 
 **Logo** on kansiossa `assets/logot-ja-grafiikat/`:
 - `logo.svg`: päälogo (Holske™), käytössä headerissa ja footerissa

@@ -3,9 +3,9 @@
 import sharp from 'sharp';
 import { readFile, writeFile } from 'node:fs/promises';
 
-const VIHREA = '#37432d';
-const ORANSSI = '#ed9121';
-const VAALEA = '#f7f4ee';
+const VIHREA = '#555936';
+const ORANSSI = '#c06a33';
+const VAALEA = '#efebe3';
 
 /** Poistaa svg-juuren ja palauttaa sisällön + viewBoxin, jotta logon voi upottaa toiseen SVG:hen */
 function sisalto(svg) {

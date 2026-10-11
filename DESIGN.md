@@ -3,21 +3,24 @@
 Holsken visuaalinen järjestelmä, yksinkertainen versio. Suunta: alan standardi huippulaatuisena, valokuvavetoinen. Lähteet: `src/styles/global.css`, komponentit `src/components/`.
 
 ## Tunnelma
-Selkeä ja luotettava. Iso valokuva, lyhyt lupaus, puhelinnumero. Kuusenvihreä pääväri, oranssi vain soittamiseen. Ei eyebrow-otsakkeita, ei piirrettyjä kuvituksia, ei ajatusviivoja.
+Selkeä ja luotettava. Iso valokuva, lyhyt lupaus, puhelinnumero. Oliivi pääväri, ruoste vain soittamiseen, luunvaalea pohja. Ei eyebrow-otsakkeita, ei piirrettyjä kuvituksia, ei ajatusviivoja.
 
 ## Värit (vaalea / tumma tila)
+Omistajan paletti: oliivi #555936, ruoste #8C451C, luu #D9D2C5, hiili #262626.
+
 | Token | Vaalea | Tumma | Käyttö |
 |---|---|---|---|
-| `--bg` | #f1f2ed | #101814 | sivun pohja |
-| `--surface` | #fafaf7 | #16201b | kortit |
-| `--sand` | #e4e7de | #1a2620 | vaihtuvat osiot ja kortit |
-| `--ink` | #141a15 | #e6ece7 | teksti |
-| `--muted` | #4a554b | #a9b6ad | toissijainen teksti |
-| `--green` | #1f3a2c | #a9d0b6 | otsikot ja linkit (tekstiväri) |
-| `--green-fill` | #1f3a2c | #1f3a2c | vihreät pinnat (hero ilman kuvaa, esittelysolu, yhteyspaneeli) |
-| `--orange` | #ed9121 | #ed9121 | vain soittonapit. Teksti päällä #141a15. |
+| `--bg` | #efebe3 | #1d1c1a | sivun pohja |
+| `--surface` | #f7f4ee | #262626 | kortit |
+| `--sand` | #d9d2c5 | #2c2b28 | vaihtuvat osiot ja kortit |
+| `--ink` | #262626 | #efebe3 | teksti |
+| `--muted` | #5d5a52 | #b9b2a5 | toissijainen teksti |
+| `--green` | #555936 | #c9cc9f | otsikot ja linkit (oliivi tekstinä) |
+| `--green-fill` | #555936 | #555936 | oliivipinnat (esittelysolu, yhteyspaneeli) |
+| `--green-deep` | #262626 | #141413 | footer |
+| `--orange` | #8c451c | #b65e2c | vain soittonapit, teksti valkoinen |
 
-Tumma tila seuraa käyttöjärjestelmän asetusta (`prefers-color-scheme`).
+Kontrastit tarkistettu (WCAG AA): oliivi pohjalla 6.2:1, ruostenappi 7.0:1, hiili pohjalla 12.7:1.
 
 ## Typografia
 - Archivo Variable. H1 720 / stretch 112 %, enintään 5rem. H2 680 / 108 %. H3 640.

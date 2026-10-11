@@ -1,25 +1,25 @@
-/* Holske: valokuvavetoinen, vaalea pohja, kuusenvihreä pääväri ja oranssi vain soittamiseen.
+/* Holske: valokuvavetoinen, luunvaalea pohja, oliivi pääväri ja ruoste vain soittamiseen.
    Kulmat: pinnat ja kuvat 16px, napit ja pienet ohjaimet 10px. */
 @import '@fontsource-variable/archivo/wdth.css';
 
 :root {
-  /* Värit */
-  --bg: #f1f2ed;
-  --surface: #fafaf7;
-  --sand: #e4e7de;
-  --moss-soft: #dce3d6;
-  --line: #cfd4c8;
-  --ink: #141a15;
-  --muted: #4a554b;
-  --green: #1f3a2c;
-  --green-fill: #1f3a2c;
-  --green-deep: #13241a;
-  --green-text-on: #e8efe6;
-  --orange: #ed9121;
-  --orange-hover: #f5a445;
-  --orange-ink: #141a15;
+  /* Värit: oliivi, ruoste, luu ja hiili */
+  --bg: #efebe3;
+  --surface: #f7f4ee;
+  --sand: #d9d2c5;
+  --moss-soft: #e3ddd1;
+  --line: #cfc7b8;
+  --ink: #262626;
+  --muted: #5d5a52;
+  --green: #555936;
+  --green-fill: #555936;
+  --green-deep: #262626;
+  --green-text-on: #f3efe7;
+  --orange: #8c451c;
+  --orange-hover: #a1531f;
+  --orange-ink: #ffffff;
   --danger: #a3361a;
-  --ok: #2c6a3f;
+  --ok: #555936;
 
   /* Typografia */
   --font-display: 'Archivo Variable', 'Archivo', 'Helvetica Neue', Arial, sans-serif;
@@ -39,7 +39,7 @@
   --r-sm: 10px;
   --r-md: 16px;
   --r-lg: 16px;
-  --shadow: 0 1px 2px rgb(31 58 44 / 0.05), 0 12px 32px -16px rgb(31 58 44 / 0.22);
+  --shadow: 0 1px 2px rgb(38 38 38 / 0.05), 0 12px 32px -16px rgb(38 38 38 / 0.22);
   --header-h: 4.5rem;
 
   /* Liike */
@@ -51,17 +51,18 @@
 /* Tumma tila: sama paletti, kuusenvihreän sävyinen yöpohja */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #101814;
-    --surface: #16201b;
-    --sand: #1a2620;
-    --moss-soft: #22302a;
-    --line: #2c3a33;
-    --ink: #e6ece7;
-    --muted: #a9b6ad;
-    --green: #a9d0b6;
-    --green-fill: #1f3a2c;
-    --green-deep: #0b120e;
-    --orange-hover: #f7ad55;
+    --bg: #1d1c1a;
+    --surface: #262626;
+    --sand: #2c2b28;
+    --moss-soft: #33312d;
+    --line: #3a3833;
+    --ink: #efebe3;
+    --muted: #b9b2a5;
+    --green: #c9cc9f;
+    --green-fill: #555936;
+    --green-deep: #141413;
+    --orange: #b65e2c;
+    --orange-hover: #a85626;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -16px rgb(0 0 0 / 0.6);
   }
 }
@@ -159,7 +160,7 @@ a:hover { text-decoration-thickness: 2px; }
 .section--green :focus-visible,
 .site-footer :focus-visible,
 .tulos-kortti :focus-visible {
-  outline-color: var(--orange);
+  outline-color: var(--green-text-on);
 }
 
 .visually-hidden {
@@ -258,7 +259,7 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--btn-fg);
   font: 650 1.0625rem/1.2 var(--font-body);
   font-stretch: 104%;
-  box-shadow: 0 1px 0 rgb(255 255 255 / 0.25) inset, 0 6px 18px -8px rgb(237 145 33 / 0.55);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.25) inset, 0 6px 18px -8px rgb(140 69 28 / 0.45);
   letter-spacing: 0.005em;
   text-decoration: none;
   cursor: pointer;
@@ -349,7 +350,7 @@ select:focus-visible,
 textarea:focus-visible {
   outline: none;
   border-color: var(--green);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--orange) 45%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 35%, transparent);
 }
 [aria-invalid='true'] { border-color: var(--danger); }
 .field-error {
@@ -384,5 +385,5 @@ textarea:focus-visible {
 }
 
 /* Selaimen omat pinnat brändin väreihin */
-::selection { background: var(--orange); color: var(--ink); }
+::selection { background: var(--orange); color: #fff; }
 html { accent-color: var(--green); }

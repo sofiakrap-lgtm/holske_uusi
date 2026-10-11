@@ -14,8 +14,8 @@ Unresolved: valokuvat puuttuvat (paikkamerkit).
 
 ## Direction contract
 THESIS: Alan standardi huippulaatuisena (käyttäjän valinta, standing exit). Valokuva, lyhyt lupaus ja puhelinnumero heti. Kieltäytyy piirretyistä kuvituksista, eyebrow-otsakkeista, keksityistä luvuista ja samanlaisista osioista.
-OWN-WORLD: vaalea viileä pohja, kuusenvihreä teksti ja pinnat, oranssi vain soittamiseen. Kulmat 16/10px. Phosphor-ikonit. Tumma tila samasta paletista.
+OWN-WORLD: luunvaalea pohja, oliivi teksti ja pinnat, ruoste vain soittamiseen, hiili footerissa. Kulmat 16/10px. Phosphor-ikonit. Tumma tila samasta paletista.
 STORY: kävijä näkee talon ja katon, ymmärtää että Holske tekee kattoja ja maalausta, tunnistaa katon merkit, näkee huoltovälit ja soittaa.
-FIRST VIEWPORT: koko leveyden talokuva, vasemmassa alakulmassa otsikko "Kattoremontit ja katon maalaus", lause ja oranssi Soita-nappi.
+FIRST VIEWPORT: koko leveyden talokuva, vasemmassa alakulmassa otsikko "Kattoremontit ja katon maalaus", lause ja ruosteenvärinen Soita-nappi.
 FORM: canon, seed c2c98c64 (roll degraded, käyttäjä valitsi standardin).
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
