@@ -6,7 +6,6 @@ import Kuva from '../../components/Kuva.astro';
 import Icon from '../../components/Icon.astro';
 import Ukk from '../../components/Ukk.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
-import TaloPiirros from '../../components/TaloPiirros.astro';
 import yritys from '../../data/yritys.json';
 
 export async function getStaticPaths() {
@@ -77,13 +76,9 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
       </div>
     </div>
     {
-      getKuva(d.kuva) ? (
+      getKuva(d.kuva) && (
         <div class="hero-kuva">
           <Kuva nimi={d.kuva} alt={d.kuvaAlt} ikoni={d.ikoni} variantti="hero" eager />
-        </div>
-      ) : (
-        <div class="container hero-piirros">
-          <TaloPiirros />
         </div>
       )
     }
@@ -94,14 +89,14 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
       <section class="section" aria-labelledby="sisaltaa-otsikko">
         <div class="container kaksi">
           <h2 id="sisaltaa-otsikko">Mitä teemme</h2>
-          <dl class="rivit">
+          <ul class="rivit">
             {alapalvelut.map((a) => (
-              <div>
-                <dt>{a.nimi}</dt>
-                <dd>{a.teksti}</dd>
-              </div>
+              <li>
+                <h3>{a.nimi}</h3>
+                <p>{a.teksti}</p>
+              </li>
             ))}
-          </dl>
+          </ul>
         </div>
       </section>
     )
@@ -160,11 +155,12 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
 
 <style>
   .hero {
-    background: var(--green);
+    background: var(--green-fill);
     color: var(--green-text-on);
-    padding-top: clamp(1rem, 3vw, 2rem);
+    padding-block: clamp(1rem, 3vw, 2rem) clamp(3rem, 7vw, 5rem);
     overflow: hidden;
   }
+  .hero:has(.hero-kuva) { padding-bottom: 0; }
   .hero :global(.murupolku a),
   .hero :global(.murupolku span),
   .hero :global(.murupolku ol) { color: var(--green-text-on); }
@@ -178,7 +174,6 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
   .toiminnot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.75rem; }
   .sposti-linkki { display: inline-flex; align-items: center; min-height: 48px; font-weight: 650; font-size: var(--fs-lg); color: #fff; }
   .hero :focus-visible { outline-color: var(--orange); }
-  .hero-piirros { color: var(--green-text-on); margin-top: clamp(2.5rem, 6vw, 4rem); }
   .hero-kuva { margin-top: clamp(2.5rem, 6vw, 4rem); padding-inline: var(--gutter); }
   @media (min-width: 1180px) {
     .hero-kuva { padding-inline: 0; }
@@ -188,13 +183,25 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
     .kaksi { grid-template-columns: 0.85fr 1.15fr; gap: 5rem; }
   }
   .prose { min-width: 0; }
-  .rivit { margin: 0; border-top: 1px solid var(--line); }
-  .rivit div { display: grid; gap: 0.35rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
-  @media (min-width: 44rem) {
-    .rivit div { grid-template-columns: 13rem 1fr; gap: 2rem; }
+  .rivit {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
   }
-  .rivit dt { font-weight: 600; color: var(--green); font-size: 1.125rem; }
-  .rivit dd { margin: 0; color: var(--muted); }
+  .rivit li {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .rivit h3 { font-size: 1.15rem; }
+  .rivit p { color: var(--muted); }
   .lisakuvat { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
   .pieni-otsikko { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); }
   .linkkirivit { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }

@@ -9,13 +9,14 @@
  *   leveä   21:9 / 16:9 / 4:5  reunasta reunaan
  *   jaettu  4:5 / 4:3 / 4:5    puolen leveyden kuva tekstin vieressä
  *   kortti  4:3                kortin kuva
+ *   tayta   täyttää ruudukon solun (korkeus vanhemmalta)
  */
 import { getImage } from 'astro:assets';
 import { getKuva } from '../lib/kuvat';
 import kuvatiedot from '../data/kuvat.json';
 import Icon from './Icon.astro';
 
-type Variantti = 'hero' | 'leveä' | 'jaettu' | 'kortti';
+type Variantti = 'hero' | 'leveä' | 'jaettu' | 'kortti' | 'tayta';
 interface Props {
   nimi: string;
   alt?: string;
@@ -37,12 +38,13 @@ const SUHTEET: Record<Variantti, [string, string, string]> = {
   leveä: ['21 / 9', '16 / 9', '4 / 5'],
   jaettu: ['4 / 5', '4 / 3', '4 / 5'],
   kortti: ['4 / 3', '4 / 3', '4 / 3'],
+  tayta: ['4 / 3', '4 / 3', '4 / 3'],
 };
 const [sD, sT, sM] = SUHTEET[variantti];
 const taysi = variantti === 'hero' || variantti === 'leveä';
 const sizes = taysi
   ? '(min-width: 1180px) min(100vw, 2560px), 100vw'
-  : variantti === 'jaettu'
+  : variantti === 'jaettu' || variantti === 'tayta'
     ? '(min-width: 1024px) 50vw, 100vw'
     : '(min-width: 1024px) 33vw, (min-width: 744px) 50vw, 100vw';
 const LEVEYDET = [480, 768, 1080, 1440, 1920, 2560, 3200];
@@ -130,6 +132,7 @@ if (!paa && import.meta.env.DEV) console.warn(`[Kuva] Puuttuu: assets/kuvat/${ni
     .kuvapaikka--hero,
     .kuvapaikka--leveä { border-radius: 0; }
   }
+  .kuvapaikka--tayta { aspect-ratio: auto; height: 100%; min-height: 18rem; }
   picture,
   img,
   .tyhja {

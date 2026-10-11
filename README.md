@@ -51,17 +51,17 @@ Kuvat ja logo lisätään repon juureen, ja sivusto pakkaa ne automaattisesti AV
 | Tiedosto | Missä | Desktop | Tabletti | Mobiili | Vähintään |
 |---|---|---|---|---|---|
 | `etusivu.jpg` | Etusivun pääkuva, koko leveys | 16:9 | 4:3 | 4:5 | 3200 × 1800 |
-| `katto-huolto.jpg` | Etusivu, katon kunto, koko leveys | 21:9 | 16:9 | 4:5 | 3200 × 1372 |
-| `maalaus.jpg` | Etusivu ja Maalaus-sivu, koko leveys | 21:9 / 16:9 | 16:9 / 4:3 | 4:5 | 3200 × 1800 |
-| `perheyritys.jpg` | Etusivu, Meistä-osio | 4:5 | 4:3 | 4:5 | 2000 × 2500 |
-| `meista.jpg` | Meistä-sivu | 4:5 | 4:3 | 4:5 | 2000 × 2500 |
-| `katot.jpg` | Katot-sivun pääkuva | 16:9 | 4:3 | 4:5 | 3200 × 1800 |
+| `katto-huolto.jpg` | Etusivu, katon merkit, kuva tekstin vieressä | 4:5 | 4:3 | 4:5 | 2000 × 2500 |
+| `maalaus.jpg` | Etusivu (tekstin vieressä, 4:5) ja Maalaus-sivun pääkuva (16:9) | 4:5 / 16:9 | 4:3 | 4:5 | 3200 × 1800 |
+| `katot.jpg` | Katot-sivun pääkuva ja etusivun kattoruudukko | 16:9 | 4:3 | 4:5 | 3200 × 1800 |
 | `painepesu.jpg`, `lumityot.jpg`, `pihatyot.jpg`, `muut-korjaukset.jpg` | Palvelusivujen pääkuvat ja etusivun kortit | 16:9 | 4:3 | 4:5 | 3200 × 1800 |
 | `katot-2.jpg`, `katot-3.jpg`, `maalaus-2.jpg` (valinnaiset) | Lisäkuvat palvelusivulle | 4:3 | 4:3 | 4:3 | 2400 × 1800 |
 
 Mihin tahansa kuvaan voi lisätä erillisen mobiiliversion `<nimi>-mobiili.jpg` (4:5, vähintään 1600 × 2000) ja tablettiversion `<nimi>-tabletti.jpg` (4:3, vähintään 2400 × 1800). Ilman niitä pääkuva rajataan automaattisesti keskeltä.
 
-Alt-tekstit ja rajauksen kohta: `src/data/kuvat.json`. Niin kauan kuin kuvaa ei ole, sen paikalla näkyy saman muotoinen paikkamerkki.
+Alt-tekstit ja rajauksen kohta: `src/data/kuvat.json`. Jos kuvaa ei ole, sen paikka jätetään pois ja sivu toimii ilman sitä.
+
+**Väliaikaiset tekoälykuvat (Canva, 10/2026):** etusivu, katot, katto-huolto ja maalaus on tehty Canvalla. Ne eivät ole Holsken omia töitä, joten vaihda ne omiin kuviin, kun niitä on. Lataa ne Canvasta täysikokoisina ja tallenna yllä olevilla nimillä.
 
 **Logo** on kansiossa `assets/logot-ja-grafiikat/`:
 - `logo.svg`: päälogo (Holske™), käytössä headerissa ja footerissa

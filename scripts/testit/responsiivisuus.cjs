@@ -30,7 +30,7 @@ const LEV = [[360,780],[390,844],[430,932],[744,1133],[768,1024],[810,1080],[820
     }
     // etusivu: CTA näkyvissä ilman vieritystä
     await p.goto(BASE + '/', { waitUntil: 'networkidle' });
-    const cta = await p.evaluate(() => { const e = document.querySelector('.hero-teksti .btn'); const r = e.getBoundingClientRect(); return r.bottom <= window.innerHeight; });
+    const cta = await p.evaluate(() => { const e = document.querySelector('.hero-toiminnot .btn'); const r = e.getBoundingClientRect(); return r.bottom <= window.innerHeight; });
     if (!cta) virheet.push(`${w} /: hero-CTA ei näy ilman vieritystä`);
     // valikko kosketuksella
     const toggle = p.locator('[data-menu-toggle]');
