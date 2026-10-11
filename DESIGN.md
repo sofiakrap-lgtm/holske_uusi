@@ -1,40 +1,48 @@
 # Design
 
-Holsken visuaalinen järjestelmä, yksinkertainen versio. Lähteet: `src/styles/global.css`, komponentit `src/components/`.
+Holsken visuaalinen järjestelmä, yksinkertainen versio, suunta "harjakatto". Lähteet: `src/styles/global.css`, komponentit `src/components/`.
 
 ## Tunnelma
-Rauhallinen skandinaavinen esite. Iso kuva, yksi lause, puhelinnumero. Ohuet viivat erottavat rivejä, ei kortteja eikä kuvakeruudukkoja. Ei eyebrow-otsakkeita.
+Kattoalan ammattilainen, ei esite. Leveä, raskas typografia, kuusenvihreät pinnat ja viivapiirrokset kuin rakennuspiirustuksesta. Oranssi on huomioväri, ei koriste. Ohuet viivat erottavat rivejä, ei kortteja eikä kuvakeruudukkoja. Ei eyebrow-otsakkeita.
 
 ## Värit
 | Token | Arvo | Käyttö |
 |---|---|---|
-| `--bg` | #f7f4ee | sivun pohja |
-| `--surface` | #fffdf9 | nostetut pinnat |
-| `--sand` | #ece6da | vaihtuvat osiot |
-| `--line` | #e2dbcd | erotinviivat |
-| `--ink` | #20261b | leipäteksti |
-| `--muted` | #586050 | toissijainen teksti |
-| `--green` | #37432d | otsikot, linkit, yhteystietokaista |
-| `--green-deep` | #262f1f | footer |
-| `--orange` | #ed9121 | vain soittonapit ja pienet merkit, teksti päällä #1d1609. Ei koskaan tekstinä vaalealla. |
+| `--bg` | #f1f2ed | sivun pohja |
+| `--surface` | #fafaf7 | nostetut pinnat |
+| `--sand` | #e4e7de | vaihtuvat osiot |
+| `--line` | #cfd4c8 | erotinviivat |
+| `--ink` | #141a15 | leipäteksti |
+| `--muted` | #4a554b | toissijainen teksti |
+| `--green` | #1f3a2c | hero, otsikot, linkit |
+| `--green-deep` | #13241a | "merkit"-osio, footer |
+| `--green-text-on` | #e8efe6 | teksti vihreällä |
+| `--orange` | #ed9121 | soittonapit, yhteystietokaista, piirrosten uusi kerros. Teksti päällä #141a15. Ei koskaan tekstinä vaalealla. |
 
 ## Typografia
-- Otsikot: Forum 400, H1 clamp(2.5rem, 4.6rem), tracking -0.02em, line-height 1.04.
-- Teksti: DM Sans, 18 px, line-height 1.6. Rivin mitta noin 40rem.
-- Puhelinnumero yhteystietokaistalla Forumilla isona.
+- Archivo Variable (wdth-akseli) kaikkialla.
+- H1: paino 760, font-stretch 125 %, clamp(2.6rem, 6rem), line-height 0.98, tracking -0.025em. Mobiilissa stretch 110 %.
+- H2: 700 / 118 %. H3: 650 / 108 %.
+- Teksti 18 px, line-height 1.6, rivin mitta noin 40rem.
+- Puhelinnumero CTA-kaistalla jättikokoisena (780, 125 %).
 
 ## Asettelu
 - Leveys max 74rem, sivumarginaali clamp(1rem, 4vw, 2.5rem), osioväli clamp(4rem, 9vw, 7.5rem).
-- Hero: keskitetty otsikko ja toiminnot, alla reunasta reunaan kuva (16:9 / 4:3 / 4:5).
-- Sisältöosiot: kaksi saraketta (otsikko vasemmalla, rivit oikealla), tai kuva + teksti rinnakkain.
+- Hero: vihreä, vasemmalle tasattu otsikko, alla talon julkisivupiirros (tai valokuva, kun se on lisätty).
+- Sisältöosiot: kaksi saraketta (otsikko vasemmalla, rivit oikealla).
 - Rivit: `dl`/`ul`, 1px viiva, 1,5rem pystyväli.
 
+## Piirrokset (korvaavat puuttuvat kuvat)
+- `TaloPiirros`: talon pääty, mittaviivat, tekstit HARJA / KATON KORKEUS / RÄYSTÄS. Piirtyy esiin.
+- `KattoProfiili`: poikkileikkaus katon tyypin mukaan, uusi kerros oranssina.
+- `Huoltovalit`: aikajana 0–30 v, palkit kasvavat vierityksessä.
+- Kun valokuva lisätään `assets/kuvat/`, se korvaa piirroksen automaattisesti (`Kuva vainJosOn`).
+
 ## Komponentit
-- `.btn` oranssi pilleri 52 px, `.btn--secondary` reunaviiva.
-- Header: läpikuultava, sumennettu, valikko alle 1024 px hampurilaisena.
+- `.btn` oranssi, kulmasäde 6 px, 52 px korkea.
+- Header: valikko alle 64rem hampurilaisena, oranssi Soita-nappi.
 - Mobiilin alapalkki: Sähköposti + Soita.
-- `CtaOsio`: vihreä kaista, iso numero, sähköposti, palvelualue.
-- `Kuva`: variantit hero, leveä, jaettu, kortti; paikkamerkki ennen kuvia.
+- `CtaOsio`: oranssi kaista, jättinumero, sähköposti, palvelualue.
 
 ## Liike
-Hillitty: napin painallus scale 0.97, nuolet liikkuvat hoverissa, kuvat nousevat esiin vierityksessä. Kaikki pois, kun käyttäjä toivoo vähemmän liikettä.
+Hillitty: piirrokset piirtyvät, aikajanan palkit kasvavat, osiot nousevat esiin (vain translateY). Kaikki pois, kun käyttäjä toivoo vähemmän liikettä.

@@ -23,8 +23,10 @@ interface Props {
   variantti?: Variantti;
   eager?: boolean;
   class?: string;
+  /** Jos true, mitään ei näytetä ennen kuin kuva on lisätty */
+  vainJosOn?: boolean;
 }
-const { nimi, alt: altProp, ikoni = 'kuva', variantti = 'kortti', eager = false, class: className } = Astro.props;
+const { nimi, alt: altProp, ikoni = 'kuva', variantti = 'kortti', eager = false, class: className, vainJosOn = false } = Astro.props;
 
 const tiedot = (kuvatiedot as Record<string, { alt?: string; fokus?: string }>)[nimi] ?? {};
 const alt = tiedot.alt || altProp || '';
@@ -69,6 +71,7 @@ const kuvat = paa
 if (!paa && import.meta.env.DEV) console.warn(`[Kuva] Puuttuu: assets/kuvat/${nimi}.jpg`);
 ---
 
+{(paa || !vainJosOn) && (
 <div
   class:list={['kuvapaikka', `kuvapaikka--${variantti}`, className]}
   style={`--s-d:${sD};--s-t:${sT};--s-m:${sM};--fokus:${fokus}`}
@@ -99,6 +102,7 @@ if (!paa && import.meta.env.DEV) console.warn(`[Kuva] Puuttuu: assets/kuvat/${ni
     )
   }
 </div>
+)}
 
 <style>
   .kuvapaikka {

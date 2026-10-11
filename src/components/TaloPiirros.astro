@@ -1,0 +1,79 @@
+---
+/**
+ * Omakotitalon julkisivupiirros (pääty ja harjakatto) heron alareunaan.
+ * Puhdasta geometriaa: ohut viiva, mittaviivat ja kattoterminologia.
+ */
+---
+
+<svg class="talopiirros" viewBox="0 0 1200 380" role="img" aria-label="Piirros omakotitalon päädystä ja harjakatosta" preserveAspectRatio="xMidYMax meet">
+  <g class="viiva" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- maanpinta -->
+    <path d="M0 360 H1200" />
+    <!-- runko -->
+    <path d="M330 360 V200 H870 V360" />
+    <!-- katto: räystäät ulottuvat seinän yli -->
+    <path class="katto" d="M300 212 L600 40 L900 212" />
+    <path d="M318 212 H882" opacity="0.5" />
+    <!-- katon saumat / tiilirivit -->
+    <g class="saumat" opacity="0.55">
+      <path d="M352 182 L600 40" /><path d="M404 152 L600 40" /><path d="M456 122 L600 40" /><path d="M508 92 L600 40" />
+      <path d="M848 182 L600 40" /><path d="M796 152 L600 40" /><path d="M744 122 L600 40" /><path d="M692 92 L600 40" />
+    </g>
+    <!-- savupiippu -->
+    <path d="M700 95 V48 H742 V119" />
+    <!-- ikkunat ja ovi -->
+    <rect x="390" y="246" width="96" height="70" />
+    <path d="M438 246 V316" opacity="0.6" />
+    <rect x="714" y="246" width="96" height="70" />
+    <path d="M762 246 V316" opacity="0.6" />
+    <path d="M566 360 V262 H634 V360" />
+    <!-- pääty-ikkuna -->
+    <path d="M574 150 L600 128 L626 150 V178 H574 Z" />
+    <!-- mittaviivat -->
+    <g class="mitta" opacity="0.5">
+      <path d="M930 40 V212" /><path d="M922 40 H938" /><path d="M922 212 H938" />
+      <path d="M300 238 V246" /><path d="M300 242 H330" /><path d="M330 238 V246" />
+    </g>
+    <!-- viereinen talo, kauempana -->
+    <g opacity="0.3">
+      <path d="M40 360 V262 H220 V360" /><path d="M28 268 L130 196 L232 268" />
+      <path d="M990 360 V250 H1160 V360" /><path d="M978 256 L1075 186 L1172 256" />
+    </g>
+  </g>
+  <g class="tekstit" fill="currentColor">
+    <text x="612" y="30">HARJA</text>
+    <text x="946" y="132">KATON KORKEUS</text>
+    <text x="244" y="230">RÄYSTÄS</text>
+  </g>
+</svg>
+
+<style>
+  .talopiirros {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 22rem;
+    overflow: visible;
+  }
+  .tekstit text {
+    font: 600 11px/1 var(--font-body);
+    letter-spacing: 0.14em;
+    opacity: 0.6;
+  }
+  @media (max-width: 40rem) {
+    .tekstit { display: none; }
+  }
+  /* Piirros piirtyy kerran sivun latautuessa; liikettä vähentävillä se on heti valmis */
+  @media (prefers-reduced-motion: no-preference) {
+    .viiva path,
+    .viiva rect {
+      stroke-dasharray: 1400;
+      stroke-dashoffset: 1400;
+      animation: piirra 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    }
+    .saumat path { animation-delay: 0.9s; }
+    .tekstit { opacity: 0; animation: esiin 0.8s ease-out 1.6s forwards; }
+  }
+  @keyframes piirra { to { stroke-dashoffset: 0; } }
+  @keyframes esiin { to { opacity: 1; } }
+</style>

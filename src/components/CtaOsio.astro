@@ -23,42 +23,42 @@ const tel = `tel:${yritys.puhelinE164}`;
 
 <style>
   .yhteys {
-    background: var(--green);
-    color: var(--green-text-on);
+    background: var(--orange);
+    color: var(--ink);
     padding-block: clamp(5rem, 12vw, 9rem);
   }
   .sisus {
     display: grid;
-    justify-items: center;
+    justify-items: start;
     gap: 1.25rem;
-    text-align: center;
-    max-width: 48rem;
+    max-width: var(--max);
   }
-  h2 { color: #fff; }
-  .lead { color: color-mix(in srgb, #fff 82%, transparent); margin-inline: auto; }
+  h2 { color: var(--ink); max-width: 18ch; }
+  .lead { color: var(--ink); max-width: 38rem; }
   .numero {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     font-family: var(--font-display);
-    font-size: clamp(2.75rem, 1.8rem + 4.5vw, 5rem);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: #fff;
+    font-weight: 780;
+    font-stretch: 125%;
+    font-size: clamp(1.9rem, 0.6rem + 8vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
     text-decoration: none;
-    font-variant-numeric: lining-nums;
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--r-sm);
-    transition: color 200ms ease;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
   @media (hover: hover) and (pointer: fine) {
-    .numero:hover { color: var(--orange); }
+    .numero:hover { text-decoration: underline; text-decoration-thickness: 4px; text-underline-offset: 0.12em; }
   }
   .sposti {
-    color: #fff;
+    color: var(--ink);
     font-size: var(--fs-lg);
-    font-weight: 500;
+    font-weight: 650;
     min-height: 44px;
     display: inline-flex;
     align-items: center;
   }
-  .alue { color: color-mix(in srgb, #fff 65%, transparent); font-size: var(--fs-sm); letter-spacing: 0.02em; }
+  .alue { color: var(--ink); font-size: var(--fs-sm); letter-spacing: 0.04em; }
+  :focus-visible { outline-color: var(--ink); }
 </style>

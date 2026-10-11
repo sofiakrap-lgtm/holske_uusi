@@ -1,0 +1,83 @@
+---
+/** Huoltovälit aikajanana 0-30 vuotta. Luvut vanhan sivun katto- ja maalaussisällöstä. */
+const MAX = 30;
+const rivit = [
+  { kohde: 'Uusi sinkitty peltikatto', teksti: 'Ensimmäinen maalaus', alku: 2, loppu: 3 },
+  { kohde: 'Puutalon ulkoseinät', teksti: 'Uusi maalaus', alku: 5, loppu: 10 },
+  { kohde: 'Maalattu peltikatto', teksti: 'Uusi maalaus', alku: 15, loppu: 20 },
+  { kohde: 'Betonitiilikatto', teksti: 'Pinnoitus katon ollessa', alku: 20, loppu: 30 },
+];
+const asteikko = [0, 5, 10, 15, 20, 25, 30];
+---
+
+<div class="aikajana">
+  <ol class="rivit">
+    {
+      rivit.map((r) => (
+        <li>
+          <span class="kohde">{r.kohde}</span>
+          <span class="raita" aria-hidden="true">
+            <span class="palkki" style={`--a:${(r.alku / MAX) * 100}%;--w:${((r.loppu - r.alku) / MAX) * 100}%`} />
+          </span>
+          <span class="arvo">
+            {r.teksti} <span class="nowrap">{r.alku}-{r.loppu} v</span>
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+  <div class="asteikko" aria-hidden="true">
+    <span class="tyhja"></span>
+    <span class="luvut">
+      {asteikko.map((v) => <span style={`--x:${(v / MAX) * 100}%`}>{v}</span>)}
+    </span>
+    <span class="yksikko">vuotta</span>
+  </div>
+</div>
+
+<style>
+  .aikajana { display: grid; gap: 0.5rem; }
+  .rivit { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  li {
+    display: grid;
+    gap: 0.5rem 1.5rem;
+    align-items: center;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 52rem) {
+    li, .asteikko { grid-template-columns: 14rem 1fr 13rem; }
+  }
+  .kohde { font-weight: 650; color: var(--green); font-stretch: 108%; }
+  .arvo { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .nowrap { white-space: nowrap; }
+  .raita {
+    position: relative;
+    height: 0.75rem;
+    background:
+      repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px calc(100% / 6)),
+      linear-gradient(var(--line), var(--line)) 0 50% / 100% 1px no-repeat;
+  }
+  .palkki {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--a);
+    width: max(var(--w), 0.75rem);
+    border-radius: 2px;
+    background: var(--green);
+    transform-origin: left center;
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .palkki { animation: kasva linear both; animation-timeline: view(); animation-range: entry 10% cover 35%; }
+    }
+  }
+  @keyframes kasva { from { transform: scaleX(0); opacity: 0.3; } to { transform: scaleX(1); opacity: 1; } }
+  .asteikko { display: none; }
+  @media (min-width: 52rem) {
+    .asteikko { display: grid; gap: 1.5rem; font-size: 0.8125rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .luvut { position: relative; height: 1.2em; }
+    .luvut span { position: absolute; left: var(--x); transform: translateX(-50%); }
+  }
+</style>

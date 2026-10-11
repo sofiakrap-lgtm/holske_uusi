@@ -1,0 +1,34 @@
+---
+/** Katemateriaalin poikkileikkaus ohuena viivapiirroksena. */
+interface Props {
+  tyyppi: string;
+}
+const { tyyppi } = Astro.props;
+const t = tyyppi.toLowerCase();
+
+const profiilit: Record<string, string> = {
+  // Tiili: aaltoileva profiili, limittäin
+  tiili:
+    '<path d="M4 40 C 20 18, 36 18, 52 40 S 84 62, 100 40 S 132 18, 148 40 S 180 62, 196 40 S 228 18, 236 30"/><path d="M4 50 H236" opacity=".35"/>',
+  // Pelti: konesauma, korkeat saumat tasaisin välein
+  pelti:
+    '<path d="M4 44 H40 V22 H46 V44 H96 V22 H102 V44 H152 V22 H158 V44 H208 V22 H214 V44 H236"/><path d="M4 50 H236" opacity=".35"/>',
+  // Huopa: loiva, kerroksellinen
+  huopa:
+    '<path d="M4 38 L236 30"/><path d="M4 44 L236 36" opacity=".6"/><path d="M4 50 L236 42" opacity=".35"/>',
+  // Pinnoitus: tiiliprofiili ja uusi pintakerros
+  pinnoitus:
+    '<path d="M4 42 C 20 20, 36 20, 52 42 S 84 64, 100 42 S 132 20, 148 42 S 180 64, 196 42 S 228 20, 236 32"/><path d="M4 36 C 20 14, 36 14, 52 36 S 84 58, 100 36 S 132 14, 148 36 S 180 58, 196 36 S 228 14, 236 26" class="uusi"/>',
+  // Maalaus: peltiprofiili ja uusi maalikerros
+  maalaus:
+    '<path d="M4 46 H40 V24 H46 V46 H96 V24 H102 V46 H152 V24 H158 V46 H208 V24 H214 V46 H236"/><path d="M4 41 H36 V19 H50 V41 H92 V19 H106 V41 H148 V19 H162 V41 H204 V19 H218 V41 H236" class="uusi"/>',
+};
+const avain = t.includes('tiili') ? 'tiili' : t.includes('pinnoitus') ? 'pinnoitus' : t.includes('maalaus') ? 'maalaus' : t.includes('huopa') ? 'huopa' : 'pelti';
+---
+
+<svg class="profiili" viewBox="0 0 240 60" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={profiilit[avain]} />
+
+<style>
+  .profiili { display: block; width: 100%; max-width: 15rem; height: auto; color: var(--green); }
+  .profiili :global(.uusi) { stroke: var(--orange); stroke-width: 2.2; }
+</style>

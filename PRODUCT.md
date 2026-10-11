@@ -28,8 +28,8 @@ Kävijä vertailee muutamaa paikallista tekijää. Päätös syntyy puhelussa. K
 ## Brand Commitments
 - Nimi Holske Oy, Y-tunnus 3419162-6, Pyörärinne 4, 01280 Vantaa.
 - Logo: `assets/logot-ja-grafiikat/logo.svg` (väri CSS:stä) ja `logo-pieni.svg` (H.).
-- Värit: tummanvihreä #37432d (pääväri), oranssi #ed9121 (korostus, toimintakehotteet), lämmin vaalea neutraali tausta.
-- Fontit: Forum (otsikot) ja DM Sans (teksti), omistajan vahvistama.
+- Värit: kuusenvihreä #1f3a2c (pääväri, hero ja tummat osiot), oranssi #ed9121 (soittonapit ja yhteystietokaista), viileä vaalea tausta #f1f2ed. Omistaja hyväksyi ilmeen uudistamisen 10/2026.
+- Fontti: Archivo (leveä variaatiofontti), otsikot leveinä, teksti normaalileveänä.
 - Sävy: tarjoileva mutta hillitty, arvokas, skandinaavinen. Ei huutomerkkejä.
 
 ## Evidence on Hand
