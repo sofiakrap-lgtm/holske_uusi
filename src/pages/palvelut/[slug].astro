@@ -69,7 +69,7 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
         <div class="hero-ala">
           <p class="lead">{d.ingressi}</p>
           <div class="toiminnot">
-            <a href={tel} class="btn"><Icon name="puhelin" size={20} /> Soita {yritys.puhelinNaytto}</a>
+            <a href={tel} class="btn btn--iso"><Icon name="puhelin" size={20} /> Soita {yritys.puhelinNaytto}</a>
             <a href={`mailto:${yritys.sahkoposti}`} class="sposti-linkki">{yritys.sahkoposti}</a>
           </div>
         </div>
@@ -157,10 +157,10 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
   .hero {
     background: var(--green-fill);
     color: var(--green-text-on);
-    padding-block: clamp(1rem, 3vw, 2rem) clamp(3rem, 7vw, 5rem);
+    margin-top: calc(-1 * var(--header-offset));
+    padding-block: calc(var(--header-offset) + clamp(1rem, 3vw, 2rem)) clamp(3rem, 7vw, 5rem);
     overflow: hidden;
   }
-  .hero:has(.hero-kuva) { padding-bottom: 0; }
   .hero :global(.murupolku a),
   .hero :global(.murupolku span),
   .hero :global(.murupolku ol) { color: var(--green-text-on); }
@@ -174,10 +174,13 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
   .toiminnot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.75rem; }
   .sposti-linkki { display: inline-flex; align-items: center; min-height: 48px; font-weight: 650; font-size: var(--fs-lg); color: #fff; }
   .hero :focus-visible { outline-color: var(--green-text-on); }
-  .hero-kuva { margin-top: clamp(2.5rem, 6vw, 4rem); padding-inline: var(--gutter); }
-  @media (min-width: 1180px) {
-    .hero-kuva { padding-inline: 0; }
+  .hero-kuva {
+    width: 100%;
+    max-width: calc(var(--max) + 2 * var(--gutter));
+    margin: clamp(2.5rem, 6vw, 4rem) auto 0;
+    padding-inline: var(--gutter);
   }
+  .hero-kuva :global(.kuvapaikka) { border-radius: var(--r-md); }
   .kaksi { display: grid; gap: 2rem; align-items: start; }
   @media (min-width: 60rem) {
     .kaksi { grid-template-columns: 0.85fr 1.15fr; gap: 5rem; }

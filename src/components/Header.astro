@@ -16,6 +16,7 @@ const isActive = (href: string) =>
 const tel = `tel:${yritys.puhelinE164}`;
 ---
 
+<div class="header-sentinel" data-header-sentinel aria-hidden="true"></div>
 <header class="site-header" data-header>
   <div class="container bar">
     <a href="/" class="brand" aria-label={`${yritys.nimi}, etusivu`}>
@@ -55,7 +56,7 @@ const tel = `tel:${yritys.puhelinE164}`;
       <a href={tel} class="phone" aria-label={`Soita ${yritys.puhelinNaytto}`}>
         <Icon name="puhelin" size={20} />
       </a>
-      <a href={tel} class="btn cta">Soita {yritys.puhelinNaytto}</a>
+      <a href={tel} class="btn cta"><Icon name="puhelin" size={18} /> Soita {yritys.puhelinNaytto}</a>
       <button
         type="button"
         class="menu-toggle"
@@ -92,32 +93,46 @@ const tel = `tel:${yritys.puhelinE164}`;
   });
   window.matchMedia('(min-width: 64rem)').addEventListener('change', (e) => e.matches && setOpen(false));
 
-  // Ohut varjo vasta kun sivua on vieritetty
-  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  // Varjo vasta kun sivua on vieritetty (IntersectionObserver, ei scroll-kuuntelijaa)
+  const sentinel = document.querySelector('[data-header-sentinel]');
+  if (sentinel && header) {
+    new IntersectionObserver(([e]) => header.classList.toggle('is-scrolled', !e.isIntersecting)).observe(sentinel);
+  }
 </script>
 
 <style>
+  .header-sentinel { position: absolute; top: 0; left: 0; width: 1px; height: 24px; pointer-events: none; }
+  /* Kelluva navigaatiosaareke: irrallaan yläreunasta, läpikuultava pinta */
   .site-header {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: color-mix(in srgb, var(--bg) 78%, transparent);
-    -webkit-backdrop-filter: blur(18px) saturate(170%);
-    backdrop-filter: blur(18px) saturate(170%);
-    border-bottom: 1px solid transparent;
-    transition: border-color 200ms ease, box-shadow 200ms ease;
-  }
-  .site-header.is-scrolled {
-    border-bottom-color: color-mix(in srgb, var(--line) 80%, transparent);
-    box-shadow: 0 6px 24px -18px rgb(32 38 27 / 0.35);
+    padding-top: 0.75rem;
+    pointer-events: none;
   }
   .bar {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 1.5rem;
     min-height: var(--header-h);
+    padding-inline: 1.25rem 0.5rem;
+    max-width: calc(var(--max) + 2rem);
+    border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 10px 30px -18px rgb(38 38 38 / 0.35);
+    pointer-events: auto;
+    transition: box-shadow 300ms var(--ease-out), background-color 300ms var(--ease-out);
+  }
+  @media (max-width: 82rem) {
+    .bar { width: calc(100% - 2 * var(--gutter)); }
+  }
+  .site-header.is-scrolled .bar {
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 14px 36px -18px rgb(38 38 38 / 0.45);
   }
   .brand {
     display: inline-flex;
@@ -175,8 +190,8 @@ const tel = `tel:${yritys.puhelinE164}`;
   }
   .phone:hover { text-decoration: underline; }
   .cta {
-    min-height: 2.9rem;
-    padding: 0.65rem 1.25rem;
+    min-height: 3rem;
+    padding: 0.5rem 1.25rem 0.5rem 0.5rem;
     font-size: 1rem;
     white-space: nowrap;
   }
@@ -223,18 +238,20 @@ const tel = `tel:${yritys.puhelinE164}`;
     .cta { display: none; }
     .actions { margin-left: auto; gap: 0.25rem; }
     .nav { margin: 0; }
+    .bar { padding-inline: 1rem 0.35rem; }
     .nav-list {
       position: absolute;
-      top: 100%;
+      top: calc(100% + 0.5rem);
       left: 0;
       right: 0;
       flex-direction: column;
       align-items: stretch;
       gap: 0.25rem;
       padding: 0.75rem var(--gutter) 1.5rem;
-      background: var(--bg);
-      border-bottom: 1px solid var(--line);
-      box-shadow: 0 24px 40px -24px rgb(32 38 27 / 0.35);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      box-shadow: 0 24px 40px -24px rgb(38 38 38 / 0.4);
       /* Valikko laskeutuu headerista, josta se avattiin, ja palaa samaa reittiä */
       transform-origin: top center;
       transform: translateY(-8px);
@@ -268,6 +285,6 @@ const tel = `tel:${yritys.puhelinE164}`;
   }
 
   @media (prefers-reduced-transparency: reduce) {
-    .site-header { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; }
+    .bar { background: var(--surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
   }
 </style>

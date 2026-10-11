@@ -18,6 +18,12 @@ const kattoKuva = getKuva('katot');
 const huoltoKuva = getKuva('katto-huolto');
 const maalausKuva = getKuva('maalaus');
 
+// Etusivulle vain kunkin palvelun ensimmäinen lause, koko teksti on palvelusivulla
+const ekaLause = (t: string) => {
+  const i = t.indexOf('. ');
+  return i === -1 ? t : t.slice(0, i + 1);
+};
+
 // Vanhan sivun kattosisällöstä
 const merkit = [
   'Katolla kasvaa sammalta',
@@ -41,38 +47,43 @@ const merkit = [
       )
     }
     <div class="container hero-sisus">
-      <h1>Kattoremontit ja katon maalaus</h1>
-      <p class="hero-lead">
+      <h1 class="saapuu">Kattoremontit ja katon maalaus</h1>
+      <p class="hero-lead saapuu" style="--i:1">
         Pieni perheyritys pääkaupunkiseudulta. Kunnostamme, maalaamme ja pinnoitamme omakotitalojen katot ja seinät
         kiinteään hintaan.
       </p>
-      <div class="hero-toiminnot">
-        <a href={tel} class="btn"><Icon name="puhelin" size={20} /> Soita {yritys.puhelinNaytto}</a>
-        <a href={`mailto:${yritys.sahkoposti}`} class="hero-sposti">{yritys.sahkoposti}</a>
+      <div class="hero-toiminnot saapuu" style="--i:2">
+        <a href={tel} class="btn btn--iso"><Icon name="puhelin" size={20} /> Soita {yritys.puhelinNaytto}</a>
+        <a href={`mailto:${yritys.sahkoposti}`} class="hero-sposti">
+          <Icon name="sahkoposti" size={20} />
+          {yritys.sahkoposti}
+        </a>
       </div>
     </div>
   </section>
 
   <section class="section" aria-labelledby="katot-otsikko">
     <div class="container">
+      <div class="osio-otsake">
+        <h2 id="katot-otsikko">Kaikki kattotyöt yhdestä paikasta</h2>
+        <p>{katot.data.ingressi}</p>
+      </div>
       <div class:list={['bento', { 'bento--kuva': kattoKuva }]}>
-        <div class="solu solu--esittely">
-          <h2 id="katot-otsikko">Kaikki kattotyöt yhdestä paikasta</h2>
-          <p>{katot.data.ingressi}</p>
-          <a href="/palvelut/katot/" class="link-arrow">Lue lisää kattotöistä <Icon name="nuoli" size={18} /></a>
-        </div>
         {
           kattoKuva && (
-            <div class="solu solu--kuva">
+            <a href="/palvelut/katot/" class="solu solu--kuva reveal">
               <Kuva nimi="katot" variantti="tayta" />
-            </div>
+              <span class="kuva-linkki">
+                Lue lisää kattotöistä <Icon name="nuoli" size={18} />
+              </span>
+            </a>
           )
         }
         {
           katot.data.alapalvelut.map((a, i) => (
-            <div class:list={['solu', 'solu--palvelu', `solu--p${i + 1}`]}>
+            <div class:list={['solu', 'solu--palvelu', `solu--p${i + 1}`, 'reveal']}>
               <h3>{a.nimi}</h3>
-              <p>{a.teksti}</p>
+              <p>{ekaLause(a.teksti)}</p>
             </div>
           ))
         }
@@ -80,9 +91,13 @@ const merkit = [
     </div>
   </section>
 
-  <section class="section merkit-osio" aria-labelledby="merkit-otsikko">
+  <section class="section section--sand" aria-labelledby="merkit-otsikko">
     <div class:list={['container', 'merkit-ruudukko', { 'merkit-ruudukko--kuva': huoltoKuva }]}>
-      {huoltoKuva && <Kuva nimi="katto-huolto" variantti="jaettu" class="reveal" />}
+      {huoltoKuva && (
+        <div class="kehys reveal">
+          <Kuva nimi="katto-huolto" variantti="jaettu" />
+        </div>
+      )}
       <div class="merkit-teksti">
         <h2 id="merkit-otsikko">Mistä tiedät, että katto tarvitsee huoltoa?</h2>
         <p class="lead">Tikkaille ei tarvitse kiivetä itse. Kun huomaat jonkin näistä, on hyvä aika soittaa.</p>
@@ -90,27 +105,31 @@ const merkit = [
           {
             merkit.map((m) => (
               <li>
-                <Icon name="check" size={22} />
+                <Icon name="varoitus" size={26} />
                 <span>{m}</span>
               </li>
             ))
           }
         </ul>
+        <a href={tel} class="btn"><Icon name="puhelin" size={20} /> Soita {yritys.puhelinNaytto}</a>
       </div>
     </div>
   </section>
 
-  <section class="section section--sand" aria-labelledby="huolto-otsikko">
-    <div class="container">
-      <div class="osio-otsake">
+  <section class="section" aria-labelledby="huolto-otsikko">
+    <div class="container huolto">
+      <div class="huolto-otsake">
         <h2 id="huolto-otsikko">Milloin katto ja seinät kannattaa maalata?</h2>
-        <p>Pinnoitus voi pidentää tiilikaton käyttöikää jopa 20 vuodella.</p>
+        <p>
+          Pinnoitus voi pidentää tiilikaton käyttöikää jopa 20 vuodella. Nämä ovat tavalliset välit, kuntoarviossa
+          katsomme juuri sinun kohteesi.
+        </p>
       </div>
       <Huoltovalit />
     </div>
   </section>
 
-  <section class="section" aria-labelledby="maalaus-otsikko">
+  <section class="section section--sand" aria-labelledby="maalaus-otsikko">
     <div class:list={['container', 'maalaus', { 'maalaus--kuva': maalausKuva }]}>
       <div class="maalaus-teksti">
         <h2 id="maalaus-otsikko">{maalaus.data.otsikko}</h2>
@@ -127,11 +146,15 @@ const merkit = [
         </ul>
         <a href="/palvelut/maalaus/" class="link-arrow">Lue lisää talon maalauksesta <Icon name="nuoli" size={18} /></a>
       </div>
-      {maalausKuva && <Kuva nimi="maalaus" variantti="jaettu" class="reveal" />}
+      {maalausKuva && (
+        <div class="kehys reveal">
+          <Kuva nimi="maalaus" variantti="jaettu" />
+        </div>
+      )}
     </div>
   </section>
 
-  <section class="section section--tight" aria-labelledby="vaiheet-otsikko">
+  <section class="section" aria-labelledby="vaiheet-otsikko">
     <div class="container">
       <h2 id="vaiheet-otsikko" class="osion-otsikko">Näin työ etenee</h2>
       <Vaiheet />
@@ -144,7 +167,7 @@ const merkit = [
       <ul class="muut">
         {
           muut.map((p) => (
-            <li>
+            <li class="reveal">
               <a href={`/palvelut/${p.id}/`} class="muu">
                 {getKuva(p.data.kuva) ? (
                   <Kuva nimi={p.data.kuva} variantti="kortti" />
@@ -169,14 +192,19 @@ const merkit = [
 
   <section class="section meista" id="meista" aria-labelledby="meista-otsikko">
     <div class="container meista-sisus">
-      <h2 id="meista-otsikko">Pieni perheyritys. Tue paikallista tekijää.</h2>
-      <p class="meista-lause">
-        Olemme suomalainen perheyritys pääkaupunkiseudulta. {yritys.kokemusLause} Asiakkaan tarpeet ovat meille
-        ensisijaisia, ja muokkaamme työn sinun kohteesi mukaan.
-      </p>
-      <p class="meista-tiedot">
-        {yritys.nimi}, Y-tunnus {yritys.ytunnus}, {yritys.katuosoite}, {yritys.postinumero} {yritys.kaupunki}
-      </p>
+      <div class="meista-teksti">
+        <h2 id="meista-otsikko">Pieni perheyritys. Tue paikallista tekijää.</h2>
+        <p class="meista-lause">
+          Olemme suomalainen perheyritys pääkaupunkiseudulta. {yritys.kokemusLause} Asiakkaan tarpeet ovat meille
+          ensisijaisia, ja muokkaamme työn sinun kohteesi mukaan.
+        </p>
+      </div>
+      <dl class="tiedot">
+        <div><dt>Yritys</dt><dd>{yritys.nimi}</dd></div>
+        <div><dt>Y-tunnus</dt><dd>{yritys.ytunnus}</dd></div>
+        <div><dt>Kotipaikka</dt><dd>{yritys.katuosoite}, {yritys.postinumero} {yritys.kaupunki}</dd></div>
+        <div><dt>Palvelualue</dt><dd>{yritys.palvelualue.join(', ')}</dd></div>
+      </dl>
     </div>
   </section>
 
@@ -184,13 +212,14 @@ const merkit = [
 </BaseLayout>
 
 <style>
-  /* 1. Hero */
+  /* Hero: kuva jatkuu kelluvan navigaation alle */
   .hero {
     position: relative;
     display: grid;
     align-items: end;
-    min-height: min(88svh, 52rem);
-    padding-block: clamp(6rem, 12vw, 8rem) clamp(2.5rem, 6vw, 4.5rem);
+    min-height: min(100svh, 56rem);
+    margin-top: calc(-1 * var(--header-offset));
+    padding-block: calc(var(--header-offset) + 4rem) clamp(3rem, 7vw, 5.5rem);
     background: var(--green-fill);
     color: #fff;
     overflow: hidden;
@@ -204,71 +233,122 @@ const merkit = [
     inset: 0;
     z-index: -1;
     background:
-      linear-gradient(to top, rgb(24 23 20 / 0.88) 0%, rgb(24 23 20 / 0.6) 40%, rgb(24 23 20 / 0) 78%),
-      linear-gradient(to right, rgb(24 23 20 / 0.55), rgb(24 23 20 / 0) 62%);
+      linear-gradient(to top, rgb(24 23 20 / 0.88) 0%, rgb(24 23 20 / 0.6) 38%, rgb(24 23 20 / 0) 72%),
+      linear-gradient(to right, rgb(24 23 20 / 0.6), rgb(24 23 20 / 0) 60%),
+      linear-gradient(to bottom, rgb(24 23 20 / 0.35), rgb(24 23 20 / 0) 18%);
+  }
+  @media (max-width: 63.99rem) {
+    .hero { padding-bottom: 6.5rem; }
   }
   @media (max-width: 48rem) {
     .hero--kuva::before {
-      background: linear-gradient(to top, rgb(24 23 20 / 0.9) 0%, rgb(24 23 20 / 0.7) 55%, rgb(24 23 20 / 0.25) 100%);
+      background: linear-gradient(to top, rgb(24 23 20 / 0.92) 0%, rgb(24 23 20 / 0.72) 55%, rgb(24 23 20 / 0.3) 100%);
     }
   }
-  .hero-sisus { display: grid; gap: 1.25rem; justify-items: start; }
+  .hero-sisus { display: grid; gap: 1.4rem; justify-items: start; }
   .hero h1 { color: #fff; max-width: 13ch; }
-  .hero-lead { max-width: 34rem; font-size: var(--fs-lg); line-height: 1.5; color: rgb(255 255 255 / 0.9); }
-  .hero-toiminnot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.75rem; margin-top: 0.75rem; }
+  .hero-lead {
+    max-width: 34rem;
+    font-size: clamp(1.15rem, 1rem + 0.5vw, 1.35rem);
+    line-height: 1.5;
+    color: rgb(255 255 255 / 0.92);
+  }
+  .hero-toiminnot { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.75rem; margin-top: 0.75rem; }
   .hero-sposti {
     display: inline-flex;
     align-items: center;
+    gap: 0.55rem;
     min-height: 48px;
     font-weight: 600;
     font-size: var(--fs-lg);
     color: #fff;
+    text-decoration-color: rgb(255 255 255 / 0.45);
   }
   .hero :focus-visible { outline-color: var(--green-text-on); }
 
-  /* 2. Bento */
+  .osio-otsake { display: grid; gap: 1rem; max-width: 46rem; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+  .osio-otsake p { color: var(--muted); font-size: var(--fs-lg); }
+
+  /* Kattotyöt: kuva ja viisi palvelua, kaikki solut täytetty */
   .bento { display: grid; gap: 1rem; grid-template-columns: 1fr; }
   .solu {
     display: grid;
-    gap: 0.75rem;
+    gap: 0.6rem;
     align-content: start;
-    padding: clamp(1.5rem, 3vw, 2.25rem);
+    padding: clamp(1.5rem, 2.6vw, 2rem);
     border-radius: var(--r-md);
     background: var(--surface);
     box-shadow: var(--shadow);
   }
+  .solu h3 { font-size: clamp(1.2rem, 1.05rem + 0.4vw, 1.4rem); }
   .solu p { color: var(--muted); }
-  .solu--esittely { background: var(--green-fill); color: var(--green-text-on); box-shadow: none; gap: 1.1rem; }
-  .solu--esittely h2 { color: #fff; font-size: clamp(1.85rem, 1.4rem + 1.4vw, 2.5rem); }
-  .solu--esittely p { color: var(--green-text-on); }
-  .solu--esittely .link-arrow { color: #fff; margin-top: 0.5rem; }
-  .solu--esittely :focus-visible { outline-color: var(--green-text-on); }
-  .solu--kuva { padding: 0; overflow: hidden; box-shadow: none; }
-  .solu--p2, .solu--p4 { background: var(--sand); box-shadow: none; }
+  .solu--p1 { background: var(--green-fill); box-shadow: none; }
+  .solu--p1 h3 { color: #fff; }
+  .solu--p1 p { color: var(--green-text-on); }
+  .solu--p3, .solu--p4 { background: var(--sand); box-shadow: none; }
+  .solu--kuva {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: none;
+    min-height: 18rem;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+  }
+  .solu--kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
+  .solu--kuva :global(img) { transition: transform 900ms var(--ease-out); }
+  .kuva-linkki {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    background: rgb(24 23 20 / 0.55);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgb(255 255 255 / 0.18);
+    font-weight: 600;
+  }
+  .kuva-linkki :global(.icon) { transition: transform 300ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .solu--kuva:hover :global(img) { transform: scale(1.03); }
+    .solu--kuva:hover .kuva-linkki :global(.icon) { transform: translateX(4px); }
+  }
   @media (min-width: 48rem) {
     .bento { grid-template-columns: repeat(6, 1fr); }
-    .solu--esittely { grid-column: 1 / -1; }
+    .solu--kuva { grid-column: 1 / -1; min-height: 24rem; }
     .solu--p1, .solu--p2, .solu--p3 { grid-column: span 2; }
     .solu--p4, .solu--p5 { grid-column: span 3; }
   }
   @media (min-width: 64rem) {
-    .bento--kuva { grid-template-columns: repeat(6, 1fr); }
-    .bento--kuva .solu--esittely { grid-column: 1 / 3; grid-row: 1 / 3; align-content: end; }
-    .bento--kuva .solu--kuva { grid-column: 3 / -1; grid-row: 1; min-height: 22rem; }
-    .bento--kuva .solu--p1 { grid-column: 3 / 5; grid-row: 2; }
-    .bento--kuva .solu--p2 { grid-column: 5 / -1; grid-row: 2; }
+    .bento--kuva .solu--kuva { grid-column: 1 / 5; grid-row: 1 / 3; min-height: 30rem; }
+    .bento--kuva .solu--p1 { grid-column: 5 / -1; grid-row: 1; align-content: end; }
+    .bento--kuva .solu--p2 { grid-column: 5 / -1; grid-row: 2; align-content: end; }
     .bento--kuva .solu--p3,
     .bento--kuva .solu--p4,
     .bento--kuva .solu--p5 { grid-column: span 2; }
   }
 
-  /* 3. Merkit */
+  /* Kaksoiskehys kuville: kuva kuin levy alustallaan */
+  .kehys {
+    padding: 0.45rem;
+    border-radius: calc(var(--r-md) + 0.45rem);
+    background: color-mix(in srgb, var(--ink) 5%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 7%, transparent);
+  }
+
+  /* Merkit */
   .merkit-ruudukko { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
   @media (min-width: 60rem) {
     .merkit-ruudukko--kuva { grid-template-columns: 5fr 6fr; }
   }
-  .merkit-teksti { display: grid; gap: 1.25rem; max-width: 40rem; }
-  .merkit { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 1rem; }
+  .merkit-teksti { display: grid; gap: 1.25rem; justify-items: start; max-width: 40rem; }
+  .merkit { list-style: none; margin: 0.5rem 0 1rem; padding: 0; display: grid; gap: 1.1rem; }
   .merkit li {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -278,39 +358,31 @@ const merkit = [
     font-weight: 600;
     color: var(--ink);
   }
-  .merkit :global(.icon) {
-    box-sizing: content-box;
-    padding: 0.45rem;
-    border-radius: var(--r-sm);
-    background: color-mix(in srgb, var(--green) 12%, transparent);
-    color: var(--green);
+  .merkit :global(.icon) { color: var(--green); }
+
+  /* Huoltovälit: otsikko vasemmalla, välit oikealla */
+  .huolto { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  @media (min-width: 60rem) {
+    .huolto { grid-template-columns: 5fr 7fr; }
+    .huolto-otsake { position: sticky; top: calc(var(--header-offset) + 2rem); }
   }
+  .huolto-otsake { display: grid; gap: 1rem; }
+  .huolto-otsake p { color: var(--muted); font-size: var(--fs-lg); max-width: 32rem; }
 
-  /* 4. Huoltovälit */
-  .osio-otsake { display: grid; gap: 1rem; max-width: 44rem; margin-bottom: clamp(2.5rem, 6vw, 4rem); }
-  .osio-otsake p { color: var(--muted); }
-
-  /* 5. Maalaus */
+  /* Maalaus */
   .maalaus { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
   @media (min-width: 60rem) {
     .maalaus--kuva { grid-template-columns: 6fr 5fr; }
   }
   .maalaus-teksti { display: grid; gap: 1.25rem; justify-items: start; }
-  .alapalvelut {
-    list-style: none;
-    margin: 0.75rem 0;
-    padding: 0;
-    display: grid;
-    gap: 1.5rem 2.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-  }
-  .alapalvelut li { display: grid; gap: 0.35rem; align-content: start; }
+  .alapalvelut { list-style: none; margin: 0.5rem 0; padding: 0; display: grid; gap: 1.25rem; max-width: 36rem; }
+  .alapalvelut li { display: grid; gap: 0.25rem; }
   .alapalvelut h3 { font-size: 1.15rem; }
   .alapalvelut p { color: var(--muted); }
 
   .osion-otsikko { margin-bottom: clamp(2rem, 5vw, 3rem); }
 
-  /* 7. Muut palvelut */
+  /* Muut palvelut: kortit samassa linjassa */
   .muut {
     list-style: none;
     margin: 0;
@@ -319,18 +391,20 @@ const merkit = [
     gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr));
   }
+  .muut li { display: grid; }
   .muu {
     display: grid;
-    height: 100%;
+    grid-template-rows: auto 1fr;
     border-radius: var(--r-md);
     background: var(--surface);
     box-shadow: var(--shadow);
     overflow: hidden;
     color: var(--ink);
     text-decoration: none;
-    transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+    transition: transform 400ms var(--ease-out), box-shadow 400ms var(--ease-out);
   }
   .muu :global(.kuvapaikka) { border-radius: 0; }
+  .muu :global(img) { transition: transform 900ms var(--ease-out); }
   .kuvaton {
     display: grid;
     place-items: center;
@@ -338,7 +412,6 @@ const merkit = [
     background: var(--green-fill);
     color: var(--green-text-on);
   }
-  .muu :global(img) { transition: transform 600ms var(--ease-out); }
   .muu-teksti { display: grid; gap: 0.4rem; align-content: start; padding: 1.4rem 1.5rem 1.6rem; }
   .muu strong {
     display: flex;
@@ -352,22 +425,34 @@ const merkit = [
   .muu strong :global(.icon) { flex: none; transition: transform 300ms var(--ease-out); }
   .muu-teksti > span { color: var(--muted); }
   @media (hover: hover) and (pointer: fine) {
-    .muu:hover { transform: translateY(-3px); }
-    .muu:hover :global(img) { transform: scale(1.03); }
+    .muu:hover { transform: translateY(-4px); box-shadow: 0 2px 4px rgb(38 38 38 / 0.06), 0 22px 40px -20px rgb(38 38 38 / 0.35); }
+    .muu:hover :global(img) { transform: scale(1.04); }
     .muu:hover strong :global(.icon) { transform: translateX(4px); }
   }
 
-  /* 8. Meistä */
-  .meista { padding-bottom: 0; }
-  .meista-sisus { display: grid; gap: 1.5rem; }
-  .meista-sisus > * { max-width: 60rem; }
+  /* Meistä: lause vasemmalla, yritystiedot oikealla */
+  .meista-sisus { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: end; }
+  @media (min-width: 60rem) {
+    .meista-sisus { grid-template-columns: 7fr 5fr; }
+  }
+  .meista-teksti { display: grid; gap: 1.5rem; }
   .meista-lause {
     font-family: var(--font-display);
-    font-size: clamp(1.35rem, 1.05rem + 1.2vw, 2rem);
-    line-height: 1.35;
+    font-size: clamp(1.3rem, 1.05rem + 1vw, 1.85rem);
+    line-height: 1.38;
     font-weight: 500;
     letter-spacing: -0.01em;
     color: var(--ink);
   }
-  .meista-tiedot { color: var(--muted); font-size: var(--fs-sm); }
+  .tiedot {
+    margin: 0;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    border-radius: var(--r-md);
+    background: var(--sand);
+    display: grid;
+    gap: 1rem;
+  }
+  .tiedot div { display: grid; gap: 0.1rem; }
+  .tiedot dt { font-size: var(--fs-sm); color: var(--muted); }
+  .tiedot dd { margin: 0; font-weight: 600; color: var(--ink); }
 </style>

@@ -27,17 +27,22 @@ Kontrastit tarkistettu (WCAG AA): oliivi pohjalla 6.2:1, ruostenappi 7.0:1, hiil
 - Teksti 18 px, rivinväli 1.6.
 
 ## Muodot
-Yksi järjestelmä: pinnat, kortit ja kuvat 16px, napit ja pienet ohjaimet 10px. Varjo kuusenvihreään sävytetty.
+Dokumentoitu sääntö: napit ja navigaatio täysin pyöreitä (pilleri), pinnat, kortit ja kuvat 16px. Isot kuvat kaksoiskehyksessä (ohut alusta 0.45rem). Varjot hiilen sävyisiä.
 
-## Etusivun osiot (jokaisella eri asettelu)
+## Navigaatio ja napit
+- Kelluva navigaatiosaareke: irti yläreunasta, läpikuultava pinta, varjo kasvaa vieritettäessä (IntersectionObserver).
+- Etusivun ja palvelusivujen hero jatkuu navigaation alle.
+- Napin ikoni omassa ympyrässään napin sisällä.
+
+## Etusivun osiot (jokaisella eri asettelu, vaalea ja hiekka vuorottelevat)
 1. Hero: koko leveyden valokuva ja tumma liukuvärihuntu, otsikko, lause, Soita ja sähköposti vasemmassa alakulmassa. Ilman kuvaa vihreä pinta.
-2. Kattotyöt: bento-ruudukko (vihreä esittelysolu, kuva, viisi palvelusolua vuorotellen vaalea ja hiekka).
-3. Merkit: kuva ja tarkistuslista rinnakkain.
-4. Huoltovälit: neljä isoa lukua hiekkapohjalla.
+2. Kattotyöt: otsikko, alla bento (iso kuva linkkinä, viisi palvelusolua, kussakin yksi lause).
+3. Merkit: kuva ja varoitusmerkkilista rinnakkain, Soita-nappi.
+4. Huoltovälit: otsikko vasemmalla (kiinnittyy), rivit oikealla.
 5. Maalaus: teksti ja alapalvelut, kuva oikealla.
 6. Vaiheet: kolme numeroitua vaihetta.
 7. Muut palvelut: kuvakortit.
-8. Meistä: iso lause ja yritystiedot.
+8. Meistä: iso lause vasemmalla, yritystiedot hiekkakortissa oikealla.
 9. Yhteys: vihreä paneeli, iso numero.
 
 ## Kuvat
@@ -47,4 +52,4 @@ Kuvat kansioon `assets/kuvat/` (nimet README:ssä). Kuvapaikka katoaa, jos kuvaa
 Phosphor (`@phosphor-icons/core`, regular) komponentin `Icon.astro` kautta.
 
 ## Liike
-Hillitty: kuvat nousevat esiin vierityksessä, kortit nousevat 3px hoverissa, napit painuvat. Kaikki pois, kun käyttäjä toivoo vähemmän liikettä.
+Heron tekstit saapuvat porrastetusti latautuessa (nousu ja terävöityminen). Osiot nousevat esiin vierityksessä, kortit nousevat 4px ja kuvat zoomaavat hoverissa, napit painuvat. Kaikki pois, kun käyttäjä toivoo vähemmän liikettä.
