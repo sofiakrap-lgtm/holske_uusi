@@ -63,6 +63,13 @@ Alt-tekstit ja rajauksen kohta: `src/data/kuvat.json`. Jos kuvaa ei ole, sen pai
 
 **Tekoälykuvat (10/2026):** nykyiset kuvat on generoitu, eivätkä ne ole Holsken omia töitä. Vaihda ne omiin kuviin samoilla nimillä, kun niitä on. `muut-korjaukset.jpg` puuttuu vielä, joten sen kortissa näkyy ikoni. Tallenna tiedostot nimellä `nimi.jpg`, ei `nimi.jpg.jpg`.
 
+**Etusivun video** kansioon `public/video/`:
+- `etusivu.mp4` (pakollinen): neliö 1:1, esim. 1080 × 1080, H.264, alle 3 Mt, 8-12 s saumaton silmukka, ei ääntä
+- `etusivu-poster.jpg` (suositeltu): videon ensimmäinen kuva samassa koossa
+- `etusivu.webm` (valinnainen): sama video WebM-muodossa
+
+Ilman videota paikalla näkyy oliivinvärinen neliö.
+
 **Logo** on kansiossa `assets/logot-ja-grafiikat/`:
 - `logo.svg`: päälogo (Holske™), käytössä headerissa ja footerissa
 - `logo-pieni.svg`: pieni logo (H.), käytössä faviconissa

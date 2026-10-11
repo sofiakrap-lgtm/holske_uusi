@@ -13,9 +13,9 @@ Proof: vanhan sivun faktat (huoltovälit, työtapa, 25 v kokemus). Ei arvosteluj
 Unresolved: valokuvat puuttuvat (paikkamerkit).
 
 ## Direction contract
-THESIS: Alan standardi huippulaatuisena (käyttäjän valinta, standing exit). Valokuva, lyhyt lupaus ja puhelinnumero heti. Kieltäytyy piirretyistä kuvituksista, eyebrow-otsakkeista, keksityistä luvuista ja samanlaisista osioista.
-OWN-WORLD: luunvaalea pohja, oliivi teksti ja pinnat, ruoste vain soittamiseen, hiili footerissa. Kulmat 16/10px. Phosphor-ikonit. Tumma tila samasta paletista.
+THESIS: Bahn-malli (omistajan valinta). Kevyt ja rauhallinen, väri kuvista ja videosta, yksi toiminto "Ota yhteyttä". Kieltäytyy koko ruudun bannerista, painavista napeista ja puhelinnumerosta joka paikassa.
+OWN-WORLD: valkoinen ja lämmin harmaa pohja, hiili teksti ja napit, oliivi yksi korostussolu. Geist. Kuva keskellä -ruudukko tunnusmerkkinä. Ei kehyksiä, ei raskaita kaistoja.
 STORY: kävijä näkee talon ja katon, ymmärtää että Holske tekee kattoja ja maalausta, tunnistaa katon merkit, näkee huoltovälit ja soittaa.
-FIRST VIEWPORT: koko leveyden talokuva, vasemmassa alakulmassa otsikko "Kattoremontit ja katon maalaus", lause ja ruosteenvärinen Soita-nappi.
+FIRST VIEWPORT: vasemmalla iso otsikko kolmella rivillä sana kerrallaan, lause, "Ota yhteyttä" ja "Katso palvelut"; oikealla neliövideo.
 FORM: canon, seed c2c98c64 (roll degraded, käyttäjä valitsi standardin).
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance

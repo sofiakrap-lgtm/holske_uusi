@@ -1,0 +1,36 @@
+---
+/**
+ * Otsikko, jonka sanat nousevat esiin yksi kerrallaan. Rivit erotetaan |-merkillä:
+ * <SanaOtsikko teksti="Kattoremontit|ja katon maalaus" />
+ */
+interface Props {
+  teksti: string;
+  taso?: 'h1' | 'h2';
+  class?: string;
+  id?: string;
+}
+const { teksti, taso = 'h1', class: className, id } = Astro.props;
+const Tag = taso;
+const rivit = teksti.split('|').map((r) => r.trim().split(/\s+/));
+let i = 0;
+---
+
+<Tag class:list={['sana-otsikko', className]} id={id} aria-label={teksti.replace(/\|/g, ' ')}>
+  {
+    rivit.map((sanat) => (
+      <span class="rivi" aria-hidden="true">
+        {sanat.map((s) => (
+          <>
+            <span class="sana">
+              <span style={`--i:${i++}`}>{s}</span>
+            </span>{' '}
+          </>
+        ))}
+      </span>
+    ))
+  }
+</Tag>
+
+<style>
+  .rivi { display: block; }
+</style>

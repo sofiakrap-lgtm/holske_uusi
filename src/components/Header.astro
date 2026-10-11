@@ -1,5 +1,4 @@
 ---
-import Icon from './Icon.astro';
 import Logo from './Logo.astro';
 import yritys from '../data/yritys.json';
 
@@ -13,7 +12,6 @@ const path = Astro.url.pathname;
 const isActive = (href: string) =>
   path === href || (href !== '/' && href !== '/palvelut/' && path.startsWith(href)) ||
   (href === '/palvelut/' && path.startsWith('/palvelut/') && !['/palvelut/katot/', '/palvelut/maalaus/'].includes(path));
-const tel = `tel:${yritys.puhelinE164}`;
 ---
 
 <div class="header-sentinel" data-header-sentinel aria-hidden="true"></div>
@@ -35,28 +33,13 @@ const tel = `tel:${yritys.puhelinE164}`;
           ))
         }
         <li class="nav-mobile-only">
-          <a href={tel} class="nav-phone">
-            <Icon name="puhelin" size={20} />
-            {yritys.puhelinNaytto}
-          </a>
-        </li>
-        <li class="nav-mobile-only">
-          <a href={`mailto:${yritys.sahkoposti}`} class="nav-phone">
-            <Icon name="sahkoposti" size={20} />
-            {yritys.sahkoposti}
-          </a>
-        </li>
-        <li class="nav-mobile-only">
-          <a href={tel} class="btn btn--block">Soita {yritys.puhelinNaytto}</a>
+          <a href="/yhteystiedot/" class="btn btn--block">Ota yhteyttä</a>
         </li>
       </ul>
     </nav>
 
     <div class="actions">
-      <a href={tel} class="phone" aria-label={`Soita ${yritys.puhelinNaytto}`}>
-        <Icon name="puhelin" size={20} />
-      </a>
-      <a href={tel} class="btn cta"><Icon name="puhelin" size={18} /> Soita {yritys.puhelinNaytto}</a>
+      <a href="/yhteystiedot/" class="btn cta">Ota yhteyttä</a>
       <button
         type="button"
         class="menu-toggle"
@@ -101,14 +84,21 @@ const tel = `tel:${yritys.puhelinE164}`;
 </script>
 
 <style>
-  .header-sentinel { position: absolute; top: 0; left: 0; width: 1px; height: 24px; pointer-events: none; }
-  /* Kelluva navigaatiosaareke: irrallaan yläreunasta, läpikuultava pinta */
+  .header-sentinel { position: absolute; top: 0; left: 0; width: 1px; height: 8px; pointer-events: none; }
   .site-header {
     position: sticky;
     top: 0;
     z-index: 50;
-    padding-top: 0.75rem;
-    pointer-events: none;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background-color 400ms var(--ease-out), border-color 400ms var(--ease-out);
+  }
+  .site-header.is-scrolled,
+  .site-header.is-open {
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    backdrop-filter: saturate(180%) blur(16px);
+    border-bottom-color: var(--line);
   }
   .bar {
     position: relative;
@@ -116,23 +106,6 @@ const tel = `tel:${yritys.puhelinE164}`;
     align-items: center;
     gap: 1.5rem;
     min-height: var(--header-h);
-    padding-inline: 1.25rem 0.5rem;
-    max-width: calc(var(--max) + 2rem);
-    border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--surface) 82%, transparent);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    backdrop-filter: blur(20px) saturate(160%);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 10px 30px -18px rgb(38 38 38 / 0.35);
-    pointer-events: auto;
-    transition: box-shadow 300ms var(--ease-out), background-color 300ms var(--ease-out);
-  }
-  @media (max-width: 82rem) {
-    .bar { width: calc(100% - 2 * var(--gutter)); }
-  }
-  .site-header.is-scrolled .bar {
-    background: color-mix(in srgb, var(--surface) 92%, transparent);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 14px 36px -18px rgb(38 38 38 / 0.45);
   }
   .brand {
     display: inline-flex;
@@ -163,11 +136,8 @@ const tel = `tel:${yritys.puhelinE164}`;
     text-decoration: none;
     transition: background-color 150ms ease;
   }
-  .nav-list a:hover { background: color-mix(in srgb, var(--green) 8%, transparent); }
-  .nav-list a[aria-current='page'] {
-    color: var(--green);
-    background: color-mix(in srgb, var(--green) 10%, transparent);
-  }
+  .nav-list a:hover { background: color-mix(in srgb, var(--ink) 5%, transparent); }
+  .nav-list a[aria-current='page'] { color: var(--ink); background: color-mix(in srgb, var(--ink) 6%, transparent); }
   .nav-mobile-only { display: none; }
 
   .actions {
@@ -175,23 +145,9 @@ const tel = `tel:${yritys.puhelinE164}`;
     align-items: center;
     gap: 0.75rem;
   }
-  .phone {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    min-height: 44px;
-    min-width: 44px;
-    justify-content: center;
-    color: var(--green);
-    font-weight: 600;
-    text-decoration: none;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-  .phone:hover { text-decoration: underline; }
   .cta {
-    min-height: 3rem;
-    padding: 0.5rem 1.25rem 0.5rem 0.5rem;
+    min-height: 2.5rem;
+    padding: 0.5rem 1.15rem;
     font-size: 1rem;
     white-space: nowrap;
   }
@@ -203,11 +159,11 @@ const tel = `tel:${yritys.puhelinE164}`;
     border: 0;
     border-radius: 999px;
     background: transparent;
-    color: var(--green);
+    color: var(--ink);
     cursor: pointer;
     place-items: center;
   }
-  .menu-toggle:active { background: color-mix(in srgb, var(--green) 10%, transparent); }
+  .menu-toggle:active { background: color-mix(in srgb, var(--ink) 8%, transparent); }
   .menu-icon {
     position: relative;
     display: block;
@@ -228,30 +184,23 @@ const tel = `tel:${yritys.puhelinE164}`;
   .is-open .menu-icon span:first-child { top: 5px; transform: rotate(45deg); }
   .is-open .menu-icon span:last-child { top: 5px; transform: rotate(-45deg); }
 
-  @media (min-width: 64rem) {
-    .phone { display: none; }
-  }
 
   @media (max-width: 63.99rem) {
     .bar { gap: 0.5rem; }
     .menu-toggle { display: grid; }
-    .cta { display: none; }
     .actions { margin-left: auto; gap: 0.25rem; }
     .nav { margin: 0; }
-    .bar { padding-inline: 1rem 0.35rem; }
     .nav-list {
       position: absolute;
-      top: calc(100% + 0.5rem);
+      top: 100%;
       left: 0;
       right: 0;
       flex-direction: column;
       align-items: stretch;
       gap: 0.25rem;
       padding: 0.75rem var(--gutter) 1.5rem;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--r-md);
-      box-shadow: 0 24px 40px -24px rgb(38 38 38 / 0.4);
+      min-height: calc(100dvh - var(--header-h));
+      background: var(--bg);
       /* Valikko laskeutuu headerista, josta se avattiin, ja palaa samaa reittiä */
       transform-origin: top center;
       transform: translateY(-8px);
@@ -278,13 +227,12 @@ const tel = `tel:${yritys.puhelinE164}`;
       border-radius: var(--r-sm);
     }
     .nav-mobile-only { display: block; }
-    .nav-mobile-only:first-of-type { margin-top: 0.5rem; border-top: 1px solid var(--line); padding-top: 0.75rem; }
-    .nav-phone { gap: 0.6rem; color: var(--green) !important; font-weight: 600 !important; }
-    .nav-list .btn { margin-top: 0.5rem; color: var(--orange-ink); justify-content: center; }
+    .nav-list a:not(.btn) { font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2rem); font-weight: 560; letter-spacing: -0.02em; min-height: 3.75rem; }
+    .nav-list .btn { margin-top: 0.5rem; min-height: 3.25rem; color: var(--orange-ink); justify-content: center; }
     .nav-list .btn:hover { background: var(--orange-hover); }
   }
 
   @media (prefers-reduced-transparency: reduce) {
-    .bar { background: var(--surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
+    .site-header.is-scrolled { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; }
   }
 </style>

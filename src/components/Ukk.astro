@@ -9,7 +9,7 @@ const { kysymykset } = Astro.props;
 <div class="ukk">
   {
     kysymykset.map((q) => (
-      <details>
+      <details name="ukk">
         <summary>
           <span>{q.k}</span>
           <Icon name="plus" size={22} />
@@ -21,27 +21,34 @@ const { kysymykset } = Astro.props;
 </div>
 
 <style>
-  .ukk {
-    display: grid;
-    border-top: 1px solid var(--line);
-    max-width: 48rem;
+  .ukk { display: grid; gap: 0.5rem; }
+  details {
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    interpolate-size: allow-keywords;
   }
-  details { border-bottom: 1px solid var(--line); }
+  :global(.section--sand) details { background: var(--bg); }
+  details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 350ms var(--ease-out), content-visibility 350ms allow-discrete;
+  }
+  details[open]::details-content { block-size: auto; }
   summary {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
     min-height: 3.5rem;
-    padding: 1.1rem 0;
+    padding: 1.1rem 1.4rem;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 1.125rem;
-    color: var(--green);
+    color: var(--ink);
     list-style: none;
   }
   summary::-webkit-details-marker { display: none; }
-  summary :global(.icon) { flex: none; transition: transform 260ms var(--ease-out); }
+  summary :global(.icon) { flex: none; transition: transform 350ms var(--ease-out); }
   details[open] summary :global(.icon) { transform: rotate(45deg); }
-  p { padding: 0 0 1.4rem; color: var(--muted); max-width: var(--measure); }
+  p { padding: 0 1.4rem 1.4rem; color: var(--muted); max-width: var(--measure); }
 </style>

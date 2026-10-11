@@ -19,7 +19,7 @@ const vaiheet = [
   {
     vaiheet.map((v, i) => (
       <li>
-        <span class="nro" aria-hidden="true">{i + 1}</span>
+        <span class="nro" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
         <h3>{v.otsikko}</h3>
         <p>{v.teksti}</p>
       </li>
@@ -38,18 +38,13 @@ const vaiheet = [
   }
   li { display: grid; gap: 0.6rem; align-content: start; }
   .nro {
-    display: grid;
-    place-items: center;
-    width: 3rem;
-    height: 3rem;
-    margin-bottom: 0.5rem;
-    border-radius: var(--r-sm);
-    background: var(--green-fill);
-    color: #fff;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.35rem;
-    line-height: 1;
+    display: block;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
   }
   h3 { font-size: 1.25rem; }
   p { color: var(--muted); max-width: 26rem; }

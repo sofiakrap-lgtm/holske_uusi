@@ -1,0 +1,65 @@
+---
+/**
+ * Luku, jonka numerot rullaavat paikalleen kuin matkamittari, kun luku tulee näkyviin.
+ * Muut merkit (v, -, +) näkyvät sellaisenaan. Ilman JavaScriptiä ja vähennetyllä liikkeellä luku näkyy heti.
+ */
+interface Props {
+  arvo: string;
+  class?: string;
+}
+const { arvo, class: className } = Astro.props;
+const merkit = [...arvo];
+const numerot = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+let n = 0;
+---
+
+<span class:list={['rulla', className]} aria-label={arvo} role="text" data-rulla>
+  {
+    merkit.map((m) =>
+      /\d/.test(m) ? (
+        <span class="paikka" aria-hidden="true">
+          <span class="nauha" style={`--d:${m};--n:${n++}`}>
+            {numerot.map((d) => <span>{d}</span>)}
+          </span>
+        </span>
+      ) : (
+        <span class="muu" aria-hidden="true">{m === ' ' ? ' ' : m}</span>
+      ),
+    )
+  }
+</span>
+
+<script>
+  const rullat = document.querySelectorAll<HTMLElement>('[data-rulla]');
+  if (rullat.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          (e.target as HTMLElement).classList.remove('odottaa');
+          io.unobserve(e.target);
+        }
+      },
+      { threshold: 0.4 },
+    );
+    rullat.forEach((r) => {
+      r.classList.add('odottaa');
+      io.observe(r);
+    });
+  }
+</script>
+
+<style>
+  .rulla { display: inline-flex; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .paikka { display: inline-block; height: 1em; line-height: 1; overflow: hidden; }
+  .nauha {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(calc(var(--d) * -1em));
+    transition: transform 1400ms var(--ease-in-out);
+    transition-delay: calc(var(--n) * 60ms);
+  }
+  .nauha > span { display: block; height: 1em; line-height: 1; }
+  .rulla:global(.odottaa) .nauha { transform: translateY(0); transition: none; }
+  .muu { display: inline-block; line-height: 1; }
+</style>

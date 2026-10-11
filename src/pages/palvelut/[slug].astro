@@ -6,6 +6,8 @@ import Kuva from '../../components/Kuva.astro';
 import Icon from '../../components/Icon.astro';
 import Ukk from '../../components/Ukk.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
+import SanaOtsikko from '../../components/SanaOtsikko.astro';
+import Bento from '../../components/Bento.astro';
 import yritys from '../../data/yritys.json';
 
 export async function getStaticPaths() {
@@ -19,9 +21,8 @@ const d = palvelu.data;
 const muut = (await getCollection('palvelut'))
   .filter((p) => p.id !== palvelu.id)
   .sort((a, b) => a.data.jarjestys - b.data.jarjestys)
-  .slice(0, 4);
+;
 const site = Astro.site ?? new URL('https://holske.fi');
-const tel = `tel:${yritys.puhelinE164}`;
 
 const schema: Record<string, unknown>[] = [
   {
@@ -58,45 +59,41 @@ import { getKuva } from '../../lib/kuvat';
 // Lisäkuvat näytetään vain, jos ne on lisätty kansioon (esim. katot-2.jpg, katot-3.jpg)
 const lisakuvat = [`${d.kuva}-2`, `${d.kuva}-3`].filter((n) => getKuva(n));
 const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
+const bentoSolut: { otsikko: string; teksti?: string; href?: string }[] = alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: a.teksti }));
+if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kuntoarvio', teksti: 'Katsomme kohteen ja kerromme, mitä se tarvitsee.', href: '/yhteystiedot/' });
 ---
 
 <BaseLayout title={d.seoTitle} description={d.kuvaus} schema={schema}>
   <section class="hero">
     <div class="container">
       <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }, { nimi: d.nimi, href: `/palvelut/${palvelu.id}/` }]} />
-      <div class="hero-teksti">
-        <h1>{d.otsikko}</h1>
-        <div class="hero-ala">
-          <p class="lead">{d.ingressi}</p>
-          <div class="toiminnot">
-            <a href={tel} class="btn btn--iso"><Icon name="puhelin" size={20} /> Soita {yritys.puhelinNaytto}</a>
-            <a href={`mailto:${yritys.sahkoposti}`} class="sposti-linkki">{yritys.sahkoposti}</a>
+      <div class="hero-ruudukko">
+        <div class="hero-teksti">
+          <SanaOtsikko teksti={d.otsikko} />
+          <p class="lead saapuu" style="--i:4">{d.ingressi}</p>
+          <div class="btn-row saapuu" style="--i:5">
+            <a href="/yhteystiedot/" class="btn btn--iso">Ota yhteyttä</a>
           </div>
         </div>
+        {
+          getKuva(d.kuva) && (
+            <div class="hero-kuva saapuu" style="--i:2">
+              <Kuva nimi={d.kuva} alt={d.kuvaAlt} ikoni={d.ikoni} variantti="tayta" eager />
+            </div>
+          )
+        }
       </div>
     </div>
-    {
-      getKuva(d.kuva) && (
-        <div class="hero-kuva">
-          <Kuva nimi={d.kuva} alt={d.kuvaAlt} ikoni={d.ikoni} variantti="hero" eager />
-        </div>
-      )
-    }
   </section>
 
   {
-    alapalvelut.length > 0 && (
-      <section class="section" aria-labelledby="sisaltaa-otsikko">
-        <div class="container kaksi">
-          <h2 id="sisaltaa-otsikko">Mitä teemme</h2>
-          <ul class="rivit">
-            {alapalvelut.map((a) => (
-              <li>
-                <h3>{a.nimi}</h3>
-                <p>{a.teksti}</p>
-              </li>
-            ))}
-          </ul>
+    bentoSolut.length > 0 && (
+      <section class="section section--sand" aria-labelledby="sisaltaa-otsikko">
+        <div class="container">
+          <div class="osio-otsake">
+            <h2 id="sisaltaa-otsikko">Mitä teemme</h2>
+          </div>
+          <Bento kuva={`${d.kuva}-2`} solut={bentoSolut} korostus={bentoSolut.length - 1} />
         </div>
       </section>
     )
@@ -106,15 +103,14 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
     lisakuvat.length > 0 && (
       <section class="section--tight" aria-label="Kuvia työstä">
         <div class="container lisakuvat">
-          {lisakuvat.map((n) => <Kuva nimi={n} ikoni={d.ikoni} variantti="kortti" />)}
+          {lisakuvat.map((n) => <Kuva nimi={n} ikoni={d.ikoni} variantti="kortti" class="reveal" />)}
         </div>
       </section>
     )
   }
 
-  <section class="section section--sand">
-    <div class="container kaksi">
-      <div></div>
+  <section class="section">
+    <div class="container">
       <div class="prose">
         <Content />
       </div>
@@ -123,27 +119,28 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
 
   {
     d.ukk.length > 0 && (
-      <section class="section" aria-labelledby="ukk-otsikko">
-        <div class="container kaksi">
-          <h2 id="ukk-otsikko">Usein kysyttyä</h2>
+      <section class="section section--sand" aria-labelledby="ukk-otsikko">
+        <div class="container ukk-ruudukko">
+          <div class="ukk-otsake">
+            <h2 id="ukk-otsikko">Usein kysyttyä</h2>
+            <a href="/yhteystiedot/" class="btn btn--secondary">Ota yhteyttä</a>
+          </div>
           <Ukk kysymykset={d.ukk} />
         </div>
       </section>
     )
   }
 
-  <CtaOsio />
-
   <section class="section--tight" aria-labelledby="muut-otsikko">
-    <div class="container kaksi">
+    <div class="container">
       <h2 id="muut-otsikko" class="pieni-otsikko">Muut palvelut</h2>
-      <ul class="linkkirivit">
+      <ul class="muut">
         {
           muut.map((p) => (
             <li>
               <a href={`/palvelut/${p.id}/`}>
-                <strong>{p.data.nimi}</strong>
-                <Icon name="nuoli" size={22} />
+                {p.data.nimi}
+                <Icon name="nuoli" size={18} />
               </a>
             </li>
           ))
@@ -151,76 +148,42 @@ const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
       </ul>
     </div>
   </section>
+
+  <CtaOsio />
 </BaseLayout>
 
 <style>
-  .hero {
-    background: var(--green-fill);
-    color: var(--green-text-on);
-    margin-top: calc(-1 * var(--header-offset));
-    padding-block: calc(var(--header-offset) + clamp(1rem, 3vw, 2rem)) clamp(3rem, 7vw, 5rem);
-    overflow: hidden;
+  .hero { padding-block: clamp(1rem, 3vw, 2rem) clamp(3rem, 7vw, 6rem); }
+  .hero-ruudukko { display: grid; gap: clamp(2.5rem, 6vw, 4rem); align-items: center; margin-top: clamp(1.5rem, 4vw, 3rem); }
+  @media (min-width: 64rem) {
+    .hero-ruudukko:has(.hero-kuva) { grid-template-columns: 7fr 5fr; }
   }
-  .hero :global(.murupolku a),
-  .hero :global(.murupolku span),
-  .hero :global(.murupolku ol) { color: var(--green-text-on); }
-  .hero h1 { color: #fff; max-width: 16ch; }
-  .hero-teksti { display: grid; gap: clamp(1.75rem, 4vw, 2.5rem); margin-top: clamp(1rem, 3vw, 2rem); }
-  .hero-ala { display: grid; gap: 1.75rem; align-items: end; }
-  @media (min-width: 60rem) {
-    .hero-ala { grid-template-columns: minmax(0, 36rem) auto; justify-content: space-between; gap: 3rem; }
+  .hero-teksti { display: grid; gap: 1.75rem; justify-items: start; }
+  .hero-teksti :global(h1) { font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.75rem); }
+  .hero-kuva { position: relative; aspect-ratio: 1 / 1; border-radius: var(--r-lg); overflow: hidden; }
+  .hero-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
+  .lisakuvat { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+  .ukk-ruudukko { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  @media (min-width: 64rem) {
+    .ukk-ruudukko { grid-template-columns: 5fr 7fr; }
   }
-  .hero .lead { color: var(--green-text-on); }
-  .toiminnot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.75rem; }
-  .sposti-linkki { display: inline-flex; align-items: center; min-height: 48px; font-weight: 650; font-size: var(--fs-lg); color: #fff; }
-  .hero :focus-visible { outline-color: var(--green-text-on); }
-  .hero-kuva {
-    width: 100%;
-    max-width: calc(var(--max) + 2 * var(--gutter));
-    margin: clamp(2.5rem, 6vw, 4rem) auto 0;
-    padding-inline: var(--gutter);
-  }
-  .hero-kuva :global(.kuvapaikka) { border-radius: var(--r-md); }
-  .kaksi { display: grid; gap: 2rem; align-items: start; }
-  @media (min-width: 60rem) {
-    .kaksi { grid-template-columns: 0.85fr 1.15fr; gap: 5rem; }
-  }
-  .prose { min-width: 0; }
-  .rivit {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
-  }
-  .rivit li {
-    display: grid;
-    gap: 0.5rem;
-    align-content: start;
-    padding: clamp(1.25rem, 2.5vw, 1.75rem);
-    border-radius: var(--r-md);
-    background: var(--surface);
-    box-shadow: var(--shadow);
-  }
-  .rivit h3 { font-size: 1.15rem; }
-  .rivit p { color: var(--muted); }
-  .lisakuvat { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
-  .pieni-otsikko { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); }
-  .linkkirivit { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-  .linkkirivit a {
-    display: flex;
+  .ukk-otsake { display: grid; gap: 1.25rem; justify-items: start; }
+  .pieni-otsikko { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem); margin-bottom: 1.5rem; }
+  .muut { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .muut a {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    min-height: 3.5rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--line);
+    gap: 0.5rem;
+    min-height: 2.875rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink);
+    font-weight: 500;
     text-decoration: none;
+    transition: background-color 200ms ease;
   }
-  .linkkirivit strong { font-size: 1.1875rem; font-weight: 600; color: var(--green); }
-  .linkkirivit :global(.icon) { flex: none; color: var(--green); transition: transform 300ms var(--ease-out); }
-  @media (hover: hover) and (pointer: fine) {
-    .linkkirivit a:hover :global(.icon) { transform: translateX(6px); }
-  }
+  .muut a:hover { background: var(--sand); }
+  .muut :global(.icon) { transition: transform 200ms var(--ease-out); }
+  .muut a:hover :global(.icon) { transform: translateX(3px); }
 </style>

@@ -5,6 +5,7 @@ import Icon from '../../components/Icon.astro';
 import Kuva from '../../components/Kuva.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
 import Murupolku from '../../components/Murupolku.astro';
+import SanaOtsikko from '../../components/SanaOtsikko.astro';
 import { getKuva } from '../../lib/kuvat';
 
 const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
@@ -20,7 +21,7 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
     <div class="container">
       <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }]} />
       <div class="otsake">
-        <h1>Palvelut</h1>
+        <SanaOtsikko teksti="Palvelut" />
         <p class="lead">
           Erikoisalaamme ovat kattoremontit, katon maalaus ja talon maalaus. Hoidamme samalla myös muut omakotitalon
           ulkotyöt.
@@ -91,7 +92,8 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
     color: var(--green-text-on);
   }
   .ydinkortti { display: grid; gap: 1rem; color: var(--ink); text-decoration: none; }
-  .ydinkortti h2 { font-size: clamp(1.7rem, 1.3rem + 1.4vw, 2.3rem); margin-top: 0.5rem; }
+  .ydinkortti h2 { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); margin-top: 0.5rem; }
+  .ydinkortti :global(.kuvapaikka) { border-radius: var(--r-md); }
   .ydinkortti p { color: var(--muted); }
   .ydinkortti :global(.kuvapaikka) { transition: transform 500ms var(--ease-out); }
   @media (hover: hover) and (pointer: fine) {
@@ -114,9 +116,9 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
     text-decoration: none;
   }
   .linkkirivit a > span { display: grid; gap: 0.25rem; min-width: 0; }
-  .linkkirivit strong { font-size: 1.25rem; font-weight: 600; color: var(--green); }
+  .linkkirivit strong { font-size: 1.25rem; font-weight: 560; color: var(--ink); }
   .kuvaus { color: var(--muted); }
-  .linkkirivit :global(.icon) { flex: none; color: var(--green); transition: transform 300ms var(--ease-out); }
+  .linkkirivit :global(.icon) { flex: none; color: var(--ink); transition: transform 300ms var(--ease-out); }
   @media (hover: hover) and (pointer: fine) {
     .linkkirivit a:hover :global(.icon) { transform: translateX(6px); }
   }

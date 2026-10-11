@@ -3,186 +3,86 @@ import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Kuva from '../components/Kuva.astro';
 import Icon from '../components/Icon.astro';
+import SanaOtsikko from '../components/SanaOtsikko.astro';
+import HeroMedia from '../components/HeroMedia.astro';
+import Bento from '../components/Bento.astro';
 import Vaiheet from '../components/Vaiheet.astro';
-import CtaOsio from '../components/CtaOsio.astro';
 import Huoltovalit from '../components/Huoltovalit.astro';
+import Ukk from '../components/Ukk.astro';
+import CtaOsio from '../components/CtaOsio.astro';
 import { getKuva } from '../lib/kuvat';
 import yritys from '../data/yritys.json';
 
 const katot = (await getEntry('palvelut', 'katot'))!;
 const maalaus = (await getEntry('palvelut', 'maalaus'))!;
 const muut = (await getCollection('palvelut', (p) => !p.data.ydin)).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
-const tel = `tel:${yritys.puhelinE164}`;
-const heroKuva = getKuva('etusivu');
-const kattoKuva = getKuva('katot');
-const huoltoKuva = getKuva('katto-huolto');
-const maalausKuva = getKuva('maalaus');
 
-// Etusivulle vain kunkin palvelun ensimmäinen lause, koko teksti on palvelusivulla
+// Etusivulle vain ensimmäinen lause, koko teksti on palvelusivulla
 const ekaLause = (t: string) => {
   const i = t.indexOf('. ');
   return i === -1 ? t : t.slice(0, i + 1);
 };
 
+const lupaukset = [
+  { nimi: 'Ilmainen kuntoarvio', lause: 'Katsomme kohteen paikan päällä.', teksti: 'Saat selkeän suunnitelman ja hinnan ilman sitoutumista.' },
+  { nimi: 'Kiinteä hinta', lause: 'Tiedät hinnan ennen aloitusta.', teksti: 'Saat kiinteän hinnan kuntoarvion jälkeen, ja päätät itse, jatketaanko.' },
+  { nimi: 'Siisti työmaa', lause: 'Jätämme pihan siistimmäksi.', teksti: 'Lopuksi tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
+];
+
+const kattoSolut = [
+  ...katot.data.alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: ekaLause(a.teksti) })),
+  { otsikko: 'Lue lisää kattotöistä', href: '/palvelut/katot/' },
+];
+
 // Vanhan sivun kattosisällöstä
-const merkit = [
+const merkit: { otsikko: string; teksti?: string; href?: string }[] = [
   'Katolla kasvaa sammalta',
   'Peltikatossa näkyy ruostetta',
   'Katto vuotaa',
   'Tiilen pinta on kulunut tai hapristunut',
   'Katon väri on selvästi haalistunut',
+].map((m) => ({ otsikko: m }));
+merkit.push({ otsikko: 'Huomasitko jonkin näistä? Ota yhteyttä', href: '/yhteystiedot/' });
+
+const maalausSolut = [
+  ...maalaus.data.alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: a.teksti })),
+  { otsikko: 'Lue lisää talon maalauksesta', href: '/palvelut/maalaus/' },
 ];
+
+const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
 ---
 
 <BaseLayout
   title="Kattoremontit ja katon maalaus pääkaupunkiseudulla | Holske"
   description="Kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus omakotitaloille Helsingissä, Espoossa ja Vantaalla. Perheyritys, ilmainen kuntoarvio."
 >
-  <section class:list={['hero', { 'hero--kuva': heroKuva }]}>
-    {
-      heroKuva && (
-        <div class="hero-tausta">
-          <Kuva nimi="etusivu" variantti="tayta" eager />
-        </div>
-      )
-    }
-    <div class="container hero-sisus">
-      <h1 class="saapuu">Kattoremontit ja katon maalaus</h1>
-      <p class="hero-lead saapuu" style="--i:1">
-        Pieni perheyritys pääkaupunkiseudulta. Kunnostamme, maalaamme ja pinnoitamme omakotitalojen katot ja seinät
-        kiinteään hintaan.
-      </p>
-      <div class="hero-toiminnot saapuu" style="--i:2">
-        <a href={tel} class="btn btn--iso"><Icon name="puhelin" size={20} /> Soita {yritys.puhelinNaytto}</a>
-        <a href={`mailto:${yritys.sahkoposti}`} class="hero-sposti">
-          <Icon name="sahkoposti" size={20} />
-          {yritys.sahkoposti}
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="katot-otsikko">
-    <div class="container">
-      <div class="osio-otsake">
-        <h2 id="katot-otsikko">Kaikki kattotyöt yhdestä paikasta</h2>
-        <p>{katot.data.ingressi}</p>
-      </div>
-      <div class:list={['bento', { 'bento--kuva': kattoKuva }]}>
-        {
-          kattoKuva && (
-            <a href="/palvelut/katot/" class="solu solu--kuva reveal">
-              <Kuva nimi="katot" variantti="tayta" />
-              <span class="kuva-linkki">
-                Lue lisää kattotöistä <Icon name="nuoli" size={18} />
-              </span>
-            </a>
-          )
-        }
-        {
-          katot.data.alapalvelut.map((a, i) => (
-            <div class:list={['solu', 'solu--palvelu', `solu--p${i + 1}`, 'reveal']}>
-              <h3>{a.nimi}</h3>
-              <p>{ekaLause(a.teksti)}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--sand" aria-labelledby="merkit-otsikko">
-    <div class:list={['container', 'merkit-ruudukko', { 'merkit-ruudukko--kuva': huoltoKuva }]}>
-      {huoltoKuva && (
-        <div class="kehys reveal">
-          <Kuva nimi="katto-huolto" variantti="jaettu" />
-        </div>
-      )}
-      <div class="merkit-teksti">
-        <h2 id="merkit-otsikko">Mistä tiedät, että katto tarvitsee huoltoa?</h2>
-        <p class="lead">Tikkaille ei tarvitse kiivetä itse. Kun huomaat jonkin näistä, on hyvä aika soittaa.</p>
-        <ul class="merkit">
-          {
-            merkit.map((m) => (
-              <li>
-                <Icon name="varoitus" size={26} />
-                <span>{m}</span>
-              </li>
-            ))
-          }
-        </ul>
-        <a href={tel} class="btn"><Icon name="puhelin" size={20} /> Soita {yritys.puhelinNaytto}</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="huolto-otsikko">
-    <div class="container huolto">
-      <div class="huolto-otsake">
-        <h2 id="huolto-otsikko">Milloin katto ja seinät kannattaa maalata?</h2>
-        <p>
-          Pinnoitus voi pidentää tiilikaton käyttöikää jopa 20 vuodella. Nämä ovat tavalliset välit, kuntoarviossa
-          katsomme juuri sinun kohteesi.
+  <section class="hero">
+    <div class="container hero-ruudukko">
+      <div class="hero-teksti">
+        <SanaOtsikko teksti="Kattoremontit|ja katon maalaus|omakotitaloille" />
+        <p class="hero-lead saapuu" style="--i:4">
+          Pieni perheyritys pääkaupunkiseudulta. Kunnostamme, maalaamme ja pinnoitamme katot ja seinät kiinteään hintaan.
         </p>
-      </div>
-      <Huoltovalit />
-    </div>
-  </section>
-
-  <section class="section section--sand" aria-labelledby="maalaus-otsikko">
-    <div class:list={['container', 'maalaus', { 'maalaus--kuva': maalausKuva }]}>
-      <div class="maalaus-teksti">
-        <h2 id="maalaus-otsikko">{maalaus.data.otsikko}</h2>
-        <p class="lead">{maalaus.data.ingressi}</p>
-        <ul class="alapalvelut">
-          {
-            maalaus.data.alapalvelut.map((a) => (
-              <li>
-                <h3>{a.nimi}</h3>
-                <p>{a.teksti}</p>
-              </li>
-            ))
-          }
-        </ul>
-        <a href="/palvelut/maalaus/" class="link-arrow">Lue lisää talon maalauksesta <Icon name="nuoli" size={18} /></a>
-      </div>
-      {maalausKuva && (
-        <div class="kehys reveal">
-          <Kuva nimi="maalaus" variantti="jaettu" />
+        <div class="btn-row saapuu" style="--i:5">
+          <a href="/yhteystiedot/" class="btn btn--iso">Ota yhteyttä</a>
+          <a href="#kattotyot" class="link-arrow">Katso palvelut <Icon name="nuoli" size={18} /></a>
         </div>
-      )}
+      </div>
+      <div class="saapuu" style="--i:2">
+        <HeroMedia nimi="etusivu" kuvaus="Holske työssä omakotitalon katolla" />
+      </div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="vaiheet-otsikko">
+  <section class="section--tight lupaukset-osio" aria-label="Miksi Holske">
     <div class="container">
-      <h2 id="vaiheet-otsikko" class="osion-otsikko">Näin työ etenee</h2>
-      <Vaiheet />
-    </div>
-  </section>
-
-  <section class="section section--tight" aria-labelledby="muut-otsikko">
-    <div class="container">
-      <h2 id="muut-otsikko" class="osion-otsikko">Myös nämä hoituvat</h2>
-      <ul class="muut">
+      <ul class="lupaukset">
         {
-          muut.map((p) => (
+          lupaukset.map((l) => (
             <li class="reveal">
-              <a href={`/palvelut/${p.id}/`} class="muu">
-                {getKuva(p.data.kuva) ? (
-                  <Kuva nimi={p.data.kuva} variantti="kortti" />
-                ) : (
-                  <span class="kuvaton" aria-hidden="true">
-                    <Icon name={p.data.ikoni} size={48} />
-                  </span>
-                )}
-                <span class="muu-teksti">
-                  <strong>
-                    {p.data.nimi} <Icon name="nuoli" size={20} />
-                  </strong>
-                  <span>{p.data.kortti}</span>
-                </span>
-              </a>
+              <span class="eyebrow">{l.nimi}</span>
+              <strong>{l.lause}</strong>
+              <p>{l.teksti}</p>
             </li>
           ))
         }
@@ -190,269 +90,228 @@ const merkit = [
     </div>
   </section>
 
-  <section class="section meista" id="meista" aria-labelledby="meista-otsikko">
-    <div class="container meista-sisus">
-      <div class="meista-teksti">
-        <h2 id="meista-otsikko">Pieni perheyritys. Tue paikallista tekijää.</h2>
-        <p class="meista-lause">
-          Olemme suomalainen perheyritys pääkaupunkiseudulta. {yritys.kokemusLause} Asiakkaan tarpeet ovat meille
-          ensisijaisia, ja muokkaamme työn sinun kohteesi mukaan.
-        </p>
+  <section class="section" id="kattotyot" aria-labelledby="katot-otsikko">
+    <div class="container">
+      <div class="osio-otsake">
+        <h2 id="katot-otsikko">Kaikki kattotyöt yhdestä paikasta</h2>
+        <p>{ekaLause(katot.data.ingressi)} {yritys.kokemusLause}</p>
       </div>
-      <dl class="tiedot">
-        <div><dt>Yritys</dt><dd>{yritys.nimi}</dd></div>
-        <div><dt>Y-tunnus</dt><dd>{yritys.ytunnus}</dd></div>
-        <div><dt>Kotipaikka</dt><dd>{yritys.katuosoite}, {yritys.postinumero} {yritys.kaupunki}</dd></div>
-        <div><dt>Palvelualue</dt><dd>{yritys.palvelualue.join(', ')}</dd></div>
-      </dl>
+      <Bento kuva="katot" solut={kattoSolut} korostus={5} />
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="merkit-otsikko">
+    <div class="container">
+      <div class="osio-otsake">
+        <h2 id="merkit-otsikko">Mistä tiedät, että katto tarvitsee huoltoa?</h2>
+        <p>Tikkaille ei tarvitse kiivetä itse. Kun huomaat jonkin näistä, on hyvä aika pyytää kuntoarvio.</p>
+      </div>
+      <Bento kuva="katto-huolto" solut={merkit} korostus={5} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="huolto-otsikko">
+    <div class="container huolto">
+      <div class="huolto-otsake">
+        <h2 id="huolto-otsikko">Milloin katto ja seinät kannattaa maalata?</h2>
+        <p>Pinnoitus voi pidentää tiilikaton käyttöikää jopa 20 vuodella. Nämä ovat tavalliset välit, kuntoarviossa katsomme juuri sinun kohteesi.</p>
+      </div>
+      <Huoltovalit />
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="maalaus-otsikko">
+    <div class="container">
+      <div class="osio-otsake">
+        <h2 id="maalaus-otsikko">{maalaus.data.otsikko}</h2>
+        <p>{maalaus.data.ingressi}</p>
+      </div>
+      <Bento kuva="maalaus" solut={maalausSolut} korostus={3} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="muut-otsikko">
+    <div class="container">
+      <div class="karuselli-otsake">
+        <div class="osio-otsake">
+          <h2 id="muut-otsikko">Myös nämä hoituvat</h2>
+          <p>Teemme samalla muut omakotitalon ulkotyöt, kun niitä tarvitaan.</p>
+        </div>
+        <div class="karuselli-napit" aria-hidden="true">
+          <button type="button" class="pyorea" data-karuselli-edellinen tabindex="-1"><Icon name="nuoli" size={20} class="kaannetty" /></button>
+          <button type="button" class="pyorea" data-karuselli-seuraava tabindex="-1"><Icon name="nuoli" size={20} /></button>
+        </div>
+      </div>
+    </div>
+    <ul class="karuselli" data-karuselli aria-label="Muut palvelut">
+      {
+        muut.map((p) => (
+          <li>
+            <a href={`/palvelut/${p.id}/`} class="muu">
+              <span class="muu-kuva">
+                {getKuva(p.data.kuva) ? (
+                  <Kuva nimi={p.data.kuva} variantti="kortti" />
+                ) : (
+                  <span class="kuvaton" aria-hidden="true">
+                    <Icon name={p.data.ikoni} size={48} />
+                  </span>
+                )}
+              </span>
+              <span class="muu-teksti">
+                <strong>{p.data.nimi}</strong>
+                <span>{p.data.kortti}</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="vaiheet-otsikko">
+    <div class="container">
+      <h2 id="vaiheet-otsikko" class="osion-otsikko">Näin työ etenee</h2>
+      <Vaiheet />
+    </div>
+  </section>
+
+  <section class="section" id="meista" aria-labelledby="meista-otsikko">
+    <div class="container meista">
+      <h2 id="meista-otsikko">Pieni perheyritys. Tue paikallista tekijää.</h2>
+      <p class="meista-lause reveal">
+        Olemme suomalainen perheyritys pääkaupunkiseudulta. {yritys.kokemusLause} Asiakkaan tarpeet ovat meille
+        ensisijaisia, ja muokkaamme työn sinun kohteesi mukaan.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--sand" id="ukk" aria-labelledby="ukk-otsikko">
+    <div class="container ukk-ruudukko">
+      <div class="ukk-otsake">
+        <h2 id="ukk-otsikko">Usein kysyttyä</h2>
+        <p>Etkö löytänyt vastausta? Kysy meiltä suoraan.</p>
+        <a href="/yhteystiedot/" class="btn btn--secondary">Ota yhteyttä</a>
+      </div>
+      <Ukk kysymykset={ukk} />
     </div>
   </section>
 
   <CtaOsio />
 </BaseLayout>
 
+<script>
+  // Karusellin nuolinapit vierittävät yhden kortin verran
+  const lista = document.querySelector<HTMLElement>('[data-karuselli]');
+  const siirto = (suunta: number) => {
+    if (!lista) return;
+    const kortti = lista.querySelector('li');
+    const leveys = kortti ? kortti.getBoundingClientRect().width + 16 : 320;
+    lista.scrollBy({ left: suunta * leveys, behavior: 'smooth' });
+  };
+  document.querySelector('[data-karuselli-edellinen]')?.addEventListener('click', () => siirto(-1));
+  document.querySelector('[data-karuselli-seuraava]')?.addEventListener('click', () => siirto(1));
+</script>
+
 <style>
-  /* Hero: kuva jatkuu kelluvan navigaation alle */
-  .hero {
-    position: relative;
-    display: grid;
-    align-items: end;
-    min-height: min(100svh, 56rem);
-    margin-top: calc(-1 * var(--header-offset));
-    padding-block: calc(var(--header-offset) + 4rem) clamp(3rem, 7vw, 5.5rem);
-    background: var(--green-fill);
-    color: #fff;
-    overflow: hidden;
-    isolation: isolate;
-  }
-  .hero-tausta { position: absolute; inset: 0; z-index: -1; }
-  .hero-tausta :global(.kuvapaikka) { border-radius: 0; height: 100%; min-height: 0; }
-  .hero--kuva::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background:
-      linear-gradient(to top, rgb(24 23 20 / 0.88) 0%, rgb(24 23 20 / 0.6) 38%, rgb(24 23 20 / 0) 72%),
-      linear-gradient(to right, rgb(24 23 20 / 0.6), rgb(24 23 20 / 0) 60%),
-      linear-gradient(to bottom, rgb(24 23 20 / 0.35), rgb(24 23 20 / 0) 18%);
-  }
-  @media (max-width: 63.99rem) {
-    .hero { padding-bottom: 6.5rem; }
-  }
-  @media (max-width: 48rem) {
-    .hero--kuva::before {
-      background: linear-gradient(to top, rgb(24 23 20 / 0.92) 0%, rgb(24 23 20 / 0.72) 55%, rgb(24 23 20 / 0.3) 100%);
-    }
-  }
-  .hero-sisus { display: grid; gap: 1.4rem; justify-items: start; }
-  .hero h1 { color: #fff; max-width: 13ch; }
-  .hero-lead {
-    max-width: 34rem;
-    font-size: clamp(1.15rem, 1rem + 0.5vw, 1.35rem);
-    line-height: 1.5;
-    color: rgb(255 255 255 / 0.92);
-  }
-  .hero-toiminnot { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.75rem; margin-top: 0.75rem; }
-  .hero-sposti {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    min-height: 48px;
-    font-weight: 600;
-    font-size: var(--fs-lg);
-    color: #fff;
-    text-decoration-color: rgb(255 255 255 / 0.45);
-  }
-  .hero :focus-visible { outline-color: var(--green-text-on); }
-
-  .osio-otsake { display: grid; gap: 1rem; max-width: 46rem; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
-  .osio-otsake p { color: var(--muted); font-size: var(--fs-lg); }
-
-  /* Kattotyöt: kuva ja viisi palvelua, kaikki solut täytetty */
-  .bento { display: grid; gap: 1rem; grid-template-columns: 1fr; }
-  .solu {
-    display: grid;
-    gap: 0.6rem;
-    align-content: start;
-    padding: clamp(1.5rem, 2.6vw, 2rem);
-    border-radius: var(--r-md);
-    background: var(--surface);
-    box-shadow: var(--shadow);
-  }
-  .solu h3 { font-size: clamp(1.2rem, 1.05rem + 0.4vw, 1.4rem); }
-  .solu p { color: var(--muted); }
-  .solu--p1 { background: var(--green-fill); box-shadow: none; }
-  .solu--p1 h3 { color: #fff; }
-  .solu--p1 p { color: var(--green-text-on); }
-  .solu--p3, .solu--p4 { background: var(--sand); box-shadow: none; }
-  .solu--kuva {
-    position: relative;
-    padding: 0;
-    overflow: hidden;
-    box-shadow: none;
-    min-height: 18rem;
-    display: block;
-    color: #fff;
-    text-decoration: none;
-  }
-  .solu--kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
-  .solu--kuva :global(img) { transition: transform 900ms var(--ease-out); }
-  .kuva-linkki {
-    position: absolute;
-    left: 1rem;
-    bottom: 1rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 44px;
-    padding: 0.55rem 1.1rem;
-    border-radius: 999px;
-    background: rgb(24 23 20 / 0.55);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgb(255 255 255 / 0.18);
-    font-weight: 600;
-  }
-  .kuva-linkki :global(.icon) { transition: transform 300ms var(--ease-out); }
-  @media (hover: hover) and (pointer: fine) {
-    .solu--kuva:hover :global(img) { transform: scale(1.03); }
-    .solu--kuva:hover .kuva-linkki :global(.icon) { transform: translateX(4px); }
-  }
-  @media (min-width: 48rem) {
-    .bento { grid-template-columns: repeat(6, 1fr); }
-    .solu--kuva { grid-column: 1 / -1; min-height: 24rem; }
-    .solu--p1, .solu--p2, .solu--p3 { grid-column: span 2; }
-    .solu--p4, .solu--p5 { grid-column: span 3; }
-  }
+  /* Hero: otsikko vasemmalla, neliövideo oikealla */
+  .hero { padding-block: clamp(2rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem); }
+  .hero-ruudukko { display: grid; gap: clamp(2.5rem, 6vw, 4rem); align-items: center; }
   @media (min-width: 64rem) {
-    .bento--kuva .solu--kuva { grid-column: 1 / 5; grid-row: 1 / 3; min-height: 30rem; }
-    .bento--kuva .solu--p1 { grid-column: 5 / -1; grid-row: 1; align-content: end; }
-    .bento--kuva .solu--p2 { grid-column: 5 / -1; grid-row: 2; align-content: end; }
-    .bento--kuva .solu--p3,
-    .bento--kuva .solu--p4,
-    .bento--kuva .solu--p5 { grid-column: span 2; }
+    .hero-ruudukko { grid-template-columns: 7fr 5fr; }
   }
+  .hero-teksti { display: grid; gap: 1.75rem; justify-items: start; }
+  .hero-lead { max-width: 30rem; font-size: var(--fs-lg); line-height: 1.5; color: var(--muted); }
 
-  /* Kaksoiskehys kuville: kuva kuin levy alustallaan */
-  .kehys {
-    padding: 0.45rem;
-    border-radius: calc(var(--r-md) + 0.45rem);
-    background: color-mix(in srgb, var(--ink) 5%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 7%, transparent);
-  }
-
-  /* Merkit */
-  .merkit-ruudukko { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
-  @media (min-width: 60rem) {
-    .merkit-ruudukko--kuva { grid-template-columns: 5fr 6fr; }
-  }
-  .merkit-teksti { display: grid; gap: 1.25rem; justify-items: start; max-width: 40rem; }
-  .merkit { list-style: none; margin: 0.5rem 0 1rem; padding: 0; display: grid; gap: 1.1rem; }
-  .merkit li {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.9rem;
-    align-items: center;
-    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .merkit :global(.icon) { color: var(--green); }
-
-  /* Huoltovälit: otsikko vasemmalla, välit oikealla */
-  .huolto { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
-  @media (min-width: 60rem) {
-    .huolto { grid-template-columns: 5fr 7fr; }
-    .huolto-otsake { position: sticky; top: calc(var(--header-offset) + 2rem); }
-  }
-  .huolto-otsake { display: grid; gap: 1rem; }
-  .huolto-otsake p { color: var(--muted); font-size: var(--fs-lg); max-width: 32rem; }
-
-  /* Maalaus */
-  .maalaus { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
-  @media (min-width: 60rem) {
-    .maalaus--kuva { grid-template-columns: 6fr 5fr; }
-  }
-  .maalaus-teksti { display: grid; gap: 1.25rem; justify-items: start; }
-  .alapalvelut { list-style: none; margin: 0.5rem 0; padding: 0; display: grid; gap: 1.25rem; max-width: 36rem; }
-  .alapalvelut li { display: grid; gap: 0.25rem; }
-  .alapalvelut h3 { font-size: 1.15rem; }
-  .alapalvelut p { color: var(--muted); }
-
-  .osion-otsikko { margin-bottom: clamp(2rem, 5vw, 3rem); }
-
-  /* Muut palvelut: kortit samassa linjassa */
-  .muut {
+  /* Kolme lupausta */
+  .lupaukset-osio { border-top: 1px solid var(--line); }
+  .lupaukset {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr));
+    gap: 2rem clamp(2rem, 4vw, 4rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
   }
-  .muut li { display: grid; }
-  .muu {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    border-radius: var(--r-md);
-    background: var(--surface);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    color: var(--ink);
-    text-decoration: none;
-    transition: transform 400ms var(--ease-out), box-shadow 400ms var(--ease-out);
+  .lupaukset li { display: grid; gap: 0.4rem; align-content: start; }
+  .lupaukset strong { color: var(--ink); font-weight: 560; font-size: 1.25rem; letter-spacing: -0.015em; line-height: 1.3; }
+  .lupaukset p { color: var(--muted); }
+
+  /* Huoltovälit */
+  .huolto { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  @media (min-width: 64rem) {
+    .huolto { grid-template-columns: 5fr 7fr; }
+    .huolto-otsake { position: sticky; top: calc(var(--header-offset) + 2rem); }
   }
-  .muu :global(.kuvapaikka) { border-radius: 0; }
-  .muu :global(img) { transition: transform 900ms var(--ease-out); }
-  .kuvaton {
+  .huolto-otsake { display: grid; gap: 1rem; }
+  .huolto-otsake p { color: var(--muted); font-size: var(--fs-lg); max-width: 30rem; }
+
+  /* Karuselli */
+  .karuselli-otsake { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; }
+  .karuselli-napit { display: none; gap: 0.5rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  @media (min-width: 48rem) and (hover: hover) {
+    .karuselli-napit { display: flex; }
+  }
+  .pyorea {
     display: grid;
     place-items: center;
-    aspect-ratio: 4 / 3;
-    background: var(--green-fill);
-    color: var(--green-text-on);
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+    transition: background-color 200ms ease, transform 150ms var(--ease-out);
   }
-  .muu-teksti { display: grid; gap: 0.4rem; align-content: start; padding: 1.4rem 1.5rem 1.6rem; }
-  .muu strong {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .pyorea:hover { background: var(--sand); }
+  .pyorea:active { transform: scale(0.94); }
+  .pyorea :global(.kaannetty) { transform: scaleX(-1); }
+  .karuselli {
+    list-style: none;
+    margin: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(80vw, 24rem);
     gap: 1rem;
-    font-size: 1.2rem;
-    font-weight: 650;
-    color: var(--green);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2));
+    padding: 0 max(var(--gutter), calc((100vw - var(--max)) / 2)) 1rem;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
   }
-  .muu strong :global(.icon) { flex: none; transition: transform 300ms var(--ease-out); }
+  .karuselli::-webkit-scrollbar { display: none; }
+  .karuselli li { scroll-snap-align: start; display: grid; }
+  .muu { display: grid; gap: 1rem; align-content: start; color: var(--ink); text-decoration: none; }
+  .muu-kuva { display: block; border-radius: var(--r-md); overflow: hidden; }
+  .muu-kuva :global(.kuvapaikka) { border-radius: 0; }
+  .muu :global(img) { transition: transform 600ms var(--ease-out); }
+  .kuvaton { display: grid; place-items: center; aspect-ratio: 4 / 3; background: var(--green-fill); color: var(--green-text-on); }
+  .muu-teksti { display: grid; gap: 0.3rem; padding-inline: 0.25rem; }
+  .muu strong { font-size: 1.25rem; font-weight: 560; letter-spacing: -0.015em; }
   .muu-teksti > span { color: var(--muted); }
   @media (hover: hover) and (pointer: fine) {
-    .muu:hover { transform: translateY(-4px); box-shadow: 0 2px 4px rgb(38 38 38 / 0.06), 0 22px 40px -20px rgb(38 38 38 / 0.35); }
-    .muu:hover :global(img) { transform: scale(1.04); }
-    .muu:hover strong :global(.icon) { transform: translateX(4px); }
+    .muu:hover :global(img) { transform: scale(1.03); }
   }
 
-  /* Meistä: lause vasemmalla, yritystiedot oikealla */
-  .meista-sisus { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: end; }
-  @media (min-width: 60rem) {
-    .meista-sisus { grid-template-columns: 7fr 5fr; }
-  }
-  .meista-teksti { display: grid; gap: 1.5rem; }
+  .osion-otsikko { margin-bottom: clamp(2rem, 5vw, 3rem); }
+
+  /* Meistä */
+  .meista { display: grid; gap: 1.5rem; }
+  .meista > * { max-width: 56rem; }
   .meista-lause {
-    font-family: var(--font-display);
-    font-size: clamp(1.3rem, 1.05rem + 1vw, 1.85rem);
-    line-height: 1.38;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2.1rem);
+    line-height: 1.3;
+    font-weight: 450;
+    letter-spacing: -0.02em;
     color: var(--ink);
   }
-  .tiedot {
-    margin: 0;
-    padding: clamp(1.5rem, 3vw, 2rem);
-    border-radius: var(--r-md);
-    background: var(--sand);
-    display: grid;
-    gap: 1rem;
+
+  /* Usein kysyttyä */
+  .ukk-ruudukko { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  @media (min-width: 64rem) {
+    .ukk-ruudukko { grid-template-columns: 5fr 7fr; }
   }
-  .tiedot div { display: grid; gap: 0.1rem; }
-  .tiedot dt { font-size: var(--fs-sm); color: var(--muted); }
-  .tiedot dd { margin: 0; font-weight: 600; color: var(--ink); }
+  .ukk-otsake { display: grid; gap: 1rem; justify-items: start; }
+  .ukk-otsake p { color: var(--muted); font-size: var(--fs-lg); }
 </style>

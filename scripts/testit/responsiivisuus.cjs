@@ -30,7 +30,7 @@ const LEV = [[360,780],[390,844],[430,932],[744,1133],[768,1024],[810,1080],[820
     }
     // etusivu: CTA näkyvissä ilman vieritystä
     await p.goto(BASE + '/', { waitUntil: 'networkidle' });
-    const cta = await p.evaluate(() => { const e = document.querySelector('.hero-toiminnot .btn'); const r = e.getBoundingClientRect(); return r.bottom <= window.innerHeight; });
+    const cta = await p.evaluate(() => { const e = document.querySelector('.hero .btn'); const r = e.getBoundingClientRect(); return r.bottom <= window.innerHeight; });
     if (!cta) virheet.push(`${w} /: hero-CTA ei näy ilman vieritystä`);
     // valikko kosketuksella
     const toggle = p.locator('[data-menu-toggle]');
@@ -60,6 +60,7 @@ const LEV = [[360,780],[390,844],[430,932],[744,1133],[768,1024],[810,1080],[820
     const p = await ctx.newPage();
     for (const u of SIVUT) {
       await p.goto(BASE + u, { waitUntil: 'networkidle' });
+      await p.waitForTimeout(1500);
       await p.addScriptTag({ content: AXE });
       const res = await p.evaluate(async () => (await axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa', 'best-practice'] })).violations.map((v) => `${v.id} (${v.nodes.length}): ${v.nodes.slice(0, 2).map((n) => n.target.join(' ')).join(', ')}`));
       res.forEach((x) => virheet.push(`axe ${w} ${u}: ${x}`));

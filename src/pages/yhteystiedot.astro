@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Murupolku from '../components/Murupolku.astro';
+import SanaOtsikko from '../components/SanaOtsikko.astro';
 import Vaiheet from '../components/Vaiheet.astro';
+import Icon from '../components/Icon.astro';
 import yritys from '../data/yritys.json';
 const tel = `tel:${yritys.puhelinE164}`;
 const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${yritys.katuosoite}, ${yritys.postinumero} ${yritys.kaupunki}`)}`;
@@ -10,16 +12,27 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
 <BaseLayout
   title="Yhteystiedot | Holske Oy, Vantaa"
   description={`Soita ${yritys.puhelinNaytto} tai lähetä sähköpostia ${yritys.sahkoposti}. Ilmainen kuntoarvio kattoremonteille ja maalaukselle pääkaupunkiseudulla.`}
-  piilotaMobiiliCta
 >
   <section class="alku">
     <div class="container">
       <Murupolku polku={[{ nimi: 'Yhteystiedot', href: '/yhteystiedot/' }]} />
       <div class="sisus">
-        <h1>Yhteystiedot</h1>
-        <p class="lead">Soita tai lähetä sähköpostia. Kuntoarvio on ilmainen, ja vastaamme nopeasti.</p>
-        <a href={tel} class="numero">{yritys.puhelinNaytto}</a>
-        <a href={`mailto:${yritys.sahkoposti}`} class="sposti">{yritys.sahkoposti}</a>
+        <div class="teksti">
+          <SanaOtsikko teksti="Ota yhteyttä|niin tulemme katsomaan" />
+          <p class="lead saapuu" style="--i:2">
+            Kuntoarvio on ilmainen. Katsomme kohteen paikan päällä, ja saat suunnitelman ja hinnan ilman sitoutumista.
+          </p>
+        </div>
+        <div class="kanavat saapuu" style="--i:3">
+          <a href={tel} class="kanava">
+            <span class="tyyppi"><Icon name="puhelin" size={20} /> Puhelin</span>
+            <span class="arvo">{yritys.puhelinNaytto}</span>
+          </a>
+          <a href={`mailto:${yritys.sahkoposti}`} class="kanava">
+            <span class="tyyppi"><Icon name="sahkoposti" size={20} /> Sähköposti</span>
+            <span class="arvo">{yritys.sahkoposti}</span>
+          </a>
+        </div>
       </div>
 
       <dl class="tiedot">
@@ -48,34 +61,44 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
   .alku { padding-block: clamp(1.5rem, 4vw, 3rem) var(--section); }
   .sisus {
     display: grid;
-    justify-items: center;
-    gap: 1.25rem;
-    text-align: center;
-    max-width: 48rem;
-    margin: clamp(1rem, 4vw, 3rem) auto clamp(3rem, 7vw, 5rem);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    margin: clamp(2rem, 5vw, 4rem) 0 clamp(3rem, 7vw, 5rem);
+    align-items: end;
   }
-  .sisus .lead { margin-inline: auto; }
-  .numero {
-    margin-top: 1rem;
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 2rem + 5vw, 5.5rem);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: var(--green);
+  @media (min-width: 64rem) {
+    .sisus { grid-template-columns: 7fr 5fr; }
+  }
+  .teksti { display: grid; gap: 1.5rem; }
+  .kanavat { display: grid; gap: 0.75rem; }
+  .kanava {
+    display: grid;
+    gap: 0.5rem;
+    padding: clamp(1.4rem, 2.5vw, 1.9rem);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    color: var(--ink);
     text-decoration: none;
-    padding: 0.25rem 0.5rem;
+    transition: background-color 200ms ease, transform 150ms var(--ease-out);
   }
-  @media (hover: hover) and (pointer: fine) {
-    .numero:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.15em; }
+  .kanava:hover { background: var(--sand); }
+  .kanava:active { transform: scale(0.99); }
+  .tyyppi { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: var(--fs-sm); }
+  .arvo {
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem);
+    font-weight: 560;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
   }
-  .sposti { font-size: var(--fs-lg); font-weight: 600; min-height: 48px; display: inline-flex; align-items: center; }
-  .tiedot { margin: 0 auto; max-width: 44rem; border-top: 1px solid var(--line); }
-  .tiedot div { display: grid; gap: 0.25rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
+  .tiedot { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .tiedot div { display: grid; gap: 0.25rem; padding: 1.25rem 0; }
+  .tiedot div + div { border-top: 1px solid var(--line); }
   @media (min-width: 40rem) {
-    .tiedot div { grid-template-columns: 10rem 1fr; gap: 1.5rem; }
+    .tiedot div { grid-template-columns: 12rem 1fr; gap: 1.5rem; }
   }
   dt { color: var(--muted); }
-  dd { margin: 0; font-weight: 500; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
-  .kartta { font-weight: 600; }
+  dd { margin: 0; font-weight: 500; color: var(--ink); display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+  .kartta { font-weight: 500; }
   .osion-otsikko { margin-bottom: clamp(2rem, 5vw, 3rem); }
 </style>

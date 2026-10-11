@@ -1,0 +1,115 @@
+---
+/**
+ * Ruudukko, jossa kuva on keskellä ja tekstisolut sen ympärillä (vasen ja oikea sarake).
+ * Solu voi olla linkki (href). korostus = solun indeksi, joka saa oliivin pohjan.
+ */
+import Kuva from './Kuva.astro';
+import Icon from './Icon.astro';
+import { getKuva } from '../lib/kuvat';
+
+interface Solu {
+  otsikko: string;
+  teksti?: string;
+  href?: string;
+}
+interface Props {
+  kuva: string;
+  alt?: string;
+  solut: Solu[];
+  korostus?: number;
+}
+const { kuva, alt, solut, korostus = -1 } = Astro.props;
+const onKuva = !!getKuva(kuva);
+const vasen = Math.ceil(solut.length / 2);
+const rivit = Math.max(vasen, solut.length - vasen);
+---
+
+<div class:list={['bento', { 'bento--kuva': onKuva }]} style={`--rivit:${rivit}`}>
+  {
+    onKuva && (
+      <div class="bento-kuva reveal">
+        <Kuva nimi={kuva} alt={alt} variantti="tayta" />
+      </div>
+    )
+  }
+  {
+    solut.map((s, i) => {
+      const puoli = i < vasen ? 'vasen' : 'oikea';
+      const rivi = i < vasen ? i + 1 : i - vasen + 1;
+      const luokat = ['solu', `solu--${puoli}`, 'reveal', { 'solu--korostus': i === korostus, 'solu--hiekka': i % 2 === 1 }];
+      const tyyli = `--rivi:${rivi}`;
+      return s.href ? (
+        <a href={s.href} class:list={[...luokat, 'solu--linkki']} style={tyyli}>
+          <h3>{s.otsikko}</h3>
+          {s.teksti && <p>{s.teksti}</p>}
+          <Icon name="nuoli" size={22} />
+        </a>
+      ) : (
+        <div class:list={luokat} style={tyyli}>
+          <h3>{s.otsikko}</h3>
+          {s.teksti && <p>{s.teksti}</p>}
+        </div>
+      );
+    })
+  }
+</div>
+
+<style>
+  .bento { display: grid; gap: 0.75rem; }
+  @media (min-width: 40rem) {
+    .bento { grid-template-columns: 1fr 1fr; }
+    .bento-kuva { grid-column: 1 / -1; }
+  }
+  @media (min-width: 64rem) {
+    .solu { min-height: 11rem; }
+    .bento--kuva {
+      grid-template-columns: 1fr 1.3fr 1fr;
+      grid-template-rows: repeat(var(--rivit), auto);
+    }
+    .bento--kuva .bento-kuva { grid-column: 2; grid-row: 1 / span var(--rivit); }
+    .bento--kuva .solu--vasen { grid-column: 1; grid-row: var(--rivi); }
+    .bento--kuva .solu--oikea { grid-column: 3; grid-row: var(--rivi); }
+  }
+  .bento-kuva {
+    position: relative;
+    min-height: 20rem;
+    border-radius: var(--r-md);
+    overflow: hidden;
+  }
+  .bento-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
+  .solu {
+    position: relative;
+    display: grid;
+    gap: 0.5rem;
+    align-content: end;
+    min-height: 6.5rem;
+    padding: clamp(1.4rem, 2.4vw, 1.9rem);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+  .solu--hiekka { background: var(--sand); }
+  /* Hiekkapohjaisella osiolla kortit valkoisina, jotta ne erottuvat */
+  :global(.section--sand) .solu { background: var(--bg); }
+  :global(.section--sand) .solu--hiekka { background: var(--sand); }
+  .solu h3 { font-size: clamp(1.15rem, 1.05rem + 0.35vw, 1.35rem); }
+  .solu p { color: var(--muted); font-size: 1rem; line-height: 1.5; }
+  .solu--korostus,
+  :global(.section--sand) .solu--korostus { background: var(--green-fill); }
+  .solu--korostus h3 { color: #fff; }
+  .solu--korostus p { color: var(--green-text-on); }
+  .solu--linkki :global(.icon) {
+    position: absolute;
+    top: 1.4rem;
+    right: 1.4rem;
+    color: inherit;
+    transition: transform 300ms var(--ease-out);
+  }
+  .solu--korostus.solu--linkki { color: #fff; }
+  .solu--linkki:not(.solu--korostus) :global(.icon) { color: var(--ink); }
+  @media (hover: hover) and (pointer: fine) {
+    .solu--linkki:hover :global(.icon) { transform: translate(3px, -3px) rotate(-45deg); }
+  }
+  .solu--korostus:focus-visible { outline-color: var(--ink); }
+</style>
