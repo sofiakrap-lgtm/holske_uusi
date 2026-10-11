@@ -12,7 +12,7 @@
  *   tayta   täyttää ruudukon solun (korkeus vanhemmalta)
  */
 import { getImage } from 'astro:assets';
-import { getKuva } from '../lib/kuvat';
+import { getKuva, ensimmainenKuva } from '../lib/kuvat';
 import kuvatiedot from '../data/kuvat.json';
 import Icon from './Icon.astro';
 
@@ -26,9 +26,12 @@ interface Props {
   class?: string;
   /** Jos true, mitään ei näytetä ennen kuin kuva on lisätty */
   vainJosOn?: boolean;
+  /** Varakuvat, joita käytetään, kunnes kuva nimellä `nimi` on lisätty */
+  vara?: string[];
 }
-const { nimi, alt: altProp, ikoni = 'kuva', variantti = 'kortti', eager = false, class: className, vainJosOn = false } = Astro.props;
+const { nimi: omaNimi, vara = [], alt: altProp, ikoni = 'kuva', variantti = 'kortti', eager = false, class: className, vainJosOn = false } = Astro.props;
 
+const nimi = ensimmainenKuva(omaNimi, ...vara) ?? omaNimi;
 const tiedot = (kuvatiedot as Record<string, { alt?: string; fokus?: string }>)[nimi] ?? {};
 const alt = tiedot.alt || altProp || '';
 const fokus = tiedot.fokus || '50% 50%';

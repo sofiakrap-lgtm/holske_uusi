@@ -63,6 +63,22 @@ Alt-tekstit ja rajauksen kohta: `src/data/kuvat.json`. Jos kuvaa ei ole, sen pai
 
 **Tekoälykuvat (10/2026):** nykyiset kuvat on generoitu, eivätkä ne ole Holsken omia töitä. Vaihda ne omiin kuviin samoilla nimillä, kun niitä on. `muut-korjaukset.jpg` puuttuu vielä, joten sen kortissa näkyy ikoni. Tallenna tiedostot nimellä `nimi.jpg`, ei `nimi.jpg.jpg`.
 
+### Lisää kuvia (kuvapaikat ja galleria)
+
+Jokaisella kuvapaikalla on oma nimi. Kunnes lisäät kuvan sillä nimellä, paikalla näkyy varakuva (sama kuva voi toistua).
+
+| Tiedosto | Missä | Varakuva |
+|---|---|---|
+| `hero.jpg` | Etusivun neliö ennen videota (1:1) | `etusivu.jpg` |
+| `lupaus-1.jpg`, `lupaus-2.jpg`, `lupaus-3.jpg` | Kolme lupausta (4:3) | katto-huolto, maalaus, pihatyot |
+| `vaihe-1.jpg`, `vaihe-2.jpg`, `vaihe-3.jpg` | Näin työ etenee (4:3) | etusivu, katto-huolto, katot |
+| `perheyritys.jpg` | Meistä-osio (4:5) | etusivu-mobiili |
+| `katot-2.jpg`, `maalaus-2.jpg`, `painepesu-2.jpg` ... | Palvelusivun "Mitä teemme" -ruudukon keskikuva | etusivu |
+
+**Galleria:** kaikki kuvat kansiossa `assets/kuvat/galleria/` näkyvät etusivun ja palvelusivujen liukuvassa galleriassa. Kuvia voi lisätä niin paljon kuin haluaa, nimellä ei ole väliä. Jos kansio on tyhjä, galleria näyttää sivuston muut kuvat.
+
+Tallenna kuvat aina muodossa `nimi.jpg` (ei `nimi.jpg.jpg`).
+
 **Etusivun video** kansioon `public/video/`:
 - `etusivu.mp4` (pakollinen): neliö 1:1, esim. 1080 × 1080, H.264, alle 3 Mt, 8-12 s saumaton silmukka, ei ääntä
 - `etusivu-poster.jpg` (suositeltu): videon ensimmäinen kuva samassa koossa

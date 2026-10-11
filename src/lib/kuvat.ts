@@ -6,7 +6,7 @@ import type { ImageMetadata } from 'astro';
  * Jos kuvaa ei ole, sivulla näytetään siisti paikkamerkki.
  */
 const kuvat = import.meta.glob<{ default: ImageMetadata }>(
-  '/assets/kuvat/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG}',
+  '/assets/kuvat/**/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG}',
   { eager: true },
 );
 
@@ -25,3 +25,21 @@ function etsi(lista: Record<string, { default: ImageMetadata }>, nimi: string) {
 
 export const getKuva = (nimi: string) => etsi(kuvat, nimi);
 export const getLogo = (nimi = 'logo') => etsi(logot, nimi);
+
+const nimi = (polku: string) => (polku.split('/').pop() ?? '').replace(/\.[^.]+$/, '');
+
+/** Ensimmäinen olemassa oleva kuva listasta: oma kuvapaikka ensin, sitten varakuvat. */
+export const ensimmainenKuva = (...nimet: string[]) => nimet.find((n) => etsi(kuvat, n)) ?? null;
+
+/** Gallerian kuvat: kaikki kansiosta assets/kuvat/galleria/, tai jos tyhjä, sivuston pääkuvat. */
+export function getGalleria(): string[] {
+  const galleria = Object.keys(kuvat)
+    .filter((p) => p.includes('/assets/kuvat/galleria/'))
+    .sort()
+    .map(nimi);
+  if (galleria.length) return galleria;
+  return Object.keys(kuvat)
+    .filter((p) => !p.includes('/galleria/') && !/-(mobiili|tabletti)\./.test(p))
+    .sort()
+    .map(nimi);
+}

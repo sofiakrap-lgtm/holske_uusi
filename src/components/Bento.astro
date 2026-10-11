@@ -5,7 +5,7 @@
  */
 import Kuva from './Kuva.astro';
 import Icon from './Icon.astro';
-import { getKuva } from '../lib/kuvat';
+import { ensimmainenKuva } from '../lib/kuvat';
 
 interface Solu {
   otsikko: string;
@@ -17,9 +17,10 @@ interface Props {
   alt?: string;
   solut: Solu[];
   korostus?: number;
+  vara?: string[];
 }
-const { kuva, alt, solut, korostus = -1 } = Astro.props;
-const onKuva = !!getKuva(kuva);
+const { kuva, alt, solut, korostus = -1, vara = [] } = Astro.props;
+const onKuva = !!ensimmainenKuva(kuva, ...vara);
 const vasen = Math.ceil(solut.length / 2);
 const rivit = Math.max(vasen, solut.length - vasen);
 ---
@@ -28,7 +29,7 @@ const rivit = Math.max(vasen, solut.length - vasen);
   {
     onKuva && (
       <div class="bento-kuva reveal">
-        <Kuva nimi={kuva} alt={alt} variantti="tayta" />
+        <Kuva nimi={kuva} vara={vara} alt={alt} variantti="tayta" />
       </div>
     )
   }

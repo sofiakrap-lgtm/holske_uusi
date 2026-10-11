@@ -8,6 +8,7 @@ import Ukk from '../../components/Ukk.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
 import SanaOtsikko from '../../components/SanaOtsikko.astro';
 import Bento from '../../components/Bento.astro';
+import Galleria from '../../components/Galleria.astro';
 import yritys from '../../data/yritys.json';
 
 export async function getStaticPaths() {
@@ -93,7 +94,7 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
           <div class="osio-otsake">
             <h2 id="sisaltaa-otsikko">Mitä teemme</h2>
           </div>
-          <Bento kuva={`${d.kuva}-2`} solut={bentoSolut} korostus={bentoSolut.length - 1} />
+          <Bento kuva={`${d.kuva}-2`} vara={['etusivu', d.kuva]} solut={bentoSolut} korostus={bentoSolut.length - 1} />
         </div>
       </section>
     )
@@ -147,6 +148,10 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
         }
       </ul>
     </div>
+  </section>
+
+  <section class="section--tight" aria-label="Kuvia">
+    <Galleria />
   </section>
 
   <CtaOsio />

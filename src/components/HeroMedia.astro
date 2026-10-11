@@ -2,16 +2,21 @@
 /**
  * Neliön muotoinen hero-video. Lisää tiedostot kansioon public/video/:
  *   <nimi>.mp4 (pakollinen), <nimi>.webm (valinnainen), <nimi>-poster.jpg (suositeltu)
- * Ilman videota näytetään värillinen neliö.
+ * Ilman videota näytetään kuva (prop kuva), ja jos sitäkään ei ole, värillinen neliö.
  */
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import Kuva from './Kuva.astro';
+import { ensimmainenKuva } from '../lib/kuvat';
 
 interface Props {
   nimi: string;
   kuvaus?: string;
+  /** Kuva, joka näytetään kunnes video on lisätty (ja varakuvat) */
+  kuva?: string[];
 }
-const { nimi, kuvaus = '' } = Astro.props;
+const { nimi, kuvaus = '', kuva = [] } = Astro.props;
+const varakuva = ensimmainenKuva(...kuva);
 const kansio = join(process.cwd(), 'public', 'video');
 const mp4 = existsSync(join(kansio, `${nimi}.mp4`));
 const webm = existsSync(join(kansio, `${nimi}.webm`));
@@ -25,6 +30,8 @@ const poster = existsSync(join(kansio, `${nimi}-poster.jpg`)) ? `/video/${nimi}-
         {webm && <source src={`/video/${nimi}.webm`} type="video/webm" />}
         <source src={`/video/${nimi}.mp4`} type="video/mp4" />
       </video>
+    ) : varakuva ? (
+      <Kuva nimi={varakuva} variantti="tayta" eager />
     ) : (
       <div class="vari" role="img" aria-label={kuvaus} />
     )
@@ -54,6 +61,7 @@ const poster = existsSync(join(kansio, `${nimi}-poster.jpg`)) ? `/video/${nimi}-
     overflow: hidden;
     background: var(--green-fill);
   }
+  .hero-media :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
   video {
     display: block;
     width: 100%;

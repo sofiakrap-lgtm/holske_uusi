@@ -1,0 +1,55 @@
+---
+/**
+ * Liukuva kuvagalleria. Kuvat kansiosta assets/kuvat/galleria/ (tai sivuston kuvat, jos kansio on tyhjä).
+ * Nauha liukuu hitaasti ja pysähtyy hiiren ollessa päällä. Vähennetyllä liikkeellä nauhaa voi vierittää itse.
+ */
+import Kuva from './Kuva.astro';
+import { getGalleria } from '../lib/kuvat';
+
+const nimet = getGalleria();
+// Nauha toistetaan kahdesti, jotta liike jatkuu saumattomasti
+const kierros = nimet.length < 6 ? [...nimet, ...nimet] : nimet;
+const kesto = Math.max(40, kierros.length * 7);
+---
+
+{
+  nimet.length > 0 && (
+    <div class="galleria" style={`--kesto:${kesto}s`}>
+      <ul class="nauha">
+        {[...kierros, ...kierros].map((n, i) => (
+          <li class:list={[{ korkea: i % 3 === 1 }]} aria-hidden={i >= kierros.length ? 'true' : undefined}>
+            <Kuva nimi={n} variantti={i % 3 === 1 ? 'jaettu' : 'kortti'} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+<style>
+  .galleria { overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); }
+  .nauha {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    align-items: center;
+  }
+  .nauha li { width: clamp(16rem, 28vw, 26rem); flex: none; }
+  .nauha li.korkea { width: clamp(12rem, 20vw, 19rem); }
+  .nauha :global(.kuvapaikka) { border-radius: var(--r-md); }
+  .nauha li.korkea :global(.kuvapaikka) { aspect-ratio: 4 / 5; }
+  .nauha li:not(.korkea) :global(.kuvapaikka) { aspect-ratio: 4 / 3; }
+  @media (prefers-reduced-motion: no-preference) {
+    .nauha { animation: liuku var(--kesto) linear infinite; }
+    .galleria:hover .nauha { animation-play-state: paused; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .galleria { overflow-x: auto; mask-image: none; }
+  }
+  @keyframes liuku {
+    to { transform: translateX(calc(-50% - 0.5rem)); }
+  }
+</style>

@@ -1,0 +1,134 @@
+---
+/**
+ * Iso palvelukaruselli: kuva vasemmalla, teksti oikealla. Nuolinapit ja pyyhkäisy.
+ * Kuva: palvelun oma kuva (src/content/palvelut/*.md kenttä `kuva`), varalla etusivun kuva.
+ */
+import { getCollection } from 'astro:content';
+import Kuva from './Kuva.astro';
+import Icon from './Icon.astro';
+
+const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
+const kohdat = (p: (typeof palvelut)[number]) =>
+  p.data.alapalvelut.filter((a) => !a.teksti.startsWith('TODO')).slice(0, 3).map((a) => a.nimi);
+---
+
+<div class="karuselli-kehys" data-karuselli-juuri>
+  <ul class="liukuma" data-karuselli aria-roledescription="karuselli" aria-label="Palvelut">
+    {
+      palvelut.map((p, i) => (
+        <li class="dia" aria-roledescription="dia" aria-label={`${i + 1} / ${palvelut.length}: ${p.data.nimi}`}>
+          <a href={`/palvelut/${p.id}/`} class="dia-kuva" tabindex="-1" aria-hidden="true">
+            <Kuva nimi={p.data.kuva} vara={['etusivu']} alt={p.data.kuvaAlt} variantti="tayta" />
+          </a>
+          <div class="dia-teksti">
+            <span class="eyebrow">{p.data.nimi}</span>
+            <h3>{p.data.otsikko}</h3>
+            <p>{p.data.kortti}</p>
+            {kohdat(p).length > 0 && (
+              <ul class="kohdat">
+                {kohdat(p).map((k) => (
+                  <li>
+                    <Icon name="check" size={18} />
+                    {k}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <a href={`/palvelut/${p.id}/`} class="link-arrow">
+              Lue lisää <Icon name="nuoli" size={18} />
+            </a>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+  <div class="container napit">
+    <button type="button" class="pyorea" data-edellinen aria-label="Edellinen palvelu">
+      <Icon name="nuoli" size={20} class="kaannetty" />
+    </button>
+    <button type="button" class="pyorea" data-seuraava aria-label="Seuraava palvelu">
+      <Icon name="nuoli" size={20} />
+    </button>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-karuselli-juuri]').forEach((juuri) => {
+    const lista = juuri.querySelector<HTMLElement>('[data-karuselli]');
+    const siirto = (suunta: number) => {
+      if (!lista) return;
+      const dia = lista.querySelector('li');
+      const leveys = dia ? dia.getBoundingClientRect().width + 16 : 600;
+      const loppu = lista.scrollLeft + lista.clientWidth >= lista.scrollWidth - 4;
+      const alku = lista.scrollLeft <= 4;
+      // Silmukka: lopusta alkuun ja alusta loppuun
+      if (suunta > 0 && loppu) lista.scrollTo({ left: 0, behavior: 'smooth' });
+      else if (suunta < 0 && alku) lista.scrollTo({ left: lista.scrollWidth, behavior: 'smooth' });
+      else lista.scrollBy({ left: suunta * leveys, behavior: 'smooth' });
+    };
+    juuri.querySelector('[data-edellinen]')?.addEventListener('click', () => siirto(-1));
+    juuri.querySelector('[data-seuraava]')?.addEventListener('click', () => siirto(1));
+  });
+</script>
+
+<style>
+  .liukuma {
+    list-style: none;
+    margin: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(88vw, 72rem);
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2));
+    padding: 0 max(var(--gutter), calc((100vw - var(--max)) / 2));
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .liukuma::-webkit-scrollbar { display: none; }
+  .dia {
+    scroll-snap-align: start;
+    display: grid;
+    gap: 1.5rem 3rem;
+    align-items: center;
+  }
+  @media (min-width: 56rem) {
+    .dia { grid-template-columns: 7fr 5fr; }
+  }
+  .dia-kuva {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+  }
+  .dia-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
+  .dia-kuva :global(img) { transition: transform 600ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .dia-kuva:hover :global(img) { transform: scale(1.03); }
+  }
+  .dia-teksti { display: grid; gap: 0.9rem; justify-items: start; padding-right: 1rem; }
+  .dia-teksti h3 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem); letter-spacing: -0.025em; }
+  .dia-teksti p { color: var(--muted); }
+  .kohdat { list-style: none; margin: 0.25rem 0; padding: 0; display: grid; gap: 0.5rem; }
+  .kohdat li { display: flex; align-items: center; gap: 0.6rem; color: var(--ink); }
+  .kohdat :global(.icon) { color: var(--green); flex: none; }
+  .napit { display: flex; gap: 0.5rem; margin-top: 1.75rem; }
+  .pyorea {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+    transition: background-color 200ms ease, transform 150ms var(--ease-out);
+  }
+  .pyorea:hover { background: var(--sand); }
+  .pyorea:active { transform: scale(0.94); }
+  .pyorea :global(.kaannetty) { transform: scaleX(-1); }
+  :global(.section--sand) .pyorea { background: var(--bg); }
+</style>

@@ -1,12 +1,14 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Kuva from '../components/Kuva.astro';
 import Icon from '../components/Icon.astro';
 import SanaOtsikko from '../components/SanaOtsikko.astro';
 import HeroMedia from '../components/HeroMedia.astro';
 import Bento from '../components/Bento.astro';
-import Vaiheet from '../components/Vaiheet.astro';
+import PalveluKaruselli from '../components/PalveluKaruselli.astro';
+import TyoVaiheet from '../components/TyoVaiheet.astro';
+import Galleria from '../components/Galleria.astro';
 import Huoltovalit from '../components/Huoltovalit.astro';
 import Ukk from '../components/Ukk.astro';
 import CtaOsio from '../components/CtaOsio.astro';
@@ -15,7 +17,6 @@ import yritys from '../data/yritys.json';
 
 const katot = (await getEntry('palvelut', 'katot'))!;
 const maalaus = (await getEntry('palvelut', 'maalaus'))!;
-const muut = (await getCollection('palvelut', (p) => !p.data.ydin)).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
 
 // Etusivulle vain ensimmäinen lause, koko teksti on palvelusivulla
 const ekaLause = (t: string) => {
@@ -24,9 +25,9 @@ const ekaLause = (t: string) => {
 };
 
 const lupaukset = [
-  { nimi: 'Ilmainen kuntoarvio', lause: 'Katsomme kohteen paikan päällä.', teksti: 'Saat selkeän suunnitelman ja hinnan ilman sitoutumista.' },
-  { nimi: 'Kiinteä hinta', lause: 'Tiedät hinnan ennen aloitusta.', teksti: 'Saat kiinteän hinnan kuntoarvion jälkeen, ja päätät itse, jatketaanko.' },
-  { nimi: 'Siisti työmaa', lause: 'Jätämme pihan siistimmäksi.', teksti: 'Lopuksi tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
+  { kuva: 'lupaus-1', vara: ['katto-huolto'], nimi: 'Ilmainen kuntoarvio', lause: 'Katsomme kohteen paikan päällä.', teksti: 'Saat selkeän suunnitelman ja hinnan ilman sitoutumista.' },
+  { kuva: 'lupaus-2', vara: ['maalaus'], nimi: 'Kiinteä hinta', lause: 'Tiedät hinnan ennen aloitusta.', teksti: 'Saat kiinteän hinnan kuntoarvion jälkeen, ja päätät itse, jatketaanko.' },
+  { kuva: 'lupaus-3', vara: ['pihatyot'], nimi: 'Siisti työmaa', lause: 'Jätämme pihan siistimmäksi.', teksti: 'Lopuksi tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
 ];
 
 const kattoSolut = [
@@ -65,11 +66,11 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
         </p>
         <div class="btn-row saapuu" style="--i:5">
           <a href="/yhteystiedot/" class="btn btn--iso">Ota yhteyttä</a>
-          <a href="#kattotyot" class="link-arrow">Katso palvelut <Icon name="nuoli" size={18} /></a>
+          <a href="#palvelut" class="link-arrow">Katso palvelut <Icon name="nuoli" size={18} /></a>
         </div>
       </div>
       <div class="saapuu" style="--i:2">
-        <HeroMedia nimi="etusivu" kuvaus="Holske työssä omakotitalon katolla" />
+        <HeroMedia nimi="etusivu" kuva={['hero', 'etusivu']} kuvaus="Omakotitalo, jonka katto on kunnostettu" />
       </div>
     </div>
   </section>
@@ -79,7 +80,8 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
       <ul class="lupaukset">
         {
           lupaukset.map((l) => (
-            <li class="reveal">
+            <li>
+              <span class="lupaus-kuva reveal"><Kuva nimi={l.kuva} vara={l.vara} variantti="kortti" /></span>
               <span class="eyebrow">{l.nimi}</span>
               <strong>{l.lause}</strong>
               <p>{l.teksti}</p>
@@ -88,6 +90,16 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
         }
       </ul>
     </div>
+  </section>
+
+  <section class="section section--sand" id="palvelut" aria-labelledby="palvelut-otsikko">
+    <div class="container">
+      <div class="osio-otsake">
+        <h2 id="palvelut-otsikko">Katot, seinät ja pihat kuntoon</h2>
+        <p>Erikoisalaamme ovat kattoremontit ja maalaus. Hoidamme samalla myös muut omakotitalon ulkotyöt.</p>
+      </div>
+    </div>
+    <PalveluKaruselli />
   </section>
 
   <section class="section" id="kattotyot" aria-labelledby="katot-otsikko">
@@ -130,58 +142,40 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
     </div>
   </section>
 
-  <section class="section" aria-labelledby="muut-otsikko">
+  <section class="section galleria-osio" aria-labelledby="galleria-otsikko">
     <div class="container">
-      <div class="karuselli-otsake">
-        <div class="osio-otsake">
-          <h2 id="muut-otsikko">Myös nämä hoituvat</h2>
-          <p>Teemme samalla muut omakotitalon ulkotyöt, kun niitä tarvitaan.</p>
-        </div>
-        <div class="karuselli-napit" aria-hidden="true">
-          <button type="button" class="pyorea" data-karuselli-edellinen tabindex="-1"><Icon name="nuoli" size={20} class="kaannetty" /></button>
-          <button type="button" class="pyorea" data-karuselli-seuraava tabindex="-1"><Icon name="nuoli" size={20} /></button>
-        </div>
+      <div class="osio-otsake">
+        <h2 id="galleria-otsikko">Pääkaupunkiseudun omakotitaloille</h2>
+        <p>Helsinki, Espoo, Vantaa ja Kauniainen. Tulemme kohteeseen ja teemme työn alusta loppuun.</p>
       </div>
     </div>
-    <ul class="karuselli" data-karuselli aria-label="Muut palvelut">
-      {
-        muut.map((p) => (
-          <li>
-            <a href={`/palvelut/${p.id}/`} class="muu">
-              <span class="muu-kuva">
-                {getKuva(p.data.kuva) ? (
-                  <Kuva nimi={p.data.kuva} variantti="kortti" />
-                ) : (
-                  <span class="kuvaton" aria-hidden="true">
-                    <Icon name={p.data.ikoni} size={48} />
-                  </span>
-                )}
-              </span>
-              <span class="muu-teksti">
-                <strong>{p.data.nimi}</strong>
-                <span>{p.data.kortti}</span>
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <Galleria />
   </section>
 
   <section class="section section--sand" aria-labelledby="vaiheet-otsikko">
     <div class="container">
-      <h2 id="vaiheet-otsikko" class="osion-otsikko">Näin työ etenee</h2>
-      <Vaiheet />
+      <div class="osio-otsake">
+        <h2 id="vaiheet-otsikko">Näin työ etenee</h2>
+        <p>Kolme vaihetta yhteydenotosta valmiiseen työhön.</p>
+      </div>
+      <TyoVaiheet />
     </div>
   </section>
 
   <section class="section" id="meista" aria-labelledby="meista-otsikko">
     <div class="container meista">
-      <h2 id="meista-otsikko">Pieni perheyritys. Tue paikallista tekijää.</h2>
-      <p class="meista-lause reveal">
-        Olemme suomalainen perheyritys pääkaupunkiseudulta. {yritys.kokemusLause} Asiakkaan tarpeet ovat meille
-        ensisijaisia, ja muokkaamme työn sinun kohteesi mukaan.
-      </p>
+      <div class="meista-kuva reveal">
+        <Kuva nimi="perheyritys" vara={['etusivu-mobiili', 'etusivu']} variantti="tayta" />
+      </div>
+      <div class="meista-teksti">
+        <span class="eyebrow">Meistä</span>
+        <h2 id="meista-otsikko">Pieni perheyritys. Tue paikallista tekijää.</h2>
+        <p class="meista-lause">
+          Olemme suomalainen perheyritys pääkaupunkiseudulta. {yritys.kokemusLause} Asiakkaan tarpeet ovat meille
+          ensisijaisia, ja muokkaamme työn sinun kohteesi mukaan.
+        </p>
+        <p class="meista-tiedot">{yritys.nimi}, Y-tunnus {yritys.ytunnus}, {yritys.kaupunki}</p>
+      </div>
     </div>
   </section>
 
@@ -198,19 +192,6 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
 
   <CtaOsio />
 </BaseLayout>
-
-<script>
-  // Karusellin nuolinapit vierittävät yhden kortin verran
-  const lista = document.querySelector<HTMLElement>('[data-karuselli]');
-  const siirto = (suunta: number) => {
-    if (!lista) return;
-    const kortti = lista.querySelector('li');
-    const leveys = kortti ? kortti.getBoundingClientRect().width + 16 : 320;
-    lista.scrollBy({ left: suunta * leveys, behavior: 'smooth' });
-  };
-  document.querySelector('[data-karuselli-edellinen]')?.addEventListener('click', () => siirto(-1));
-  document.querySelector('[data-karuselli-seuraava]')?.addEventListener('click', () => siirto(1));
-</script>
 
 <style>
   /* Hero: otsikko vasemmalla, neliövideo oikealla */
@@ -233,6 +214,8 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
   }
   .lupaukset li { display: grid; gap: 0.4rem; align-content: start; }
+  .lupaus-kuva { display: block; margin-bottom: 1rem; border-radius: var(--r-md); overflow: hidden; }
+  .lupaus-kuva :global(.kuvapaikka) { border-radius: 0; }
   .lupaukset strong { color: var(--ink); font-weight: 560; font-size: 1.25rem; letter-spacing: -0.015em; line-height: 1.3; }
   .lupaukset p { color: var(--muted); }
 
@@ -245,67 +228,24 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
   .huolto-otsake { display: grid; gap: 1rem; }
   .huolto-otsake p { color: var(--muted); font-size: var(--fs-lg); max-width: 30rem; }
 
-  /* Karuselli */
-  .karuselli-otsake { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; }
-  .karuselli-napit { display: none; gap: 0.5rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
-  @media (min-width: 48rem) and (hover: hover) {
-    .karuselli-napit { display: flex; }
-  }
-  .pyorea {
-    display: grid;
-    place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border: 0;
-    border-radius: 999px;
-    background: var(--surface);
-    color: var(--ink);
-    cursor: pointer;
-    transition: background-color 200ms ease, transform 150ms var(--ease-out);
-  }
-  .pyorea:hover { background: var(--sand); }
-  .pyorea:active { transform: scale(0.94); }
-  .pyorea :global(.kaannetty) { transform: scaleX(-1); }
-  .karuselli {
-    list-style: none;
-    margin: 0;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: min(80vw, 24rem);
-    gap: 1rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2));
-    padding: 0 max(var(--gutter), calc((100vw - var(--max)) / 2)) 1rem;
-    scrollbar-width: none;
-    overscroll-behavior-x: contain;
-  }
-  .karuselli::-webkit-scrollbar { display: none; }
-  .karuselli li { scroll-snap-align: start; display: grid; }
-  .muu { display: grid; gap: 1rem; align-content: start; color: var(--ink); text-decoration: none; }
-  .muu-kuva { display: block; border-radius: var(--r-md); overflow: hidden; }
-  .muu-kuva :global(.kuvapaikka) { border-radius: 0; }
-  .muu :global(img) { transition: transform 600ms var(--ease-out); }
-  .kuvaton { display: grid; place-items: center; aspect-ratio: 4 / 3; background: var(--green-fill); color: var(--green-text-on); }
-  .muu-teksti { display: grid; gap: 0.3rem; padding-inline: 0.25rem; }
-  .muu strong { font-size: 1.25rem; font-weight: 560; letter-spacing: -0.015em; }
-  .muu-teksti > span { color: var(--muted); }
-  @media (hover: hover) and (pointer: fine) {
-    .muu:hover :global(img) { transform: scale(1.03); }
-  }
-
   .osion-otsikko { margin-bottom: clamp(2rem, 5vw, 3rem); }
 
-  /* Meistä */
-  .meista { display: grid; gap: 1.5rem; }
-  .meista > * { max-width: 56rem; }
+  /* Meistä: kuva ja iso lause rinnakkain */
+  .meista { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+  @media (min-width: 56rem) {
+    .meista { grid-template-columns: 5fr 7fr; }
+  }
+  .meista-kuva { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden; }
+  .meista-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
+  .meista-teksti { display: grid; gap: 1.25rem; }
   .meista-lause {
-    font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2.1rem);
-    line-height: 1.3;
+    font-size: clamp(1.3rem, 1.05rem + 1vw, 1.85rem);
+    line-height: 1.35;
     font-weight: 450;
     letter-spacing: -0.02em;
     color: var(--ink);
   }
+  .meista-tiedot { color: var(--muted); font-size: var(--fs-sm); }
 
   /* Usein kysyttyä */
   .ukk-ruudukko { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }

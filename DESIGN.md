@@ -38,9 +38,13 @@ Kuvat ja kortit 24-28px kulmat, napit ja chipit pillereitä, kentät 14px. Ei va
 - `RullaLuku`: numerot rullaavat paikalleen kuin matkamittari.
 - `Ukk`: haitari, yksi auki kerrallaan.
 - `CtaOsio`: yksi kysymys ja yksi nappi.
+- `PalveluKaruselli`: iso kuva vasemmalla, teksti ja kolme kohtaa oikealla, nuolinapit ja pyyhkäisy.
+- `TyoVaiheet`: kolme välilehteä, kuva vaihtuu ristihäivytyksellä, vaihtuu itsestään 6 s välein.
+- `Galleria`: liukuva kuvanauha kansiosta `assets/kuvat/galleria/` (pysähtyy hoverilla).
+- `Kuva` + `vara`: jokaisella kuvapaikalla oma nimi ja varakuvat, kuvat saavat toistua.
 
 ## Etusivu
-Hero (otsikko + video) · kolme lupausta · kattotyöt (Bento) · katon merkit (Bento) · huoltovälit (rullaavat luvut) · maalaus (Bento) · muut palvelut (karuselli) · työn vaiheet · meistä · usein kysyttyä · lopetus.
+Hero (otsikko + neliökuva/video) · kolme lupausta kuvineen · palvelukaruselli · kattotyöt (Bento) · katon merkit (Bento) · huoltovälit (rullaavat luvut) · maalaus (Bento) · galleria · työn vaiheet (välilehdet) · meistä kuvalla · usein kysyttyä · lopetus.
 
 ## Liike
 Sanat nousevat 0.9s, porrastus 80ms. Osiot nousevat vierityksessä. Numerot rullaavat 1.4s. Kuvat zoomaavat 1.03 hoverissa. Napit painuvat 0.97. Kaikki pois, kun käyttäjä toivoo vähemmän liikettä.
