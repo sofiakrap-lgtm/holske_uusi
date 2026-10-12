@@ -97,6 +97,8 @@ Logon väri tulee sivun CSS:stä (`color`), joten samaa tiedostoa käytetään v
 
 Sivusto on julkaistu Cloudflaren Workers-palvelussa nimellä `holske-uusi`. Testiosoite: https://holske-uusi.sofia-krap.workers.dev (ei näy Googlessa). Asetukset ovat tiedostossa `wrangler.jsonc`.
 
+Jos muutokset eivät näy sivulla, tarkista Cloudflaressa Workers & Pages → holske-uusi → Deployments, että viimeisin build on onnistunut. Epäonnistuneen buildin voi käynnistää uudelleen samasta näkymästä (Retry build).
+
 Jos projekti pitää joskus luoda uudelleen:
 
 1. https://dash.cloudflare.com → **Compute → Workers & Pages → Create** → yhdistä GitHub-repo `holske_uusi`.
