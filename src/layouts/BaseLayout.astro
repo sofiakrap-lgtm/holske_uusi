@@ -51,18 +51,22 @@ const localBusiness = {
   knowsLanguage: 'fi',
   ...(yritys.sameAs?.length ? { sameAs: yritys.sameAs } : {}),
 };
+import archivoFontti from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import figtreeFontti from '@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url';
 ---
 
 <!doctype html>
 <html lang="fi">
   <head>
     <meta charset="utf-8" />
+    <link rel="preload" href={archivoFontti} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={figtreeFontti} as="font" type="font/woff2" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, follow" />}
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#fffef7" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -91,5 +95,36 @@ const localBusiness = {
     </main>
     <Footer />
     <Evasteet />
+    <script>
+      // Fit-to-width: jos display-otsikon pisin sana ei mahdu, pienennetään kokoa askel kerrallaan
+      const sovita = () =>
+        document.querySelectorAll<HTMLElement>('[data-fit]').forEach((el) => {
+          el.style.fontSize = '';
+          let koko = parseFloat(getComputedStyle(el).fontSize);
+          let kierrokset = 0;
+          while (el.scrollWidth > el.clientWidth + 1 && koko > 22 && kierrokset++ < 40) {
+            koko -= 2;
+            el.style.fontSize = `${koko}px`;
+          }
+        });
+      // Ryhmän rivit samaan kokoon, jos jokin niistä jouduttiin pienentämään (mobiilissa)
+      const ryhmat = () => {
+        const nimet = new Set([...document.querySelectorAll<HTMLElement>('[data-fit-ryhma]')].map((e) => e.dataset.fitRyhma));
+        nimet.forEach((n) => {
+          const rivit = [...document.querySelectorAll<HTMLElement>(`[data-fit-ryhma="${n}"]`)];
+          if (!rivit.some((r) => r.style.fontSize)) return;
+          const pienin = Math.min(...rivit.map((r) => parseFloat(getComputedStyle(r).fontSize)));
+          rivit.forEach((r) => (r.style.fontSize = `${pienin}px`));
+        });
+      };
+      const kaikki = () => { sovita(); ryhmat(); };
+      if (document.fonts) document.fonts.ready.then(kaikki);
+      else kaikki();
+      let ajastin: number | undefined;
+      addEventListener('resize', () => {
+        clearTimeout(ajastin);
+        ajastin = window.setTimeout(kaikki, 120);
+      });
+    </script>
   </body>
 </html>

@@ -6,7 +6,7 @@ import Kuva from '../../components/Kuva.astro';
 import Icon from '../../components/Icon.astro';
 import Ukk from '../../components/Ukk.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
-import SanaOtsikko from '../../components/SanaOtsikko.astro';
+import HeroLead from '../../components/HeroLead.astro';
 import Bento from '../../components/Bento.astro';
 import Galleria from '../../components/Galleria.astro';
 import yritys from '../../data/yritys.json';
@@ -65,34 +65,21 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
 ---
 
 <BaseLayout title={d.seoTitle} description={d.kuvaus} schema={schema}>
-  <section class="hero">
+  <HeroLead rivit={[d.nimi, '', d.otsikko]} kuva={[d.kuva, 'etusivu']} video={palvelu.id} seuraava="var(--p-birch)" />
+
+  <section data-theme="birch" class="murut">
     <div class="container">
       <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }, { nimi: d.nimi, href: `/palvelut/${palvelu.id}/` }]} />
-      <div class="hero-ruudukko">
-        <div class="hero-teksti">
-          <SanaOtsikko teksti={d.otsikko} />
-          <p class="lead saapuu" style="--i:4">{d.ingressi}</p>
-          <div class="btn-row saapuu" style="--i:5">
-            <a href="/yhteystiedot/" class="btn btn--iso">Ota yhteyttä</a>
-          </div>
-        </div>
-        {
-          getKuva(d.kuva) && (
-            <div class="hero-kuva saapuu" style="--i:2">
-              <Kuva nimi={d.kuva} alt={d.kuvaAlt} ikoni={d.ikoni} variantti="tayta" eager />
-            </div>
-          )
-        }
-      </div>
+      <p class="ingressi">{d.ingressi}</p>
     </div>
   </section>
 
   {
     bentoSolut.length > 0 && (
-      <section class="section section--sand" aria-labelledby="sisaltaa-otsikko">
+      <section data-theme="light-grey" aria-labelledby="sisaltaa-otsikko">
         <div class="container">
           <div class="osio-otsake">
-            <h2 id="sisaltaa-otsikko">Mitä teemme</h2>
+            <h2 id="sisaltaa-otsikko" data-fit>Mitä teemme</h2>
           </div>
           <Bento kuva={`${d.kuva}-2`} vara={['etusivu', d.kuva]} solut={bentoSolut} korostus={bentoSolut.length - 1} />
         </div>
@@ -110,7 +97,7 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
     )
   }
 
-  <section class="section">
+  <section data-theme="birch">
     <div class="container">
       <div class="prose">
         <Content />
@@ -120,11 +107,11 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
 
   {
     d.ukk.length > 0 && (
-      <section class="section section--sand" aria-labelledby="ukk-otsikko">
+      <section data-theme="metsa" aria-labelledby="ukk-otsikko">
         <div class="container ukk-ruudukko">
           <div class="ukk-otsake">
-            <h2 id="ukk-otsikko">Usein kysyttyä</h2>
-            <a href="/yhteystiedot/" class="btn btn--secondary">Ota yhteyttä</a>
+            <h2 id="ukk-otsikko" data-fit>Kysymyksiä</h2>
+            <a href="/yhteystiedot/" class="btn">Ota yhteyttä</a>
           </div>
           <Ukk kysymykset={d.ukk} />
         </div>
@@ -132,7 +119,7 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
     )
   }
 
-  <section class="section--tight" aria-labelledby="muut-otsikko">
+  <section data-theme="birch" class="muut-osio" aria-labelledby="muut-otsikko">
     <div class="container">
       <h2 id="muut-otsikko" class="pieni-otsikko">Muut palvelut</h2>
       <ul class="muut">
@@ -150,7 +137,7 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
     </div>
   </section>
 
-  <section class="section--tight" aria-label="Kuvia">
+  <section data-theme="light-grey" aria-label="Kuvia">
     <Galleria />
   </section>
 
@@ -158,37 +145,45 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
 </BaseLayout>
 
 <style>
-  .hero { padding-block: clamp(1rem, 3vw, 2rem) clamp(3rem, 7vw, 6rem); }
-  .hero-ruudukko { display: grid; gap: clamp(2.5rem, 6vw, 4rem); align-items: center; margin-top: clamp(1.5rem, 4vw, 3rem); }
-  @media (min-width: 64rem) {
-    .hero-ruudukko:has(.hero-kuva) { grid-template-columns: 7fr 5fr; }
+  .murut { padding-block: 24px 0; }
+  .ingressi {
+    max-width: var(--measure);
+    margin: 32px auto 0;
+    text-align: center;
+    font-family: var(--font-display);
+    font-stretch: var(--stretch);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    font-size: clamp(22px, 1rem + 1vw, 32px);
+    line-height: 1.15;
+    color: var(--ink);
+    text-wrap: balance;
   }
-  .hero-teksti { display: grid; gap: 1.75rem; justify-items: start; }
-  .hero-teksti :global(h1) { font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.75rem); }
-  .hero-kuva { position: relative; aspect-ratio: 1 / 1; border-radius: var(--r-lg); overflow: hidden; }
-  .hero-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
-  .lisakuvat { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
-  .ukk-ruudukko { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
-  @media (min-width: 64rem) {
-    .ukk-ruudukko { grid-template-columns: 5fr 7fr; }
+  .lisakuvat { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+  .prose { margin-inline: auto; }
+  .ukk-ruudukko { display: grid; gap: var(--section-gap); }
+  @media (min-width: 1025px) {
+    .ukk-ruudukko { grid-template-columns: 1fr 1.4fr; align-items: start; }
   }
-  .ukk-otsake { display: grid; gap: 1.25rem; justify-items: start; }
-  .pieni-otsikko { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem); margin-bottom: 1.5rem; }
-  .muut { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .ukk-otsake { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+  @media (min-width: 1025px) {
+    .ukk-otsake { align-items: flex-start; text-align: left; }
+  }
+  .muut-osio { padding-block: 96px; }
+  .pieni-otsikko { text-align: center; font-size: clamp(28px, 4vw, 40px); margin-bottom: 32px; }
+  .muut { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
   .muut a {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    min-height: 2.875rem;
-    padding: 0.6rem 1.2rem;
+    gap: 10px;
+    height: 48px;
+    padding: 0 22px;
     border-radius: 999px;
-    background: var(--surface);
-    color: var(--ink);
-    font-weight: 500;
+    background: var(--p-grey-100);
+    color: var(--p-asphalt);
+    font: 600 18px/1 var(--font-body);
     text-decoration: none;
-    transition: background-color 200ms ease;
+    transition: background-color var(--dur-fast) ease;
   }
-  .muut a:hover { background: var(--sand); }
-  .muut :global(.icon) { transition: transform 200ms var(--ease-out); }
-  .muut a:hover :global(.icon) { transform: translateX(3px); }
+  .muut a:hover { background: var(--p-grey-200); }
 </style>

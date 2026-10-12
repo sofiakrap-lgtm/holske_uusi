@@ -2,9 +2,7 @@
 import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Kuva from '../components/Kuva.astro';
-import Icon from '../components/Icon.astro';
-import SanaOtsikko from '../components/SanaOtsikko.astro';
-import HeroMedia from '../components/HeroMedia.astro';
+import HeroLead from '../components/HeroLead.astro';
 import Bento from '../components/Bento.astro';
 import PalveluKaruselli from '../components/PalveluKaruselli.astro';
 import TyoVaiheet from '../components/TyoVaiheet.astro';
@@ -12,7 +10,6 @@ import Galleria from '../components/Galleria.astro';
 import Huoltovalit from '../components/Huoltovalit.astro';
 import Ukk from '../components/Ukk.astro';
 import CtaOsio from '../components/CtaOsio.astro';
-import { getKuva } from '../lib/kuvat';
 import yritys from '../data/yritys.json';
 
 const katot = (await getEntry('palvelut', 'katot'))!;
@@ -25,18 +22,20 @@ const ekaLause = (t: string) => {
 };
 
 const lupaukset = [
-  { kuva: 'lupaus-1', vara: ['katto-huolto'], nimi: 'Ilmainen kuntoarvio', lause: 'Katsomme kohteen paikan päällä.', teksti: 'Saat selkeän suunnitelman ja hinnan ilman sitoutumista.' },
-  { kuva: 'lupaus-2', vara: ['maalaus'], nimi: 'Kiinteä hinta', lause: 'Tiedät hinnan ennen aloitusta.', teksti: 'Saat kiinteän hinnan kuntoarvion jälkeen, ja päätät itse, jatketaanko.' },
-  { kuva: 'lupaus-3', vara: ['pihatyot'], nimi: 'Siisti työmaa', lause: 'Jätämme pihan siistimmäksi.', teksti: 'Lopuksi tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
+  { nimi: 'Ilmainen', vaite: 'Kuntoarvio paikan päällä', teksti: 'Saat selkeän suunnitelman ja hinnan ilman sitoutumista.' },
+  { nimi: 'Kiinteä', vaite: 'Hinta ennen aloitusta', teksti: 'Saat kiinteän hinnan kuntoarvion jälkeen, ja päätät itse, jatketaanko.' },
+  { nimi: 'Siisti', vaite: 'Työmaa kuntoon lopuksi', teksti: 'Tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
 ];
 
-const kattoSolut = [
+type Solu = { otsikko: string; teksti?: string; href?: string };
+
+const kattoSolut: Solu[] = [
   ...katot.data.alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: ekaLause(a.teksti) })),
   { otsikko: 'Lue lisää kattotöistä', href: '/palvelut/katot/' },
 ];
 
 // Vanhan sivun kattosisällöstä
-const merkit: { otsikko: string; teksti?: string; href?: string }[] = [
+const merkit: Solu[] = [
   'Katolla kasvaa sammalta',
   'Peltikatossa näkyy ruostetta',
   'Katto vuotaa',
@@ -45,7 +44,7 @@ const merkit: { otsikko: string; teksti?: string; href?: string }[] = [
 ].map((m) => ({ otsikko: m }));
 merkit.push({ otsikko: 'Huomasitko jonkin näistä? Ota yhteyttä', href: '/yhteystiedot/' });
 
-const maalausSolut = [
+const maalausSolut: Solu[] = [
   ...maalaus.data.alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: a.teksti })),
   { otsikko: 'Lue lisää talon maalauksesta', href: '/palvelut/maalaus/' },
 ];
@@ -57,119 +56,86 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
   title="Kattoremontit ja katon maalaus pääkaupunkiseudulla | Holske"
   description="Kattoremontit, katon maalaus ja pinnoitus sekä talon maalaus omakotitaloille Helsingissä, Espoossa ja Vantaalla. Perheyritys, ilmainen kuntoarvio."
 >
-  <section class="hero">
-    <div class="container hero-ruudukko">
-      <div class="hero-teksti">
-        <SanaOtsikko teksti="Kattoremontit|ja katon maalaus|omakotitaloille" />
-        <p class="hero-lead saapuu" style="--i:4">
-          Pieni perheyritys pääkaupunkiseudulta. Kunnostamme, maalaamme ja pinnoitamme katot ja seinät kiinteään hintaan.
-        </p>
-        <div class="btn-row saapuu" style="--i:5">
-          <a href="/yhteystiedot/" class="btn btn--iso">Ota yhteyttä</a>
-          <a href="#palvelut" class="link-arrow">Katso palvelut <Icon name="nuoli" size={18} /></a>
-        </div>
-      </div>
-      <div class="saapuu" style="--i:2">
-        <HeroMedia nimi="etusivu" kuva={['hero', 'etusivu']} kuvaus="Omakotitalo, jonka katto on kunnostettu" />
-      </div>
-    </div>
-  </section>
+  <HeroLead rivit={['Katto\u00ADremontit', 'ja maalaus', 'omakotitaloille pääkaupunkiseudulla']} kohdat={lupaukset} />
 
-  <section class="section--tight lupaukset-osio" aria-label="Miksi Holske">
-    <div class="container">
-      <ul class="lupaukset">
-        {
-          lupaukset.map((l) => (
-            <li>
-              <span class="lupaus-kuva reveal"><Kuva nimi={l.kuva} vara={l.vara} variantti="kortti" /></span>
-              <span class="eyebrow">{l.nimi}</span>
-              <strong>{l.lause}</strong>
-              <p>{l.teksti}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <section class="section section--sand" id="palvelut" aria-labelledby="palvelut-otsikko">
+  <section data-theme="light-grey" id="palvelut" aria-labelledby="palvelut-otsikko">
     <div class="container">
       <div class="osio-otsake">
-        <h2 id="palvelut-otsikko">Katot, seinät ja pihat kuntoon</h2>
+        <h2 id="palvelut-otsikko" data-fit>Katot ja seinät</h2>
         <p>Erikoisalaamme ovat kattoremontit ja maalaus. Hoidamme samalla myös muut omakotitalon ulkotyöt.</p>
       </div>
     </div>
     <PalveluKaruselli />
   </section>
 
-  <section class="section" id="kattotyot" aria-labelledby="katot-otsikko">
+  <section data-theme="birch" aria-labelledby="katot-otsikko">
     <div class="container">
       <div class="osio-otsake">
-        <h2 id="katot-otsikko">Kaikki kattotyöt yhdestä paikasta</h2>
+        <h2 id="katot-otsikko" data-fit>Kaikki kattotyöt</h2>
         <p>{ekaLause(katot.data.ingressi)} {yritys.kokemusLause}</p>
       </div>
       <Bento kuva="katot" solut={kattoSolut} korostus={5} />
     </div>
   </section>
 
-  <section class="section section--sand" aria-labelledby="merkit-otsikko">
+  <section data-theme="oliivi" aria-labelledby="merkit-otsikko">
     <div class="container">
       <div class="osio-otsake">
-        <h2 id="merkit-otsikko">Mistä tiedät, että katto tarvitsee huoltoa?</h2>
-        <p>Tikkaille ei tarvitse kiivetä itse. Kun huomaat jonkin näistä, on hyvä aika pyytää kuntoarvio.</p>
+        <h2 id="merkit-otsikko" data-fit>Katon merkit</h2>
+        <p>Mistä tiedät, että katto tarvitsee huoltoa? Tikkaille ei tarvitse kiivetä itse.</p>
       </div>
       <Bento kuva="katto-huolto" solut={merkit} korostus={5} />
     </div>
   </section>
 
-  <section class="section" aria-labelledby="huolto-otsikko">
-    <div class="container huolto">
-      <div class="huolto-otsake">
-        <h2 id="huolto-otsikko">Milloin katto ja seinät kannattaa maalata?</h2>
-        <p>Pinnoitus voi pidentää tiilikaton käyttöikää jopa 20 vuodella. Nämä ovat tavalliset välit, kuntoarviossa katsomme juuri sinun kohteesi.</p>
+  <section data-theme="asphalt" aria-labelledby="huolto-otsikko">
+    <div class="container">
+      <div class="osio-otsake">
+        <h2 id="huolto-otsikko" data-fit>Huoltovälit</h2>
+        <p>Milloin katto ja seinät kannattaa maalata? Pinnoitus voi pidentää tiilikaton käyttöikää jopa 20 vuodella.</p>
       </div>
       <Huoltovalit />
     </div>
   </section>
 
-  <section class="section section--sand" aria-labelledby="maalaus-otsikko">
+  <section data-theme="light-grey" aria-labelledby="maalaus-otsikko">
     <div class="container">
       <div class="osio-otsake">
-        <h2 id="maalaus-otsikko">{maalaus.data.otsikko}</h2>
+        <h2 id="maalaus-otsikko" data-fit>Talon maalaus</h2>
         <p>{maalaus.data.ingressi}</p>
       </div>
       <Bento kuva="maalaus" solut={maalausSolut} korostus={3} />
     </div>
   </section>
 
-  <section class="section galleria-osio" aria-labelledby="galleria-otsikko">
+  <section data-theme="birch" aria-labelledby="vaiheet-otsikko">
     <div class="container">
       <div class="osio-otsake">
-        <h2 id="galleria-otsikko">Pääkaupunkiseudun omakotitaloille</h2>
-        <p>Helsinki, Espoo, Vantaa ja Kauniainen. Tulemme kohteeseen ja teemme työn alusta loppuun.</p>
-      </div>
-    </div>
-    <Galleria />
-  </section>
-
-  <section class="section section--sand" aria-labelledby="vaiheet-otsikko">
-    <div class="container">
-      <div class="osio-otsake">
-        <h2 id="vaiheet-otsikko">Näin työ etenee</h2>
+        <h2 id="vaiheet-otsikko" data-fit>Näin työ etenee</h2>
         <p>Kolme vaihetta yhteydenotosta valmiiseen työhön.</p>
       </div>
       <TyoVaiheet />
     </div>
   </section>
 
-  <section class="section" id="meista" aria-labelledby="meista-otsikko">
+  <section data-theme="light-grey" aria-labelledby="galleria-otsikko">
+    <div class="container">
+      <div class="osio-otsake">
+        <h2 id="galleria-otsikko" data-fit>Katot ja pihat</h2>
+        <p>{yritys.palvelualue.join(', ')}. Tulemme kohteeseen ja teemme työn alusta loppuun.</p>
+      </div>
+    </div>
+    <Galleria />
+  </section>
+
+  <section data-theme="birch" id="meista" aria-labelledby="meista-otsikko">
     <div class="container meista">
-      <div class="meista-kuva reveal">
+      <div class="meista-kuva">
         <Kuva nimi="perheyritys" vara={['etusivu-mobiili', 'etusivu']} variantti="tayta" />
       </div>
       <div class="meista-teksti">
-        <span class="eyebrow">Meistä</span>
-        <h2 id="meista-otsikko">Pieni perheyritys. Tue paikallista tekijää.</h2>
+        <p class="eyebrow">Meistä</p>
+        <h2 id="meista-otsikko" data-fit>Perheyritys</h2>
         <p class="meista-lause">
           Olemme suomalainen perheyritys pääkaupunkiseudulta. {yritys.kokemusLause} Asiakkaan tarpeet ovat meille
           ensisijaisia, ja muokkaamme työn sinun kohteesi mukaan.
@@ -179,12 +145,12 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
     </div>
   </section>
 
-  <section class="section section--sand" id="ukk" aria-labelledby="ukk-otsikko">
+  <section data-theme="metsa" id="ukk" aria-labelledby="ukk-otsikko">
     <div class="container ukk-ruudukko">
       <div class="ukk-otsake">
-        <h2 id="ukk-otsikko">Usein kysyttyä</h2>
+        <h2 id="ukk-otsikko" data-fit>Kysymyksiä</h2>
         <p>Etkö löytänyt vastausta? Kysy meiltä suoraan.</p>
-        <a href="/yhteystiedot/" class="btn btn--secondary">Ota yhteyttä</a>
+        <a href="/yhteystiedot/" class="btn">Ota yhteyttä</a>
       </div>
       <Ukk kysymykset={ukk} />
     </div>
@@ -194,64 +160,38 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
 </BaseLayout>
 
 <style>
-  /* Hero: otsikko vasemmalla, neliövideo oikealla */
-  .hero { padding-block: clamp(2rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem); }
-  .hero-ruudukko { display: grid; gap: clamp(2.5rem, 6vw, 4rem); align-items: center; }
-  @media (min-width: 64rem) {
-    .hero-ruudukko { grid-template-columns: 7fr 5fr; }
-  }
-  .hero-teksti { display: grid; gap: 1.75rem; justify-items: start; }
-  .hero-lead { max-width: 30rem; font-size: var(--fs-lg); line-height: 1.5; color: var(--muted); }
+  [data-theme='oliivi'] { --korostus: var(--p-asphalt); }
 
-  /* Kolme lupausta */
-  .lupaukset-osio { border-top: 1px solid var(--line); }
-  .lupaukset {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 2rem clamp(2rem, 4vw, 4rem);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  /* Meistä: kuva ja sisältö rinnakkain */
+  .meista { display: grid; gap: var(--section-gap); align-items: center; }
+  @media (min-width: 1025px) {
+    .meista { grid-template-columns: 1fr 1fr; }
   }
-  .lupaukset li { display: grid; gap: 0.4rem; align-content: start; }
-  .lupaus-kuva { display: block; margin-bottom: 1rem; border-radius: var(--r-md); overflow: hidden; }
-  .lupaus-kuva :global(.kuvapaikka) { border-radius: 0; }
-  .lupaukset strong { color: var(--ink); font-weight: 560; font-size: 1.25rem; letter-spacing: -0.015em; line-height: 1.3; }
-  .lupaukset p { color: var(--muted); }
-
-  /* Huoltovälit */
-  .huolto { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
-  @media (min-width: 64rem) {
-    .huolto { grid-template-columns: 5fr 7fr; }
-    .huolto-otsake { position: sticky; top: calc(var(--header-offset) + 2rem); }
+  .meista-kuva { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-md); overflow: hidden; }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .meista-kuva { aspect-ratio: 4 / 3; }
   }
-  .huolto-otsake { display: grid; gap: 1rem; }
-  .huolto-otsake p { color: var(--muted); font-size: var(--fs-lg); max-width: 30rem; }
-
-  .osion-otsikko { margin-bottom: clamp(2rem, 5vw, 3rem); }
-
-  /* Meistä: kuva ja iso lause rinnakkain */
-  .meista { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
-  @media (min-width: 56rem) {
-    .meista { grid-template-columns: 5fr 7fr; }
-  }
-  .meista-kuva { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden; }
   .meista-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
-  .meista-teksti { display: grid; gap: 1.25rem; }
+  .meista-teksti { display: grid; gap: 24px; justify-items: start; }
   .meista-lause {
-    font-size: clamp(1.3rem, 1.05rem + 1vw, 1.85rem);
-    line-height: 1.35;
-    font-weight: 450;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-stretch: var(--stretch);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    font-size: clamp(22px, 1rem + 1vw, 32px);
+    line-height: 1.15;
     color: var(--ink);
   }
-  .meista-tiedot { color: var(--muted); font-size: var(--fs-sm); }
+  .meista-tiedot { color: var(--muted); font-size: 16px; }
 
-  /* Usein kysyttyä */
-  .ukk-ruudukko { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
-  @media (min-width: 64rem) {
-    .ukk-ruudukko { grid-template-columns: 5fr 7fr; }
+  /* Kysymyksiä: otsikko ja nappi vasemmalla, haitari oikealla */
+  .ukk-ruudukko { display: grid; gap: var(--section-gap); }
+  @media (min-width: 1025px) {
+    .ukk-ruudukko { grid-template-columns: 1fr 1.4fr; align-items: start; }
   }
-  .ukk-otsake { display: grid; gap: 1rem; justify-items: start; }
-  .ukk-otsake p { color: var(--muted); font-size: var(--fs-lg); }
+  .ukk-otsake { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+  @media (min-width: 1025px) {
+    .ukk-otsake { align-items: flex-start; text-align: left; }
+  }
+  .ukk-otsake p { color: var(--muted); font-weight: 600; font-size: clamp(18px, 1rem + 0.4vw, 24px); }
 </style>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buttons · ui-bahnexpress-fi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Figtree:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../motion/motion.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-weight:var(--weight-body);font-size:var(--text-body);line-height:var(--leading-body);font-feature-settings:var(--body-features);-webkit-font-smoothing:antialiased}
+.demo-label{font:600 14px/20px var(--font-mono);color:var(--color-text-muted);margin:0 0 var(--space-4)}
+.demo{padding:var(--space-9) var(--container-pad);display:flex;flex-direction:column;gap:var(--space-9)}
+.row{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center}
+.section{background:var(--color-bg);color:var(--color-text);padding:var(--section-py) 0;overflow-x:clip}
+.container{max-width:var(--container-max);margin:0 auto;padding-inline:var(--container-pad);display:flex;flex-direction:column;gap:var(--section-gap)}
+.display{font-family:var(--font-display);font-stretch:var(--stretch-display);font-size:var(--text-h1);line-height:var(--leading-h1);letter-spacing:var(--tracking-h1);font-weight:var(--weight-h1);text-transform:var(--case-display);color:var(--color-heading);text-wrap:balance;margin:0}
+.heading{font-family:var(--font-heading);font-stretch:var(--stretch-display);font-size:var(--text-h3);line-height:var(--leading-h3);letter-spacing:var(--tracking-h3);font-weight:var(--weight-h3);color:var(--color-heading);text-wrap:balance;margin:0}
+.eyebrow{font-family:var(--font-body);font-weight:var(--weight-caption);font-size:var(--text-caption);line-height:var(--leading-caption);color:var(--color-text-muted);margin:0}
+.lead{font-weight:var(--weight-lead);font-size:var(--text-lead);line-height:var(--leading-lead);color:var(--color-heading);margin:0;text-wrap:balance}
+.body{margin:0;text-wrap:pretty}
+.muted{color:var(--color-text-muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--button-gap);height:var(--button-h);padding:0 var(--button-px);border:0;border-radius:var(--radius-button);font:var(--weight-button) var(--text-button)/var(--leading-button) var(--font-body);white-space:nowrap;cursor:pointer;text-decoration:none;background:transparent;color:inherit;transition:background-color var(--duration-fast),color var(--duration-fast)}
+.btn:focus-visible{outline:4px solid var(--color-focus);outline-offset:0}
+.btn--primary{background:var(--color-accent);color:var(--color-accent-contrast)}
+.btn--primary:hover,.btn--primary.is-hover{background:var(--color-accent-hover)}
+.btn--secondary{background:var(--color-surface);color:var(--color-heading)}
+.btn--secondary:hover,.btn--secondary.is-hover{background:var(--palette-grey-100)}
+.btn--tertiary{background:var(--palette-grey-100);color:var(--palette-asphalt)}
+.btn--tertiary:hover,.btn--tertiary.is-hover{background:var(--palette-grey-200)}
+.btn--ghost{color:var(--color-heading);padding-inline:calc(var(--button-px) - 2px)}
+.btn--ghost:hover,.btn--ghost.is-hover{color:var(--color-link-hover)}
+.btn--xs{--button-h:40px;--button-px:20px;--text-button:16px;--leading-button:16px}
+.btn--sm{--button-h:48px;--button-px:22px;--text-button:18px;--leading-button:18px}
+.btn--lg{--button-h:64px;--button-px:28px;--text-button:22px;--leading-button:22px}
+.btn--xl{--button-h:72px;--button-px:32px;--text-button:24px;--leading-button:24px}
+.btn--icon{width:var(--button-h);padding:0}
+.btn:disabled{background:var(--color-bg-alt);color:var(--color-text-muted);cursor:not-allowed}
+.icon{width:var(--icon-size);height:var(--icon-size);fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linecap:square;stroke-linejoin:miter;flex:0 0 auto}
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;border:1px solid currentColor;border-radius:var(--radius-pill);font:400 16px/16px var(--font-body);color:var(--color-text-muted);white-space:nowrap}
+.ph{background:var(--palette-grey-100);display:block;width:100%}
+
+.btn--icon .icon{width:calc(var(--button-h) / 2);height:calc(var(--button-h) / 2)}
+.theme-demo{padding:var(--space-9);border-radius:var(--radius-card)}
+</style>
+</head>
+<body>
+
+<div class="demo">
+  <section><p class="demo-label">primary (birch-teema)</p><div class="row"><button class="btn btn--primary btn--xs">Nappi xs</button><button class="btn btn--primary btn--sm">Nappi sm</button><button class="btn btn--primary">Nappi m</button><button class="btn btn--primary btn--lg">Nappi lg</button><button class="btn btn--primary btn--xl">Nappi xl</button><button class="btn btn--primary is-hover">hover</button><button class="btn btn--primary" disabled>disabled</button><button class="btn btn--primary btn--icon btn--lg" aria-label="Seuraava"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div></section>
+  <section><p class="demo-label">secondary</p><div class="row"><button class="btn btn--secondary btn--xs">Nappi xs</button><button class="btn btn--secondary btn--sm">Nappi sm</button><button class="btn btn--secondary">Nappi m</button><button class="btn btn--secondary btn--lg">Nappi lg</button><button class="btn btn--secondary btn--xl">Nappi xl</button><button class="btn btn--secondary is-hover">hover</button><button class="btn btn--secondary" disabled>disabled</button><button class="btn btn--secondary btn--icon btn--lg" aria-label="Seuraava"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div></section>
+  <section><p class="demo-label">tertiary</p><div class="row"><button class="btn btn--tertiary btn--xs">Nappi xs</button><button class="btn btn--tertiary btn--sm">Nappi sm</button><button class="btn btn--tertiary">Nappi m</button><button class="btn btn--tertiary btn--lg">Nappi lg</button><button class="btn btn--tertiary btn--xl">Nappi xl</button><button class="btn btn--tertiary is-hover">hover</button><button class="btn btn--tertiary" disabled>disabled</button><button class="btn btn--tertiary btn--icon btn--lg" aria-label="Seuraava"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div></section>
+  <section><p class="demo-label">ghost</p><div class="row"><button class="btn btn--ghost btn--xs">Nappi xs</button><button class="btn btn--ghost btn--sm">Nappi sm</button><button class="btn btn--ghost">Nappi m</button><button class="btn btn--ghost btn--lg">Nappi lg</button><button class="btn btn--ghost btn--xl">Nappi xl</button><button class="btn btn--ghost is-hover">hover</button><button class="btn btn--ghost" disabled>disabled</button><button class="btn btn--ghost btn--icon btn--lg" aria-label="Seuraava"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div></section>
+  <section class="theme-demo" data-theme="asphalt" style="background:var(--color-bg)"><p class="demo-label">primary asphalt-teemassa (birch-pilleri)</p><div class="row"><button class="btn btn--primary btn--xs">Nappi xs</button><button class="btn btn--primary btn--sm">Nappi sm</button><button class="btn btn--primary">Nappi m</button><button class="btn btn--primary btn--lg">Nappi lg</button><button class="btn btn--primary btn--xl">Nappi xl</button><button class="btn btn--primary is-hover">hover</button><button class="btn btn--primary" disabled>disabled</button><button class="btn btn--primary btn--icon btn--lg" aria-label="Seuraava"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div></section>
+  <section class="theme-demo" data-theme="teal" style="background:var(--color-bg)"><p class="demo-label">primary teal-teemassa</p><div class="row"><button class="btn btn--primary btn--xs">Nappi xs</button><button class="btn btn--primary btn--sm">Nappi sm</button><button class="btn btn--primary">Nappi m</button><button class="btn btn--primary btn--lg">Nappi lg</button><button class="btn btn--primary btn--xl">Nappi xl</button><button class="btn btn--primary is-hover">hover</button><button class="btn btn--primary" disabled>disabled</button><button class="btn btn--primary btn--icon btn--lg" aria-label="Seuraava"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div></section>
+</div>
+
+<script src="../motion/motion.js" defer></script>
+</body>
+</html>

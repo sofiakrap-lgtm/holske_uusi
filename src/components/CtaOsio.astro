@@ -3,24 +3,20 @@ interface Props {
   otsikko?: string;
   teksti?: string;
 }
-const {
-  otsikko = 'Tarvitseeko kattosi huoltoa?',
-  teksti = 'Kuntoarvio on ilmainen, ja saat suunnitelman ja hinnan ilman sitoutumista.',
-} = Astro.props;
+const { otsikko = 'Katsotaanko kattosi?', teksti = 'Kuntoarvio on ilmainen ja ilman sitoutumista.' } = Astro.props;
 ---
 
-<section class="yhteys" aria-labelledby="yhteys-otsikko">
-  <div class="container sisus reveal">
-    <h2 id="yhteys-otsikko">{otsikko}</h2>
+<section class="cta" data-theme="asphalt" aria-labelledby="yhteys-otsikko">
+  <div class="container sisus">
+    <h2 id="yhteys-otsikko" data-fit>{otsikko}</h2>
     <p>{teksti}</p>
-    <a href="/yhteystiedot/" class="btn btn--iso">Ota yhteyttä</a>
+    <a href="/yhteystiedot/" class="btn btn--l">Ota yhteyttä</a>
   </div>
 </section>
 
 <style>
-  .yhteys { padding-block: var(--section); text-align: center; }
-  .sisus { display: grid; justify-items: center; gap: 1.25rem; }
-  h2 { max-width: 16ch; }
-  p { max-width: 34rem; color: var(--muted); font-size: var(--fs-lg); }
-  .btn { margin-top: 0.75rem; }
+  .cta { padding-block: 96px; }
+  .sisus { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+  p { color: var(--muted); font-weight: 600; font-size: clamp(18px, 1rem + 0.4vw, 24px); }
+  .btn { margin-top: 8px; }
 </style>

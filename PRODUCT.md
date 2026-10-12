@@ -29,7 +29,7 @@ Kävijä vertailee muutamaa paikallista tekijää. Päätös syntyy puhelussa. K
 - Nimi Holske Oy, Y-tunnus 3419162-6, Pyörärinne 4, 01280 Vantaa.
 - Logo: `assets/logot-ja-grafiikat/logo.svg` (väri CSS:stä) ja `logo-pieni.svg` (H.).
 - Värit (omistajan paletti 10/2026): oliivi #555936 (pääväri), ruoste #8C451C (soittonapit), luu #D9D2C5 (pinnat), hiili #262626 (teksti ja footer).
-- Fontti: Geist.
+- Fontit: Archivo leveänä (otsikot) ja Figtree (teksti), Bahnin tyylijärjestelmän mukaan.
 - Suunta: malli bahnexpress.fi (omistajan valinta 10/2026). Kevyt, lähes yksivärinen, kuvat ja video tuovat värin. Ei raskaita elementtejä.
 - Puhelinnumero vain Yhteystiedot-sivulla, muualla "Ota yhteyttä".
 - Sävy: tarjoileva mutta hillitty, arvokas, skandinaavinen. Ei huutomerkkejä.

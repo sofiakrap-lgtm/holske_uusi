@@ -5,7 +5,6 @@ import Icon from '../../components/Icon.astro';
 import Kuva from '../../components/Kuva.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
 import Murupolku from '../../components/Murupolku.astro';
-import SanaOtsikko from '../../components/SanaOtsikko.astro';
 import { getKuva } from '../../lib/kuvat';
 
 const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
@@ -21,7 +20,7 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
     <div class="container">
       <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }]} />
       <div class="otsake">
-        <SanaOtsikko teksti="Palvelut" />
+        <h1 data-fit>Palvelut</h1>
         <p class="lead">
           Erikoisalaamme ovat kattoremontit, katon maalaus ja talon maalaus. Hoidamme samalla myös muut omakotitalon
           ulkotyöt.
@@ -92,7 +91,7 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
     color: var(--green-text-on);
   }
   .ydinkortti { display: grid; gap: 1rem; color: var(--ink); text-decoration: none; }
-  .ydinkortti h2 { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); margin-top: 0.5rem; }
+  .ydinkortti h2 { font-size: clamp(24px, 1rem + 1vw, 32px); font-weight: 500; text-transform: none; letter-spacing: 0.3px; line-height: 1.15; margin-top: 0.5rem; }
   .ydinkortti :global(.kuvapaikka) { border-radius: var(--r-md); }
   .ydinkortti p { color: var(--muted); }
   .ydinkortti :global(.kuvapaikka) { transition: transform 500ms var(--ease-out); }

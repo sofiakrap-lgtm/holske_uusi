@@ -1,0 +1,189 @@
+---
+/**
+ * Bahn-tyylinen pääosio: koko osion taustamedia (video tai kuva) kohinalla, usvalla ja häivytyksellä
+ * seuraavan osion väriin, keskitetty monirivinen otsikko, toimintonappi ja tumma kolmen sarakkeen paneeli.
+ * Video: public/video/<video>.mp4 (+ -poster.jpg). Ilman videota näytetään kuva.
+ */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import Kuva from './Kuva.astro';
+import { ensimmainenKuva } from '../lib/kuvat';
+
+interface Kohta {
+  nimi: string;
+  vaite: string;
+  teksti: string;
+}
+interface Props {
+  rivit: [string, string, string];
+  vari?: string;
+  kohdat?: Kohta[];
+  video?: string;
+  kuva?: string[];
+  seuraava?: string;
+  nappi?: { teksti: string; href: string };
+}
+const {
+  rivit,
+  kohdat = [],
+  video = 'etusivu',
+  kuva = ['hero', 'etusivu'],
+  seuraava = 'var(--p-grey-50)',
+  nappi = { teksti: 'Ota yhteyttä', href: '/yhteystiedot/' },
+} = Astro.props;
+const kansio = join(process.cwd(), 'public', 'video');
+const onVideo = existsSync(join(kansio, `${video}.mp4`));
+const onWebm = existsSync(join(kansio, `${video}.webm`));
+const poster = existsSync(join(kansio, `${video}-poster.jpg`)) ? `/video/${video}-poster.jpg` : undefined;
+const taustakuva = ensimmainenKuva(...kuva);
+---
+
+<section class="paaosio" data-theme="birch" style={`--fade:${seuraava}`}>
+  <div class="tausta" aria-hidden="true">
+    {
+      onVideo ? (
+        <video autoplay muted loop playsinline preload="metadata" poster={poster} class="media">
+          {onWebm && <source src={`/video/${video}.webm`} type="video/webm" />}
+          <source src={`/video/${video}.mp4`} type="video/mp4" />
+        </video>
+      ) : taustakuva ? (
+        <div class="media"><Kuva nimi={taustakuva} variantti="tayta" eager /></div>
+      ) : (
+        <div class="media media--vari" />
+      )
+    }
+    <div class="tumma"></div>
+    <div class="kohina"></div>
+    <div class="usva"></div>
+    <div class="haivytys"></div>
+  </div>
+
+  <div class="container sisus">
+    <h1 class="otsikko">
+      <span class="r r1" data-fit data-fit-ryhma="hero">{rivit[0]}</span>
+      {rivit[1] && <span class="r r2" data-fit data-fit-ryhma="hero">{rivit[1]}</span>}
+      <span class="r r3">{rivit[2]}</span>
+    </h1>
+    <a href={nappi.href} class="btn btn--iso">{nappi.teksti}</a>
+
+    {
+      kohdat.length > 0 && (
+        <div class="kaista" data-theme="asphalt">
+          {kohdat.map((k) => (
+            <div class="kohta">
+              <p class="kohta-nimi">{k.nimi}</p>
+              <p class="kohta-vaite">{k.vaite}</p>
+              <p class="kohta-teksti">{k.teksti}</p>
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .paaosio {
+    position: relative;
+    isolation: isolate;
+    margin-top: calc(-1 * var(--header-h));
+    padding-top: calc(var(--header-h) + var(--section-gap) * 1.5);
+    padding-bottom: var(--section);
+    background: transparent;
+  }
+  .tausta { position: absolute; inset: 0; z-index: -1; overflow: clip; }
+  .tausta > * { position: absolute; inset: 0; }
+  .media { width: 100%; height: 100%; object-fit: cover; }
+  .media :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
+  .media--vari { background: var(--p-olive); }
+  .tumma {
+    background:
+      linear-gradient(to bottom, rgb(255 254 247 / 0.7) 0, rgb(255 254 247 / 0) 150px),
+      linear-gradient(to bottom, rgb(18 17 14 / 0.1) 150px, rgb(18 17 14 / 0.3) 35%, rgb(18 17 14 / 0.12) 60%, transparent 75%);
+  }
+  .kohina {
+    opacity: 0.3;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .usva { mix-blend-mode: lighten; background: rgb(122 109 96 / 0.3); }
+  .haivytys { background: linear-gradient(to bottom, transparent 65%, var(--fade)); }
+
+  .sisus { display: flex; flex-direction: column; align-items: center; gap: 32px; text-align: center; }
+  .otsikko {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    color: var(--p-birch);
+    text-shadow: 0 1px 3px rgb(0 0 0 / 0.45), 0 2px 16px rgb(0 0 0 / 0.35);
+    font-size: inherit;
+  }
+  .r { display: block; width: 100%; overflow-wrap: normal; }
+  @media (min-width: 768px) {
+    .r1,
+    .r2 { white-space: nowrap; }
+  }
+  .r1 { hyphens: manual; }
+  .r1 { font-size: 48px; line-height: 1; letter-spacing: calc(-0.3px + 0.02em); }
+  .r2 { font-size: 48px; line-height: 1; }
+  .r3 {
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0.3px;
+    font-size: 26px;
+    line-height: 1.15;
+    margin-top: 4px;
+  }
+  @media (min-width: 768px) {
+    .otsikko { gap: 10px; }
+    .r1 { font-size: 72px; }
+    .r2 { font-size: 56px; }
+    .r3 { font-size: 40px; }
+  }
+  @media (min-width: 1025px) {
+    .otsikko { gap: 12px; }
+    .r1 { font-size: 96px; }
+    .r2 { font-size: 80px; }
+    .r3 { font-size: 44px; }
+  }
+
+  /* Tumma kolmen sarakkeen paneeli */
+  .kaista {
+    display: grid;
+    grid-auto-flow: row;
+    width: 100%;
+    margin-top: clamp(48px, 10vw, 160px);
+    border-radius: var(--r-md);
+    background: var(--overlay);
+    overflow: hidden;
+    text-align: left;
+  }
+  @media (min-width: 768px) {
+    .kaista { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
+  }
+  .kohta { display: flex; flex-direction: column; gap: 16px; padding: 28px 24px; }
+  .kohta + .kohta { border-top: 2px solid var(--p-birch); }
+  @media (min-width: 768px) {
+    .kohta + .kohta { border-top: 0; border-left: 2px solid var(--p-birch); }
+    .kohta { padding: 36px; gap: 22px; }
+  }
+  @media (min-width: 1200px) {
+    .kohta { padding: 48px; gap: 24px; }
+  }
+  .kohta-nimi { font-weight: 600; font-size: 20px; line-height: 24px; color: var(--muted); }
+  .kohta-vaite {
+    font-family: var(--font-display);
+    font-stretch: var(--stretch);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    font-size: clamp(22px, 1rem + 1vw, 32px);
+    line-height: 1.12;
+    color: var(--ink);
+  }
+  .kohta-teksti { color: var(--ink-2); }
+  @media (prefers-reduced-motion: reduce) {
+    video.media { display: none; }
+  }
+</style>

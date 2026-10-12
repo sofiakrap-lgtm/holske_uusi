@@ -1,50 +1,46 @@
 # Design
 
-Holsken visuaalinen järjestelmä, yksinkertainen versio. Malli: bahnexpress.fi (omistajan valinta 10/2026). Rauhallinen, lähes yksivärinen pohja, väri tulee kuvista ja videosta. Lähteet: `src/styles/global.css`, komponentit `src/components/`.
+Holsken visuaalinen järjestelmä. Pohja: Bahnin mitattu tyylijärjestelmä (`.claude/skills/ui-bahnexpress-fi/`, poimittu bahnexpress.fi:n CSS:stä 10/2026) Holsken paletilla ja sisällöllä. Lähteet: `src/styles/global.css`, `src/components/`.
 
-## Periaatteet (omistajan palaute)
-- Ei raskaita elementtejä: ei koko ruudun kuvabanneria, ei kuvakehyksiä, ei varjoja napeissa.
-- Napit yksinkertaisia: "Ota yhteyttä", musta pilleri.
-- Puhelinnumero näkyy vain Yhteystiedot-sivulla. Muualla "Ota yhteyttä" vie sinne.
-- Ruudukko, jossa kuva on keskellä ja solut ympärillä (`Bento.astro`), on talon tunnusmerkki. Käytä sitä uusissa osioissa.
+## Periaatteet
+- Jokainen osio on yksi teema koko leveydeltä (`data-theme`): koivu, vaaleanharmaa, oliivi, metsä, hiili. Teemat vuorottelevat.
+- Display-otsikot: Archivo leveänä (font-stretch 125 %), paino 900, versaalit, keskitetty, rivikorkeus = koko. 2-4 sanaa. Liian pitkä sana pienennetään askel kerrallaan (`data-fit`).
+- Leipäteksti Figtree 300, alaotsikot ja selitteet Figtree 600.
+- Ei varjoja, ei sumennusta, ei gradientteja napeissa. Syvyys sävyaskelilla ja 2 px raoilla.
+- Napit pillereitä (xs 40, s 48, m 56, l 64, xl 72 px), kortit ja media 24 px.
+- Liike on toiminnallista: liukuva valintapilleri navigaatiossa, rullaavat numerot, haitari, karusellin nuolet. Ei koristeellisia vieritysilmestymisiä.
+- Puhelinnumero vain Yhteystiedot-sivulla. Muualla "Ota yhteyttä".
+- Kuva keskellä -ruudukko (`Bento`) on Holsken oma tunnusmerkki.
 
-## Värit (vaalea / tumma)
-| Token | Vaalea | Tumma | Käyttö |
-|---|---|---|---|
-| `--bg` | #ffffff | #161615 | pohja |
-| `--surface` | #f5f3ef | #1f1f1d | vuorottelevat osiot, kortit |
-| `--sand` | #ece8e1 | #262624 | joka toinen kortti |
-| `--ink` | #262626 | #f2efe9 | otsikot, napit |
-| `--ink-2` | #3d3c39 | #d9d5cd | leipäteksti |
-| `--muted` | #6b6964 | #a8a49c | toissijainen teksti |
-| `--green-fill` | #555936 | #555936 | oliivi: yksi korostussolu per ruudukko, hero-paikka |
-
-Omistajan paletti: oliivi #555936, ruoste #8C451C, luu #D9D2C5, hiili #262626.
+## Paletti
+| Token | Arvo | Käyttö |
+|---|---|---|
+| `--p-birch` | #fffef7 | koivu-teeman pohja, kortit tummissa teemoissa |
+| `--p-grey-50` | #f1eee6 | vaaleanharmaa teema, kortit koivulla, footer |
+| `--p-grey-100` | #e2ded4 | toissijaiset napit, hiekkasolut |
+| `--p-asphalt` | #262626 | päänappi, hiili-teema, korostussolu |
+| `--p-olive` | #555936 | oliivi-teema (Holsken pääväri) |
+| `--p-forest` | #2e3120 | metsä-teema (usein kysytyt) |
+| `--p-rust` | #8c451c | signaaliväri, vain pienet merkit |
+| `--muted` | #625a4c | toissijainen teksti vaaleilla pohjilla (AA kaikilla vaaleilla sävyillä) |
 
 ## Typografia
-Geist Variable. Lausekirjoitus kaikkialla, ei isoja kirjaimia.
-- H1 88/46px, 560, -0.035em, rivit omille riveilleen, sanat nousevat esiin (`SanaOtsikko`).
-- H2 54/32px, 560, -0.03em. H3 26/20px, 560.
-- Leipäteksti 18px, 1.55. Pieni selite 15px muted.
+| Rooli | Desktop / tabletti / mobiili |
+|---|---|
+| Hero rivi 1 (Archivo 900 versaali) | 96 / 72 / 48 px, sovitetaan |
+| Hero rivi 2 | 80 / 56 / 48 px |
+| Hero rivi 3 (Archivo 500) | 44 / 40 / 26 px |
+| Osio-otsikko H2 | 72 px asti, clamp ja sovitus |
+| Kortin otsikko (Archivo 500) | 24-28 px |
+| Leipä (Figtree 300) | 20 / 20 / 18 px |
+| Alaotsikko (Figtree 600) | 24 / 20 / 18 px |
+| Luku (Archivo 700, +1.8px, tabular) | 56 / 48 / 40 px |
 
-## Muodot
-Kuvat ja kortit 24-28px kulmat, napit ja chipit pillereitä, kentät 14px. Ei varjoja korteissa.
+## Asettelu
+Kontti 1440 px, gutter 24 / 36 / 48. Osion padding 96 / 128 / 144. Otsikosta sisältöön 48 / 56 / 64.
+
+## Etusivu (teema)
+Hero + tumma kolmen sarakkeen paneeli (koivu, taustakuva/video kohinalla, usvalla ja häivytyksellä) · Katot ja seinät -palvelurata (vaaleanharmaa) · Kaikki kattotyöt (koivu, Bento) · Katon merkit (oliivi, Bento) · Huoltovälit (hiili, rullaavat luvut) · Talon maalaus (vaaleanharmaa, Bento) · Näin työ etenee (koivu, välilehdet) · Katot ja pihat -galleria (vaaleanharmaa) · Perheyritys (koivu) · Kysymyksiä (metsä) · Lopetus (hiili) · Footer (vaaleanharmaa).
 
 ## Komponentit
-- `Header`: koko leveys, läpinäkyvä, vieritettäessä lasimainen (IntersectionObserver). Linkit ja "Ota yhteyttä".
-- `SanaOtsikko`: sana kerrallaan nouseva otsikko, rivit `|`-merkillä.
-- `HeroMedia`: neliövideo `public/video/<nimi>.mp4` (+ `-poster.jpg`, `.webm`). Ilman videota oliivi neliö.
-- `Bento`: kuva keskellä, solut vasemmalla ja oikealla, viimeinen solu voi olla oliivi linkki.
-- `RullaLuku`: numerot rullaavat paikalleen kuin matkamittari.
-- `Ukk`: haitari, yksi auki kerrallaan.
-- `CtaOsio`: yksi kysymys ja yksi nappi.
-- `PalveluKaruselli`: iso kuva vasemmalla, teksti ja kolme kohtaa oikealla, nuolinapit ja pyyhkäisy.
-- `TyoVaiheet`: kolme välilehteä, kuva vaihtuu ristihäivytyksellä, vaihtuu itsestään 6 s välein.
-- `Galleria`: liukuva kuvanauha kansiosta `assets/kuvat/galleria/` (pysähtyy hoverilla).
-- `Kuva` + `vara`: jokaisella kuvapaikalla oma nimi ja varakuvat, kuvat saavat toistua.
-
-## Etusivu
-Hero (otsikko + neliökuva/video) · kolme lupausta kuvineen · palvelukaruselli · kattotyöt (Bento) · katon merkit (Bento) · huoltovälit (rullaavat luvut) · maalaus (Bento) · galleria · työn vaiheet (välilehdet) · meistä kuvalla · usein kysyttyä · lopetus.
-
-## Liike
-Sanat nousevat 0.9s, porrastus 80ms. Osiot nousevat vierityksessä. Numerot rullaavat 1.4s. Kuvat zoomaavat 1.03 hoverissa. Napit painuvat 0.97. Kaikki pois, kun käyttäjä toivoo vähemmän liikettä.
+`HeroLead`, `Bento`, `PalveluKaruselli`, `Huoltovalit` + `RullaLuku`, `TyoVaiheet`, `Galleria`, `Ukk`, `CtaOsio`, `Header` (segmenttinavigaatio, mobiiliarkki), `Footer`, `Kuva` (varakuvat).

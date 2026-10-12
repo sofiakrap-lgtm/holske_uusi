@@ -11,44 +11,49 @@ const { kysymykset } = Astro.props;
     kysymykset.map((q) => (
       <details name="ukk">
         <summary>
-          <span>{q.k}</span>
-          <Icon name="plus" size={22} />
+          <span class="k">{q.k}</span>
+          <span class="ind"><Icon name="alas" size={28} /></span>
         </summary>
-        <p>{q.v}</p>
+        <div class="v"><p>{q.v}</p></div>
       </details>
     ))
   }
 </div>
 
 <style>
-  .ukk { display: grid; gap: 0.5rem; }
-  details {
-    border-radius: var(--r-sm);
-    background: var(--surface);
-    interpolate-size: allow-keywords;
-  }
-  :global(.section--sand) details { background: var(--bg); }
+  .ukk { display: flex; flex-direction: column; }
+  details { interpolate-size: allow-keywords; }
+  details + details { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 12px; }
   details::details-content {
     block-size: 0;
     overflow: hidden;
-    transition: block-size 350ms var(--ease-out), content-visibility 350ms allow-discrete;
+    opacity: 0;
+    transition:
+      block-size var(--dur-slow) var(--ease-in-out),
+      opacity 200ms ease,
+      content-visibility var(--dur-slow) allow-discrete;
   }
-  details[open]::details-content { block-size: auto; }
+  details[open]::details-content { block-size: auto; opacity: 1; transition-timing-function: var(--ease-emphasis), ease, linear; }
   summary {
+    list-style: none;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    min-height: 3.5rem;
-    padding: 1.1rem 1.4rem;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
     cursor: pointer;
-    font-weight: 500;
-    font-size: 1.125rem;
-    color: var(--ink);
-    list-style: none;
   }
   summary::-webkit-details-marker { display: none; }
-  summary :global(.icon) { flex: none; transition: transform 350ms var(--ease-out); }
-  details[open] summary :global(.icon) { transform: rotate(45deg); }
-  p { padding: 0 1.4rem 1.4rem; color: var(--muted); max-width: var(--measure); }
+  .k { font: 600 20px/24px var(--font-body); color: var(--ink); transition: color var(--dur-fast); }
+  @media (min-width: 1025px) {
+    .k { font-size: 24px; line-height: 32px; }
+  }
+  summary:hover .k { color: var(--ink-2); }
+  .ind { display: flex; color: var(--ink); transition: transform var(--dur-fast) ease; }
+  details[open] .ind { transform: rotate(180deg); }
+  .v { padding: 0 48px 12px 0; }
+  .v p { font-size: 18px; line-height: 24px; color: var(--ink-2); }
+  @media (min-width: 1025px) {
+    .v p { font-size: 20px; line-height: 28px; }
+  }
 </style>

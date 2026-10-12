@@ -11,7 +11,7 @@ const vuosi = new Date().getFullYear();
 <footer class="site-footer">
   <div class="container grid">
     <div class="col brand-col">
-      <a href="/" class="brand" aria-label="Holske Oy, etusivu"><Logo variantti="vaalea" class="footer-logo" /></a>
+      <a href="/" class="brand" aria-label="Holske Oy, etusivu"><Logo class="footer-logo" /></a>
       <p class="tagline">Katot ja seinät kuntoon. Siististi ja kiinteään hintaan.</p>
       <a href="/yhteystiedot/" class="btn">Ota yhteyttä</a>
     </div>
@@ -57,10 +57,12 @@ const vuosi = new Date().getFullYear();
 
 <style>
   .site-footer {
-    background: var(--green-deep);
-    color: color-mix(in srgb, #fff 80%, transparent);
-    padding-block: clamp(3.5rem, 8vw, 5.5rem) 2rem;
-    font-size: 1.0625rem;
+    background: var(--p-grey-50);
+    color: var(--ink-2);
+    padding-block: var(--section) 48px;
+    font-size: 16px;
+    line-height: 22px;
+    box-shadow: 0 50vh 0 0 var(--p-grey-50);
   }
   .grid {
     display: grid;
@@ -77,16 +79,18 @@ const vuosi = new Date().getFullYear();
   @media (min-width: 64rem) {
     .grid { grid-template-columns: 1.4fr 1.3fr 1fr 1fr; }
   }
-  .brand { color: #fff; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
-  .tagline { max-width: 20rem; font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem); line-height: 1.2; font-weight: 560; letter-spacing: -0.02em; color: #fff; }
-  .site-footer .btn { --btn-bg: #fff; --btn-fg: #262626; }
-  .site-footer .btn:hover { --btn-bg: #f5f3ef; }
+  .brand { color: var(--ink); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .tagline { max-width: 20rem; font-family: var(--font-display); font-stretch: var(--stretch); font-weight: 500; letter-spacing: 0.3px; font-size: clamp(20px, 1rem + 0.4vw, 24px); line-height: 1.17; color: var(--ink); }
   .brand :global(.footer-logo) { --logo-h: 2.25rem; }
   .col-title {
+    font-stretch: 100%;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 22px;
     font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 650;
-    color: color-mix(in srgb, #fff 92%, transparent);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
     margin-bottom: 1rem;
   }
   .list {
@@ -102,10 +106,10 @@ const vuosi = new Date().getFullYear();
     gap: 0.65rem;
     min-height: 44px;
   }
-  .list :global(.icon) { flex: none; color: #c9cc9f; }
+  .list :global(.icon) { flex: none; color: var(--muted); }
   .list a,
   .linklike {
-    color: #fff;
+    color: var(--ink);
     text-decoration: none;
     overflow-wrap: anywhere;
   }
@@ -124,8 +128,9 @@ const vuosi = new Date().getFullYear();
     gap: 0.5rem;
     margin-top: 3rem;
     padding-top: 1.5rem;
-    border-top: 1px solid color-mix(in srgb, #fff 14%, transparent);
-    font-size: var(--fs-sm);
-    color: color-mix(in srgb, #fff 62%, transparent);
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--muted);
   }
 </style>

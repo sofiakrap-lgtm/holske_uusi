@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cards · ui-bahnexpress-fi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Figtree:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../motion/motion.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-weight:var(--weight-body);font-size:var(--text-body);line-height:var(--leading-body);font-feature-settings:var(--body-features);-webkit-font-smoothing:antialiased}
+.demo-label{font:600 14px/20px var(--font-mono);color:var(--color-text-muted);margin:0 0 var(--space-4)}
+.demo{padding:var(--space-9) var(--container-pad);display:flex;flex-direction:column;gap:var(--space-9)}
+.row{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center}
+.section{background:var(--color-bg);color:var(--color-text);padding:var(--section-py) 0;overflow-x:clip}
+.container{max-width:var(--container-max);margin:0 auto;padding-inline:var(--container-pad);display:flex;flex-direction:column;gap:var(--section-gap)}
+.display{font-family:var(--font-display);font-stretch:var(--stretch-display);font-size:var(--text-h1);line-height:var(--leading-h1);letter-spacing:var(--tracking-h1);font-weight:var(--weight-h1);text-transform:var(--case-display);color:var(--color-heading);text-wrap:balance;margin:0}
+.heading{font-family:var(--font-heading);font-stretch:var(--stretch-display);font-size:var(--text-h3);line-height:var(--leading-h3);letter-spacing:var(--tracking-h3);font-weight:var(--weight-h3);color:var(--color-heading);text-wrap:balance;margin:0}
+.eyebrow{font-family:var(--font-body);font-weight:var(--weight-caption);font-size:var(--text-caption);line-height:var(--leading-caption);color:var(--color-text-muted);margin:0}
+.lead{font-weight:var(--weight-lead);font-size:var(--text-lead);line-height:var(--leading-lead);color:var(--color-heading);margin:0;text-wrap:balance}
+.body{margin:0;text-wrap:pretty}
+.muted{color:var(--color-text-muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--button-gap);height:var(--button-h);padding:0 var(--button-px);border:0;border-radius:var(--radius-button);font:var(--weight-button) var(--text-button)/var(--leading-button) var(--font-body);white-space:nowrap;cursor:pointer;text-decoration:none;background:transparent;color:inherit;transition:background-color var(--duration-fast),color var(--duration-fast)}
+.btn:focus-visible{outline:4px solid var(--color-focus);outline-offset:0}
+.btn--primary{background:var(--color-accent);color:var(--color-accent-contrast)}
+.btn--primary:hover,.btn--primary.is-hover{background:var(--color-accent-hover)}
+.btn--secondary{background:var(--color-surface);color:var(--color-heading)}
+.btn--secondary:hover,.btn--secondary.is-hover{background:var(--palette-grey-100)}
+.btn--tertiary{background:var(--palette-grey-100);color:var(--palette-asphalt)}
+.btn--tertiary:hover,.btn--tertiary.is-hover{background:var(--palette-grey-200)}
+.btn--ghost{color:var(--color-heading);padding-inline:calc(var(--button-px) - 2px)}
+.btn--ghost:hover,.btn--ghost.is-hover{color:var(--color-link-hover)}
+.btn--xs{--button-h:40px;--button-px:20px;--text-button:16px;--leading-button:16px}
+.btn--sm{--button-h:48px;--button-px:22px;--text-button:18px;--leading-button:18px}
+.btn--lg{--button-h:64px;--button-px:28px;--text-button:22px;--leading-button:22px}
+.btn--xl{--button-h:72px;--button-px:32px;--text-button:24px;--leading-button:24px}
+.btn--icon{width:var(--button-h);padding:0}
+.btn:disabled{background:var(--color-bg-alt);color:var(--color-text-muted);cursor:not-allowed}
+.icon{width:var(--icon-size);height:var(--icon-size);fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linecap:square;stroke-linejoin:miter;flex:0 0 auto}
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;border:1px solid currentColor;border-radius:var(--radius-pill);font:400 16px/16px var(--font-body);color:var(--color-text-muted);white-space:nowrap}
+.ph{background:var(--palette-grey-100);display:block;width:100%}
+
+.card{background:var(--color-surface);border-radius:var(--radius-card);display:flex;flex-direction:column;overflow:clip}
+.card__media{aspect-ratio:4/3}
+.card__content{display:flex;flex-direction:column;justify-content:space-between;gap:24px;padding:var(--card-pad);min-height:272px}
+.card--m{--card-pad:36px}.card--m .card__content{min-height:338px;gap:36px}
+.card--l{--card-pad:48px}.card--l .card__content{min-height:392px;gap:48px}
+.card__label{display:flex;align-items:center;gap:8px;height:22px}
+.card__label .eyebrow{font-size:18px;line-height:22px}
+.card__headline{display:flex;flex-direction:column;gap:12px}
+.card__headline h3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:24px;line-height:28px}
+.card__headline p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;margin:0;font-size:18px;line-height:24px}
+.card__footer--ruled{border-top:1px solid var(--color-border);padding-top:24px}
+.card__person{display:flex;gap:12px;align-items:center}
+.portrait{width:56px;height:56px;border-radius:var(--radius-portrait-sm);background:var(--color-surface-raised);flex:0 0 auto}
+@media (min-width:768px){.card--horizontal{flex-direction:row}.card--horizontal .card__media{width:50%;aspect-ratio:3/4;align-self:stretch}.card--horizontal .card__content{flex:1}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(288px,100%),1fr));gap:var(--sub-section-gap)}
+.use-case{background:var(--color-surface);border-radius:var(--radius-card);overflow:hidden}
+.use-case__media{aspect-ratio:3/2}
+.use-case__content{padding:64px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:64px;row-gap:48px}
+.use-case__proof{grid-column:1/-1;border-top:1px solid var(--color-border);padding-top:48px;display:flex;gap:48px}
+.quote-card{background:var(--color-surface-raised);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:24px;align-self:center}
+.quote-card blockquote{margin:0;font-family:var(--font-heading);font-stretch:125%;font-weight:700;letter-spacing:-.3px;font-size:24px;line-height:28px;color:var(--color-heading)}
+@media (max-width:928px){.use-case__content{grid-template-columns:1fr;padding:24px}}
+</style>
+</head>
+<body>
+
+<div class="demo" data-theme="light-grey" style="background:var(--color-bg)">
+  <p class="demo-label">Kortit (light-grey-teema → kortti birch)</p>
+  <div class="grid">
+    <article class="card"><div class="card__media ph"></div><div class="card__content"><div class="card__headline"><div class="card__label"><span class="eyebrow">Kategoria</span><span class="tag">Uusi</span></div><h3 class="heading">Kortin otsikko enintään kaksi riviä</h3><p class="muted">Kuvaus enintään kolme riviä. Placeholder-teksti kertoo mitä tähän tulee.</p></div><div class="card__footer--ruled card__person"><span class="portrait"></span><span><strong>Nimi Sukunimi</strong><br><span class="muted">Rooli</span></span></div></div></article>
+    <article class="card card--m"><div class="card__content"><div class="card__headline"><div class="card__label"><span class="eyebrow">CTA-kortti</span></div><h3 class="heading">Avoin tehtävä</h3><p class="muted">Lyhyt kuvaus.</p></div><div class="row" style="justify-content:flex-end"><a class="btn btn--primary btn--sm" href="#">Katso</a></div></div></article>
+  </div>
+  <p class="demo-label">Horisontaalinen kortti</p>
+  <article class="card card--m card--horizontal"><div class="card__media ph"></div><div class="card__content"><div class="card__headline"><div class="card__label"><span class="eyebrow">Asiakastarina</span></div><h3 class="heading">Otsikko tarinasta</h3><p class="muted">Ingressi kahdella tai kolmella rivillä.</p></div><a class="btn btn--tertiary btn--sm" href="#">Lue lisää</a></div></article>
+  <p class="demo-label">Käyttötapauskortti (avattu)</p>
+  <article class="use-case"><div class="use-case__media ph"></div><div class="use-case__content"><div style="display:flex;flex-direction:column;gap:24px"><p class="eyebrow">Käyttötapaus</p><h3 class="heading">Otsikko käyttötapaukselle</h3><p class="body">Kappale, joka kertoo ongelman ja ratkaisun.</p></div><div class="quote-card"><blockquote>”Asiakkaan lainaus lyhyesti.”</blockquote><div class="card__person"><span class="portrait"></span><span>Nimi<br><span class="muted">Yritys</span></span></div></div><div class="use-case__proof"><span><span class="display" style="font-size:48px;line-height:48px;font-weight:700;letter-spacing:1.8px;text-transform:none">86%</span><br><span class="muted">todisteen selite</span></span></div></div></article>
+</div>
+
+<script src="../motion/motion.js" defer></script>
+</body>
+</html>

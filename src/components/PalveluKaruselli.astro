@@ -13,41 +13,40 @@ const kohdat = (p: (typeof palvelut)[number]) =>
 ---
 
 <div class="karuselli-kehys" data-karuselli-juuri>
-  <ul class="liukuma" data-karuselli aria-roledescription="karuselli" aria-label="Palvelut">
+  <ul class="liukuma" data-karuselli aria-label="Palvelut">
     {
-      palvelut.map((p, i) => (
-        <li class="dia" aria-roledescription="dia" aria-label={`${i + 1} / ${palvelut.length}: ${p.data.nimi}`}>
-          <a href={`/palvelut/${p.id}/`} class="dia-kuva" tabindex="-1" aria-hidden="true">
-            <Kuva nimi={p.data.kuva} vara={['etusivu']} alt={p.data.kuvaAlt} variantti="tayta" />
+      palvelut.map((p) => (
+        <li class="dia">
+          <a href={`/palvelut/${p.id}/`} class="kortti on-light">
+            <span class="kortti-kuva">
+              <Kuva nimi={p.data.kuva} vara={['etusivu']} alt={p.data.kuvaAlt} variantti="tayta" />
+            </span>
+            <span class="kortti-sisalto">
+              <span class="eyebrow">{p.data.nimi}</span>
+              <span class="kortti-otsikko">{p.data.otsikko}</span>
+              <span class="kortti-teksti">{p.data.kortti}</span>
+              {kohdat(p).length > 0 && (
+                <span class="kohdat">
+                  {kohdat(p).map((k) => (
+                    <span class="kohta">
+                      <Icon name="check" size={20} />
+                      {k}
+                    </span>
+                  ))}
+                </span>
+              )}
+            </span>
           </a>
-          <div class="dia-teksti">
-            <span class="eyebrow">{p.data.nimi}</span>
-            <h3>{p.data.otsikko}</h3>
-            <p>{p.data.kortti}</p>
-            {kohdat(p).length > 0 && (
-              <ul class="kohdat">
-                {kohdat(p).map((k) => (
-                  <li>
-                    <Icon name="check" size={18} />
-                    {k}
-                  </li>
-                ))}
-              </ul>
-            )}
-            <a href={`/palvelut/${p.id}/`} class="link-arrow">
-              Lue lisää <Icon name="nuoli" size={18} />
-            </a>
-          </div>
         </li>
       ))
     }
   </ul>
   <div class="container napit">
     <button type="button" class="pyorea" data-edellinen aria-label="Edellinen palvelu">
-      <Icon name="nuoli" size={20} class="kaannetty" />
+      <Icon name="nuoli" size={24} class="kaannetty" />
     </button>
     <button type="button" class="pyorea" data-seuraava aria-label="Seuraava palvelu">
-      <Icon name="nuoli" size={20} />
+      <Icon name="nuoli" size={24} />
     </button>
   </div>
 </div>
@@ -77,58 +76,63 @@ const kohdat = (p: (typeof palvelut)[number]) =>
     margin: 0;
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: min(88vw, 72rem);
-    gap: 1rem;
+    grid-auto-columns: min(calc(100vw - 56px), 352px);
+    gap: 24px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2));
-    padding: 0 max(var(--gutter), calc((100vw - var(--max)) / 2));
+    scroll-padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+    padding: 0 max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
     scrollbar-width: none;
     overscroll-behavior-x: contain;
   }
+  @media (min-width: 1025px) {
+    .liukuma { grid-auto-columns: 448px; }
+  }
   .liukuma::-webkit-scrollbar { display: none; }
-  .dia {
-    scroll-snap-align: start;
-    display: grid;
-    gap: 1.5rem 3rem;
-    align-items: center;
+  .dia { scroll-snap-align: start; display: grid; }
+  .kortti {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--r-md);
+    background: var(--surface);
+    overflow: clip;
+    text-decoration: none;
+    transition: background-color 300ms ease;
   }
-  @media (min-width: 56rem) {
-    .dia { grid-template-columns: 7fr 5fr; }
+  .kortti:hover { color: inherit; }
+  .kortti-kuva { position: relative; display: block; aspect-ratio: 4 / 3; }
+  .kortti-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
+  .kortti-sisalto { display: flex; flex-direction: column; gap: 16px; padding: 24px; flex: 1; }
+  @media (min-width: 1025px) {
+    .kortti-sisalto { padding: 36px; }
   }
-  .dia-kuva {
-    position: relative;
-    display: block;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--r-lg);
-    overflow: hidden;
+  .kortti-otsikko {
+    font-family: var(--font-display);
+    font-stretch: var(--stretch);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    font-size: 24px;
+    line-height: 28px;
+    color: var(--ink);
+    text-wrap: balance;
   }
-  .dia-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
-  .dia-kuva :global(img) { transition: transform 600ms var(--ease-out); }
-  @media (hover: hover) and (pointer: fine) {
-    .dia-kuva:hover :global(img) { transform: scale(1.03); }
-  }
-  .dia-teksti { display: grid; gap: 0.9rem; justify-items: start; padding-right: 1rem; }
-  .dia-teksti h3 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem); letter-spacing: -0.025em; }
-  .dia-teksti p { color: var(--muted); }
-  .kohdat { list-style: none; margin: 0.25rem 0; padding: 0; display: grid; gap: 0.5rem; }
-  .kohdat li { display: flex; align-items: center; gap: 0.6rem; color: var(--ink); }
-  .kohdat :global(.icon) { color: var(--green); flex: none; }
-  .napit { display: flex; gap: 0.5rem; margin-top: 1.75rem; }
+  .kortti-teksti { font-size: 18px; line-height: 24px; color: var(--ink-2); }
+  .kohdat { display: grid; gap: 8px; padding-top: 16px; border-top: 1px solid var(--p-grey-200); margin-top: auto; }
+  .kohta { display: flex; align-items: center; gap: 10px; font-size: 18px; line-height: 24px; color: var(--ink); }
+  .kohta :global(.icon) { flex: none; color: var(--p-olive); }
+  .napit { display: flex; gap: 12px; margin-top: var(--sub-gap); }
   .pyorea {
     display: grid;
     place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 56px;
+    height: 56px;
     border: 0;
     border-radius: 999px;
-    background: var(--surface);
-    color: var(--ink);
+    background: var(--p-grey-100);
+    color: var(--p-asphalt);
     cursor: pointer;
-    transition: background-color 200ms ease, transform 150ms var(--ease-out);
+    transition: background-color var(--dur-fast) ease;
   }
-  .pyorea:hover { background: var(--sand); }
-  .pyorea:active { transform: scale(0.94); }
+  .pyorea:hover { background: var(--p-grey-200); }
   .pyorea :global(.kaannetty) { transform: scaleX(-1); }
-  :global(.section--sand) .pyorea { background: var(--bg); }
 </style>

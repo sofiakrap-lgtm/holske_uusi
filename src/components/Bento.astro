@@ -28,7 +28,7 @@ const rivit = Math.max(vasen, solut.length - vasen);
 <div class:list={['bento', { 'bento--kuva': onKuva }]} style={`--rivit:${rivit}`}>
   {
     onKuva && (
-      <div class="bento-kuva reveal">
+      <div class="bento-kuva">
         <Kuva nimi={kuva} vara={vara} alt={alt} variantti="tayta" />
       </div>
     )
@@ -37,7 +37,7 @@ const rivit = Math.max(vasen, solut.length - vasen);
     solut.map((s, i) => {
       const puoli = i < vasen ? 'vasen' : 'oikea';
       const rivi = i < vasen ? i + 1 : i - vasen + 1;
-      const luokat = ['solu', `solu--${puoli}`, 'reveal', { 'solu--korostus': i === korostus, 'solu--hiekka': i % 2 === 1 }];
+      const luokat = ['solu', `solu--${puoli}`, { 'solu--korostus': i === korostus, 'solu--hiekka': i % 2 === 1, 'on-light': i !== korostus }];
       const tyyli = `--rivi:${rivi}`;
       return s.href ? (
         <a href={s.href} class:list={[...luokat, 'solu--linkki']} style={tyyli}>
@@ -56,13 +56,12 @@ const rivit = Math.max(vasen, solut.length - vasen);
 </div>
 
 <style>
-  .bento { display: grid; gap: 0.75rem; }
+  .bento { display: grid; gap: 2px; border-radius: var(--r-md); overflow: hidden; }
   @media (min-width: 40rem) {
     .bento { grid-template-columns: 1fr 1fr; }
     .bento-kuva { grid-column: 1 / -1; }
   }
   @media (min-width: 64rem) {
-    .solu { min-height: 11rem; }
     .bento--kuva {
       grid-template-columns: 1fr 1.3fr 1fr;
       grid-template-rows: repeat(var(--rivit), auto);
@@ -71,46 +70,34 @@ const rivit = Math.max(vasen, solut.length - vasen);
     .bento--kuva .solu--vasen { grid-column: 1; grid-row: var(--rivi); }
     .bento--kuva .solu--oikea { grid-column: 3; grid-row: var(--rivi); }
   }
-  .bento-kuva {
-    position: relative;
-    min-height: 20rem;
-    border-radius: var(--r-md);
-    overflow: hidden;
-  }
+  .bento-kuva { position: relative; min-height: 20rem; overflow: hidden; }
   .bento-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
   .solu {
     position: relative;
-    display: grid;
-    gap: 0.5rem;
-    align-content: end;
-    min-height: 6.5rem;
-    padding: clamp(1.4rem, 2.4vw, 1.9rem);
-    border-radius: var(--r-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 12px;
+    min-height: 9rem;
+    padding: 24px;
     background: var(--surface);
-    color: var(--ink-2);
     text-decoration: none;
   }
+  @media (min-width: 768px) {
+    .solu { padding: 36px; }
+  }
+  @media (min-width: 64rem) {
+    .solu { min-height: 13rem; }
+  }
   .solu--hiekka { background: var(--sand); }
-  /* Hiekkapohjaisella osiolla kortit valkoisina, jotta ne erottuvat */
-  :global(.section--sand) .solu { background: var(--bg); }
-  :global(.section--sand) .solu--hiekka { background: var(--sand); }
-  .solu h3 { font-size: clamp(1.15rem, 1.05rem + 0.35vw, 1.35rem); }
-  .solu p { color: var(--muted); font-size: 1rem; line-height: 1.5; }
-  .solu--korostus,
-  :global(.section--sand) .solu--korostus { background: var(--green-fill); }
-  .solu--korostus h3 { color: #fff; }
-  .solu--korostus p { color: var(--green-text-on); }
-  .solu--linkki :global(.icon) {
-    position: absolute;
-    top: 1.4rem;
-    right: 1.4rem;
-    color: inherit;
-    transition: transform 300ms var(--ease-out);
-  }
-  .solu--korostus.solu--linkki { color: #fff; }
+  .solu h3 { font-size: clamp(20px, 1rem + 0.5vw, 26px); line-height: 1.15; }
+  .solu p { color: var(--muted); font-size: 18px; line-height: 24px; }
+  .solu--korostus { background: var(--korostus, var(--p-asphalt)); }
+  .solu--korostus h3 { color: var(--p-birch); }
+  .solu--korostus p { color: var(--p-grey-200); }
+  .solu--linkki :global(.icon) { position: absolute; top: 24px; right: 24px; color: var(--p-birch); }
   .solu--linkki:not(.solu--korostus) :global(.icon) { color: var(--ink); }
-  @media (hover: hover) and (pointer: fine) {
-    .solu--linkki:hover :global(.icon) { transform: translate(3px, -3px) rotate(-45deg); }
-  }
-  .solu--korostus:focus-visible { outline-color: var(--ink); }
+  .solu--linkki { transition: background-color 300ms ease; }
+  .solu--linkki.solu--korostus:hover { background: var(--p-grey-900); }
+  .solu--korostus:focus-visible { outline-color: var(--p-grey-400); }
 </style>

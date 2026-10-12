@@ -12,7 +12,7 @@ const valit = [
 <ul class="valit">
   {
     valit.map((v) => (
-      <li class="reveal">
+      <li>
         <RullaLuku arvo={v.vali} class="vali" />
         <span class="selite">
           <span class="kohde">{v.kohde}</span>
@@ -24,28 +24,29 @@ const valit = [
 </ul>
 
 <style>
-  .valit { list-style: none; margin: 0; padding: 0; display: grid; }
-  li {
-    display: grid;
-    gap: 0.5rem 2rem;
-    align-items: center;
-    padding-block: clamp(1.25rem, 2.5vw, 1.75rem);
+  .valit { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; border-radius: var(--r-md); overflow: hidden; }
+  @media (min-width: 768px) {
+    .valit { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
-  li + li { border-top: 1px solid var(--line); }
-  @media (min-width: 40rem) {
-    li { grid-template-columns: 16rem 1fr; }
+  @media (min-width: 1200px) {
+    .valit { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  li { display: flex; flex-direction: column; gap: 16px; padding: 36px 24px; background: var(--surface); }
+  @media (min-width: 1025px) {
+    li { padding: 48px 36px; }
   }
   li :global(.vali) {
     font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(2.75rem, 1.9rem + 3vw, 4.75rem);
+    font-stretch: var(--stretch);
+    font-weight: 700;
+    font-size: clamp(40px, 1.6rem + 2.4vw, 56px);
     line-height: 1;
-    letter-spacing: -0.04em;
+    letter-spacing: 1.8px;
     color: var(--ink);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
-  .selite { display: grid; gap: 0.15rem; }
-  .kohde { font-weight: 560; font-size: var(--fs-lg); color: var(--ink); }
+  .selite { display: grid; gap: 4px; }
+  .kohde { font-weight: 600; font-size: 20px; line-height: 24px; color: var(--ink); }
   .mita { color: var(--muted); }
 </style>

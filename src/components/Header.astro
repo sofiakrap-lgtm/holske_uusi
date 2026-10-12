@@ -3,61 +3,64 @@ import Logo from './Logo.astro';
 import yritys from '../data/yritys.json';
 
 const nav = [
-  { href: '/palvelut/katot/', label: 'Kattoremontit' },
+  { href: '/palvelut/katot/', label: 'Katot' },
   { href: '/palvelut/maalaus/', label: 'Maalaus' },
-  { href: '/palvelut/', label: 'Muut palvelut' },
-  { href: '/yhteystiedot/', label: 'Yhteystiedot' },
+  { href: '/palvelut/', label: 'Palvelut' },
 ];
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
-  path === href || (href !== '/' && href !== '/palvelut/' && path.startsWith(href)) ||
+  path === href || (href !== '/palvelut/' && path.startsWith(href)) ||
   (href === '/palvelut/' && path.startsWith('/palvelut/') && !['/palvelut/katot/', '/palvelut/maalaus/'].includes(path));
 ---
 
-<div class="header-sentinel" data-header-sentinel aria-hidden="true"></div>
 <header class="site-header" data-header>
-  <div class="container bar">
+  <div class="sisus">
     <a href="/" class="brand" aria-label={`${yritys.nimi}, etusivu`}>
       <Logo />
     </a>
 
     <nav class="nav" aria-label="Päävalikko">
-      <ul id="paavalikko" class="nav-list" data-nav>
+      <div class="segmentti" data-segmentti>
+        <span class="liuku" aria-hidden="true" data-liuku></span>
         {
           nav.map((item) => (
-            <li>
-              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
-                {item.label}
-              </a>
-            </li>
+            <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
           ))
         }
-        <li class="nav-mobile-only">
-          <a href="/yhteystiedot/" class="btn btn--block">Ota yhteyttä</a>
-        </li>
-      </ul>
+      </div>
     </nav>
 
-    <div class="actions">
-      <a href="/yhteystiedot/" class="btn cta">Ota yhteyttä</a>
-      <button
-        type="button"
-        class="menu-toggle"
-        aria-expanded="false"
-        aria-controls="paavalikko"
-        data-menu-toggle
-      >
+    <div class="toiminnot">
+      <a href="/yhteystiedot/" class="btn btn--toiminto">Ota yhteyttä</a>
+      <button type="button" class="valikko-nappi" aria-expanded="false" aria-controls="mobiilivalikko" data-menu-toggle>
         <span class="visually-hidden" data-menu-label>Avaa valikko</span>
         <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
       </button>
     </div>
   </div>
+
+  <div class="arkki" id="mobiilivalikko" data-nav>
+    <div class="arkki-sisus">
+      <p class="ryhma">Sivut</p>
+      <ul>
+        <li><a href="/" aria-current={path === '/' ? 'page' : undefined}>Etusivu</a></li>
+        {nav.map((item) => (
+          <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+        <li><a href="/yhteystiedot/" aria-current={path === '/yhteystiedot/' ? 'page' : undefined}>Yhteystiedot</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="scrim" data-scrim aria-hidden="true"></div>
 </header>
 
 <script>
   const header = document.querySelector<HTMLElement>('[data-header]');
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
   const label = document.querySelector<HTMLElement>('[data-menu-label]');
+  const scrim = document.querySelector<HTMLElement>('[data-scrim]');
 
   const setOpen = (open: boolean) => {
     if (!header || !toggle) return;
@@ -66,93 +69,141 @@ const isActive = (href: string) =>
     if (label) label.textContent = open ? 'Sulje valikko' : 'Avaa valikko';
     document.documentElement.classList.toggle('menu-open', open);
   };
-
   toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  scrim?.addEventListener('click', () => setOpen(false));
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && header?.classList.contains('is-open')) {
       setOpen(false);
       toggle?.focus();
     }
   });
-  window.matchMedia('(min-width: 64rem)').addEventListener('change', (e) => e.matches && setOpen(false));
+  window.matchMedia('(min-width: 820px)').addEventListener('change', (e) => e.matches && setOpen(false));
 
-  // Varjo vasta kun sivua on vieritetty (IntersectionObserver, ei scroll-kuuntelijaa)
-  const sentinel = document.querySelector('[data-header-sentinel]');
-  if (sentinel && header) {
-    new IntersectionObserver(([e]) => header.classList.toggle('is-scrolled', !e.isIntersecting)).observe(sentinel);
+  // Varatoteutus selaimille ilman scroll-timelinea: tausta peittäväksi vierityksen jälkeen
+  if (!CSS.supports('animation-timeline: scroll()') && header) {
+    const anturi = document.createElement('div');
+    anturi.style.cssText = 'position:absolute;top:0;height:96px;width:1px;pointer-events:none';
+    document.body.prepend(anturi);
+    new IntersectionObserver(([e]) => header.classList.toggle('is-scrolled', !e.isIntersecting)).observe(anturi);
+  }
+
+  // Segmenttinavigaation liukuva valintapilleri (aktiivinen kohta, hoverissa liukuu)
+  const seg = document.querySelector<HTMLElement>('[data-segmentti]');
+  const liuku = document.querySelector<HTMLElement>('[data-liuku]');
+  if (seg && liuku) {
+    const linkit = [...seg.querySelectorAll<HTMLAnchorElement>('a')];
+    const aktiivinen = linkit.find((a) => a.getAttribute('aria-current') === 'page');
+    const siirra = (a?: HTMLElement) => {
+      if (!a) { liuku.style.opacity = '0'; return; }
+      liuku.style.opacity = '1';
+      liuku.style.left = `${a.offsetLeft}px`;
+      liuku.style.width = `${a.offsetWidth}px`;
+    };
+    siirra(aktiivinen);
+    linkit.forEach((a) => {
+      a.addEventListener('mouseenter', () => siirra(a));
+      a.addEventListener('focus', () => siirra(a));
+    });
+    seg.addEventListener('mouseleave', () => siirra(aktiivinen));
+    document.fonts?.ready.then(() => siirra(aktiivinen));
   }
 </script>
 
 <style>
-  .header-sentinel { position: absolute; top: 0; left: 0; width: 1px; height: 8px; pointer-events: none; }
   .site-header {
     position: sticky;
     top: 0;
-    z-index: 50;
-    background: transparent;
-    border-bottom: 1px solid transparent;
-    transition: background-color 400ms var(--ease-out), border-color 400ms var(--ease-out);
+    z-index: 40;
+    height: var(--header-h);
+    background: var(--overlay);
+    transition: background-color var(--dur-base) ease;
   }
-  .site-header.is-scrolled,
-  .site-header.is-open {
-    background: color-mix(in srgb, var(--bg) 72%, transparent);
-    -webkit-backdrop-filter: saturate(180%) blur(16px);
-    backdrop-filter: saturate(180%) blur(16px);
-    border-bottom-color: var(--line);
+  @supports (animation-timeline: scroll()) {
+    .site-header {
+      animation: kaista linear both;
+      animation-timeline: scroll();
+      animation-range: 0 96px;
+    }
+    @keyframes kaista {
+      from { background-color: transparent; }
+      to { background-color: var(--overlay); }
+    }
   }
-  .bar {
+  @supports not (animation-timeline: scroll()) {
+    .site-header { background: transparent; }
+    .site-header:global(.is-scrolled) { background: var(--overlay); }
+  }
+  .site-header.is-open { animation: none; background: var(--overlay); }
+  .sisus {
     position: relative;
+    z-index: 2;
+    max-width: var(--max);
+    height: 100%;
+    margin: 0 auto;
+    padding-inline: 24px 12px;
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    min-height: var(--header-h);
+    column-gap: 8px;
+  }
+  @media (min-width: 768px) {
+    .sisus { padding-inline: 36px 24px; }
+  }
+  @media (min-width: 1025px) {
+    .sisus { padding-inline: 36px; }
   }
   .brand {
     display: inline-flex;
     align-items: center;
-    color: var(--green);
-    text-decoration: none;
-    flex: none;
     min-height: 44px;
-  }
-  .nav { margin-left: auto; }
-  .nav-list {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .nav-list a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0.5rem 0.75rem;
-    border-radius: 999px;
-    white-space: nowrap;
     color: var(--ink);
-    font-weight: 500;
     text-decoration: none;
-    transition: background-color 150ms ease;
   }
-  .nav-list a:hover { background: color-mix(in srgb, var(--ink) 5%, transparent); }
-  .nav-list a[aria-current='page'] { color: var(--ink); background: color-mix(in srgb, var(--ink) 6%, transparent); }
-  .nav-mobile-only { display: none; }
-
-  .actions {
+  .brand :global(.logo) { --logo-h: 1.6rem; }
+  .nav { margin-inline-start: 24px; }
+  @media (max-width: 819px) {
+    .nav { display: none; }
+  }
+  .segmentti {
+    position: relative;
+    display: flex;
+    padding: 4px;
+    border-radius: 999px;
+  }
+  .liuku {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: 0;
+    border-radius: 999px;
+    background: var(--p-grey-100);
+    opacity: 0;
+    transition:
+      left 260ms var(--ease-standard),
+      width 260ms var(--ease-standard),
+      opacity 140ms ease;
+  }
+  .segmentti a {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-  }
-  .cta {
-    min-height: 2.5rem;
-    padding: 0.5rem 1.15rem;
-    font-size: 1rem;
+    height: 48px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font: 600 18px/1 var(--font-body);
+    color: var(--ink-2);
+    text-decoration: none;
     white-space: nowrap;
   }
-
-  .menu-toggle {
+  .segmentti a:hover { color: var(--ink); }
+  .toiminnot { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 6px; }
+  .btn--toiminto { --btn-h: 40px; --btn-px: 20px; font-size: 16px; }
+  @media (min-width: 768px) {
+    .btn--toiminto { --btn-h: 48px; --btn-px: 22px; font-size: 18px; }
+    .toiminnot { gap: 12px; }
+  }
+  .valikko-nappi {
     display: none;
     width: 48px;
     height: 48px;
@@ -163,76 +214,68 @@ const isActive = (href: string) =>
     cursor: pointer;
     place-items: center;
   }
-  .menu-toggle:active { background: color-mix(in srgb, var(--ink) 8%, transparent); }
-  .menu-icon {
-    position: relative;
-    display: block;
-    width: 22px;
-    height: 12px;
+  @media (max-width: 819px) {
+    .valikko-nappi { display: grid; }
   }
+  .menu-icon { position: relative; display: block; width: 22px; height: 12px; }
   .menu-icon span {
     position: absolute;
     left: 0;
     right: 0;
     height: 2px;
-    border-radius: 2px;
     background: currentColor;
-    transition: transform 280ms var(--ease-out), top 280ms var(--ease-out);
+    transition: transform var(--dur-base) var(--ease-standard), top var(--dur-base) var(--ease-standard);
   }
   .menu-icon span:first-child { top: 0; }
   .menu-icon span:last-child { top: 10px; }
   .is-open .menu-icon span:first-child { top: 5px; transform: rotate(45deg); }
   .is-open .menu-icon span:last-child { top: 5px; transform: rotate(-45deg); }
 
-
-  @media (max-width: 63.99rem) {
-    .bar { gap: 0.5rem; }
-    .menu-toggle { display: grid; }
-    .actions { margin-left: auto; gap: 0.25rem; }
-    .nav { margin: 0; }
-    .nav-list {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.25rem;
-      padding: 0.75rem var(--gutter) 1.5rem;
-      min-height: calc(100dvh - var(--header-h));
-      background: var(--bg);
-      /* Valikko laskeutuu headerista, josta se avattiin, ja palaa samaa reittiä */
-      transform-origin: top center;
-      transform: translateY(-8px);
-      opacity: 0;
-      visibility: hidden;
-      transition:
-        transform 320ms var(--ease-out),
-        opacity 200ms ease,
-        visibility 0s linear 320ms;
-    }
-    .is-open .nav-list {
-      transform: none;
-      opacity: 1;
-      visibility: visible;
-      transition:
-        transform 320ms var(--ease-out),
-        opacity 200ms ease,
-        visibility 0s;
-    }
-    .nav-list a {
-      min-height: 3.25rem;
-      padding-inline: 0.75rem;
-      font-size: 1.1875rem;
-      border-radius: var(--r-sm);
-    }
-    .nav-mobile-only { display: block; }
-    .nav-list a:not(.btn) { font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2rem); font-weight: 560; letter-spacing: -0.02em; min-height: 3.75rem; }
-    .nav-list .btn { margin-top: 0.5rem; min-height: 3.25rem; color: var(--orange-ink); justify-content: center; }
-    .nav-list .btn:hover { background: var(--orange-hover); }
+  /* Mobiilivalikko: arkki laskeutuu headerin alta */
+  .arkki {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding-top: var(--header-h);
+    background: var(--overlay);
+    border-radius: 0 0 24px 24px;
+    transform: translateY(-100%);
+    visibility: hidden;
+    transition: transform 180ms var(--ease-standard), visibility 0s linear 180ms;
   }
-
-  @media (prefers-reduced-transparency: reduce) {
-    .site-header.is-scrolled { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .is-open .arkki {
+    transform: none;
+    visibility: visible;
+    transition: transform 240ms var(--ease-standard), visibility 0s;
+  }
+  .arkki-sisus { padding: 12px 24px 24px; }
+  .ryhma { padding: 0 22px; font: 600 16px/22px var(--font-body); color: var(--muted); margin-bottom: 8px; }
+  .arkki ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .arkki a {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font: 600 18px/1 var(--font-body);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .arkki a[aria-current='page'] { background: var(--p-grey-100); }
+  .scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: rgb(18 17 14 / 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 180ms ease, visibility 0s linear 180ms;
+  }
+  .is-open .scrim { opacity: 1; visibility: visible; transition: opacity 240ms ease, visibility 0s; }
+  @media (min-width: 820px) {
+    .arkki,
+    .scrim { display: none; }
   }
 </style>

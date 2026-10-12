@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Murupolku from '../components/Murupolku.astro';
-import SanaOtsikko from '../components/SanaOtsikko.astro';
 import Vaiheet from '../components/Vaiheet.astro';
 import Icon from '../components/Icon.astro';
 import yritys from '../data/yritys.json';
@@ -18,12 +17,12 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
       <Murupolku polku={[{ nimi: 'Yhteystiedot', href: '/yhteystiedot/' }]} />
       <div class="sisus">
         <div class="teksti">
-          <SanaOtsikko teksti="Ota yhteyttä|niin tulemme katsomaan" />
-          <p class="lead saapuu" style="--i:2">
+          <h1 data-fit>Ota yhteyttä</h1>
+          <p class="lead">
             Kuntoarvio on ilmainen. Katsomme kohteen paikan päällä, ja saat suunnitelman ja hinnan ilman sitoutumista.
           </p>
         </div>
-        <div class="kanavat saapuu" style="--i:3">
+        <div class="kanavat">
           <a href={tel} class="kanava">
             <span class="tyyppi"><Icon name="puhelin" size={20} /> Puhelin</span>
             <span class="arvo">{yritys.puhelinNaytto}</span>
@@ -80,13 +79,14 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
     text-decoration: none;
     transition: background-color 200ms ease, transform 150ms var(--ease-out);
   }
-  .kanava:hover { background: var(--sand); }
-  .kanava:active { transform: scale(0.99); }
+  .kanava:hover { background: var(--sand); color: var(--ink); }
   .tyyppi { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: var(--fs-sm); }
   .arvo {
-    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem);
-    font-weight: 560;
-    letter-spacing: -0.03em;
+    font-family: var(--font-display);
+    font-stretch: var(--stretch);
+    font-size: clamp(24px, 1rem + 2vw, 40px);
+    font-weight: 700;
+    letter-spacing: 1px;
     line-height: 1.1;
     font-variant-numeric: tabular-nums;
     overflow-wrap: anywhere;

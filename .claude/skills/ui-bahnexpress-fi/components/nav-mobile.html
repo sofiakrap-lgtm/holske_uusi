@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mobile menu · ui-bahnexpress-fi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Figtree:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../motion/motion.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-weight:var(--weight-body);font-size:var(--text-body);line-height:var(--leading-body);font-feature-settings:var(--body-features);-webkit-font-smoothing:antialiased}
+.demo-label{font:600 14px/20px var(--font-mono);color:var(--color-text-muted);margin:0 0 var(--space-4)}
+.demo{padding:var(--space-9) var(--container-pad);display:flex;flex-direction:column;gap:var(--space-9)}
+.row{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center}
+.section{background:var(--color-bg);color:var(--color-text);padding:var(--section-py) 0;overflow-x:clip}
+.container{max-width:var(--container-max);margin:0 auto;padding-inline:var(--container-pad);display:flex;flex-direction:column;gap:var(--section-gap)}
+.display{font-family:var(--font-display);font-stretch:var(--stretch-display);font-size:var(--text-h1);line-height:var(--leading-h1);letter-spacing:var(--tracking-h1);font-weight:var(--weight-h1);text-transform:var(--case-display);color:var(--color-heading);text-wrap:balance;margin:0}
+.heading{font-family:var(--font-heading);font-stretch:var(--stretch-display);font-size:var(--text-h3);line-height:var(--leading-h3);letter-spacing:var(--tracking-h3);font-weight:var(--weight-h3);color:var(--color-heading);text-wrap:balance;margin:0}
+.eyebrow{font-family:var(--font-body);font-weight:var(--weight-caption);font-size:var(--text-caption);line-height:var(--leading-caption);color:var(--color-text-muted);margin:0}
+.lead{font-weight:var(--weight-lead);font-size:var(--text-lead);line-height:var(--leading-lead);color:var(--color-heading);margin:0;text-wrap:balance}
+.body{margin:0;text-wrap:pretty}
+.muted{color:var(--color-text-muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--button-gap);height:var(--button-h);padding:0 var(--button-px);border:0;border-radius:var(--radius-button);font:var(--weight-button) var(--text-button)/var(--leading-button) var(--font-body);white-space:nowrap;cursor:pointer;text-decoration:none;background:transparent;color:inherit;transition:background-color var(--duration-fast),color var(--duration-fast)}
+.btn:focus-visible{outline:4px solid var(--color-focus);outline-offset:0}
+.btn--primary{background:var(--color-accent);color:var(--color-accent-contrast)}
+.btn--primary:hover,.btn--primary.is-hover{background:var(--color-accent-hover)}
+.btn--secondary{background:var(--color-surface);color:var(--color-heading)}
+.btn--secondary:hover,.btn--secondary.is-hover{background:var(--palette-grey-100)}
+.btn--tertiary{background:var(--palette-grey-100);color:var(--palette-asphalt)}
+.btn--tertiary:hover,.btn--tertiary.is-hover{background:var(--palette-grey-200)}
+.btn--ghost{color:var(--color-heading);padding-inline:calc(var(--button-px) - 2px)}
+.btn--ghost:hover,.btn--ghost.is-hover{color:var(--color-link-hover)}
+.btn--xs{--button-h:40px;--button-px:20px;--text-button:16px;--leading-button:16px}
+.btn--sm{--button-h:48px;--button-px:22px;--text-button:18px;--leading-button:18px}
+.btn--lg{--button-h:64px;--button-px:28px;--text-button:22px;--leading-button:22px}
+.btn--xl{--button-h:72px;--button-px:32px;--text-button:24px;--leading-button:24px}
+.btn--icon{width:var(--button-h);padding:0}
+.btn:disabled{background:var(--color-bg-alt);color:var(--color-text-muted);cursor:not-allowed}
+.icon{width:var(--icon-size);height:var(--icon-size);fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linecap:square;stroke-linejoin:miter;flex:0 0 auto}
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;border:1px solid currentColor;border-radius:var(--radius-pill);font:400 16px/16px var(--font-body);color:var(--color-text-muted);white-space:nowrap}
+.ph{background:var(--palette-grey-100);display:block;width:100%}
+
+.site-header{position:sticky;top:0;z-index:var(--z-header);height:var(--header-h);background:var(--color-overlay)}
+.site-header__inner{height:100%;padding-inline:24px 12px;display:flex;align-items:center;justify-content:space-between}
+.logo{font:900 20px/24px var(--font-display);font-stretch:125%;text-transform:uppercase;color:var(--color-heading)}
+.nav-mobile{position:fixed;inset:var(--header-h) 0 0 0;z-index:var(--z-overlay);display:none}
+.nav-mobile[data-state]{display:block}
+.nav-mobile::before{content:"";position:fixed;inset:var(--header-h) 0 0 0;background:var(--color-dialog-scrim);animation:fade-in .24s ease both}
+.nav-mobile[data-state="closed"]::before{animation:fade-out .18s ease forwards}
+.nav-mobile__sheet{position:relative;background:var(--color-bg);background-image:linear-gradient(var(--color-overlay),var(--color-overlay));padding:12px 24px 24px;animation:sheet-down .24s var(--ease-standard) both}
+.nav-mobile[data-state="closed"] .nav-mobile__sheet{animation:sheet-up .18s var(--ease-standard) forwards}
+.nav-mobile__inner{max-width:var(--container-max);margin:0 auto;display:flex;flex-direction:column;gap:24px}
+.nav-mobile__group{display:flex;flex-direction:column;gap:16px;align-items:flex-start;animation:fade-in .2s ease 80ms backwards}
+.nav-mobile__group+.nav-mobile__group{border-top:1px solid var(--color-border);padding-top:24px;width:100%}
+.nav-mobile__label{padding-inline:22px;font:600 16px/20px var(--font-body);color:var(--color-text-muted);margin:0}
+.nav-mobile__links{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-start}
+.nav-mobile__links a{height:48px;padding-inline:22px;display:inline-flex;align-items:center;border-radius:var(--radius-pill);font:600 18px/18px var(--font-body);color:var(--color-heading);text-decoration:none}
+.nav-mobile__links a:hover{color:var(--color-link-hover)}
+.nav-mobile__links a[aria-current]{background:var(--color-surface-raised)}
+@media (min-width:768px){.nav-mobile__sheet{padding:18px 36px 36px;border-radius:0 0 24px 24px}.nav-mobile__inner{flex-direction:row;gap:36px}.nav-mobile__group{flex:1}.nav-mobile__group+.nav-mobile__group{border-top:0;border-left:1px solid var(--color-border);padding:0 0 0 36px}}
+@media (min-width:1025px){.nav-mobile__sheet{padding:12px 48px 48px}.nav-mobile__inner{max-width:928px;gap:48px}.nav-mobile__group+.nav-mobile__group{padding-left:48px}}
+.site-header.is-menu-open .btn--primary{opacity:0;visibility:hidden;transition:opacity .15s,visibility .15s}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <span class="logo">Logo</span>
+    <div class="row"><a class="btn btn--primary btn--xs" href="#">Pyydä hinta</a>
+    <button class="btn btn--ghost btn--xs btn--icon" aria-label="Valikko" aria-expanded="false" aria-controls="menu" data-menu-toggle><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M3 17h18"/></svg></button></div>
+  </div>
+</header>
+<div class="nav-mobile" id="menu" hidden>
+  <div class="nav-mobile__sheet">
+    <div class="nav-mobile__inner">
+      <div class="nav-mobile__group"><p class="nav-mobile__label">Ryhmä yksi</p><ul class="nav-mobile__links"><li><a href="#" aria-current="page">Pääsivu</a></li><li><a href="#">Linkki</a></li><li><a href="#">Linkki</a></li></ul></div>
+      <div class="nav-mobile__group"><p class="nav-mobile__label">Ryhmä kaksi</p><ul class="nav-mobile__links"><li><a href="#">Pääsivu</a></li><li><a href="#">Linkki</a></li></ul></div>
+      <div class="nav-mobile__group"><p class="nav-mobile__label">Ryhmä kolme</p><ul class="nav-mobile__links"><li><a href="#">Pääsivu</a></li><li><a href="#">Linkki</a></li></ul></div>
+    </div>
+  </div>
+</div>
+<div style="height:120vh"></div>
+
+<script src="../motion/motion.js" defer></script>
+</body>
+</html>

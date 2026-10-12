@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive · ui-bahnexpress-fi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Figtree:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../motion/motion.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-weight:var(--weight-body);font-size:var(--text-body);line-height:var(--leading-body);font-feature-settings:var(--body-features);-webkit-font-smoothing:antialiased}
+.demo-label{font:600 14px/20px var(--font-mono);color:var(--color-text-muted);margin:0 0 var(--space-4)}
+.demo{padding:var(--space-9) var(--container-pad);display:flex;flex-direction:column;gap:var(--space-9)}
+.row{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center}
+.section{background:var(--color-bg);color:var(--color-text);padding:var(--section-py) 0;overflow-x:clip}
+.container{max-width:var(--container-max);margin:0 auto;padding-inline:var(--container-pad);display:flex;flex-direction:column;gap:var(--section-gap)}
+.display{font-family:var(--font-display);font-stretch:var(--stretch-display);font-size:var(--text-h1);line-height:var(--leading-h1);letter-spacing:var(--tracking-h1);font-weight:var(--weight-h1);text-transform:var(--case-display);color:var(--color-heading);text-wrap:balance;margin:0}
+.heading{font-family:var(--font-heading);font-stretch:var(--stretch-display);font-size:var(--text-h3);line-height:var(--leading-h3);letter-spacing:var(--tracking-h3);font-weight:var(--weight-h3);color:var(--color-heading);text-wrap:balance;margin:0}
+.eyebrow{font-family:var(--font-body);font-weight:var(--weight-caption);font-size:var(--text-caption);line-height:var(--leading-caption);color:var(--color-text-muted);margin:0}
+.lead{font-weight:var(--weight-lead);font-size:var(--text-lead);line-height:var(--leading-lead);color:var(--color-heading);margin:0;text-wrap:balance}
+.body{margin:0;text-wrap:pretty}
+.muted{color:var(--color-text-muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--button-gap);height:var(--button-h);padding:0 var(--button-px);border:0;border-radius:var(--radius-button);font:var(--weight-button) var(--text-button)/var(--leading-button) var(--font-body);white-space:nowrap;cursor:pointer;text-decoration:none;background:transparent;color:inherit;transition:background-color var(--duration-fast),color var(--duration-fast)}
+.btn:focus-visible{outline:4px solid var(--color-focus);outline-offset:0}
+.btn--primary{background:var(--color-accent);color:var(--color-accent-contrast)}
+.btn--primary:hover,.btn--primary.is-hover{background:var(--color-accent-hover)}
+.btn--secondary{background:var(--color-surface);color:var(--color-heading)}
+.btn--secondary:hover,.btn--secondary.is-hover{background:var(--palette-grey-100)}
+.btn--tertiary{background:var(--palette-grey-100);color:var(--palette-asphalt)}
+.btn--tertiary:hover,.btn--tertiary.is-hover{background:var(--palette-grey-200)}
+.btn--ghost{color:var(--color-heading);padding-inline:calc(var(--button-px) - 2px)}
+.btn--ghost:hover,.btn--ghost.is-hover{color:var(--color-link-hover)}
+.btn--xs{--button-h:40px;--button-px:20px;--text-button:16px;--leading-button:16px}
+.btn--sm{--button-h:48px;--button-px:22px;--text-button:18px;--leading-button:18px}
+.btn--lg{--button-h:64px;--button-px:28px;--text-button:22px;--leading-button:22px}
+.btn--xl{--button-h:72px;--button-px:32px;--text-button:24px;--leading-button:24px}
+.btn--icon{width:var(--button-h);padding:0}
+.btn:disabled{background:var(--color-bg-alt);color:var(--color-text-muted);cursor:not-allowed}
+.icon{width:var(--icon-size);height:var(--icon-size);fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linecap:square;stroke-linejoin:miter;flex:0 0 auto}
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;border:1px solid currentColor;border-radius:var(--radius-pill);font:400 16px/16px var(--font-body);color:var(--color-text-muted);white-space:nowrap}
+.ph{background:var(--palette-grey-100);display:block;width:100%}
+
+.carousel{position:relative}
+.carousel__head{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:48px}
+.carousel__arrows{display:flex;gap:12px}
+.carousel__track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:calc(50% - 50vw);padding-inline:calc(50vw - 50%);scroll-padding-inline:max(24px,calc(50vw - 672px))}
+.carousel__track::-webkit-scrollbar{display:none}
+.carousel__track>*{flex:0 0 auto;scroll-snap-align:start;max-width:calc(100% - 56px)}
+.carousel__nav{display:flex;justify-content:space-between;align-items:center;margin-top:48px}
+.slide{width:448px;background:var(--color-surface);border-radius:24px;transition:background-color .3s}
+.carousel[data-autoplay] .slide:not([data-current]){background:var(--color-bg)}
+.page-indicator{display:flex;gap:12px;align-items:center}
+.page-indicator__dot{position:relative;width:8px;height:8px;border-radius:999px;background:var(--palette-grey-200);overflow:hidden;transition:width .26s var(--ease-standard),background-color .2s;border:0;padding:0;cursor:pointer}
+.page-indicator__dot[aria-current]{width:32px}
+.page-indicator__dot[aria-current]::before{content:"";position:absolute;inset:0;background:var(--color-heading);transform:translateX(-100%);animation:indicator-fill var(--autoplay-duration) linear forwards}
+.carousel:is(:hover,:focus-within) .page-indicator__dot::before,.carousel[data-paused] .page-indicator__dot::before{animation-play-state:paused}
+.btn--icon .icon{width:32px;height:32px}
+.accordion{display:flex;flex-direction:column}
+.acc+.acc{border-top:1px solid var(--color-border);margin-top:12px;padding-top:12px}
+.acc__summary{list-style:none;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:12px 0;cursor:pointer}
+.acc__summary::-webkit-details-marker{display:none}
+.acc__summary:focus-visible{outline:4px solid var(--color-focus);outline-offset:-4px;border-radius:8px}
+.acc__q{font:600 24px/32px var(--font-body);color:var(--color-heading);transition:color .15s}
+.acc__summary:hover .acc__q{color:var(--color-text)}
+.acc__ind{display:flex;color:var(--color-heading);transition:transform .15s}
+.acc__ind .icon{width:32px;height:32px}
+.acc[open] .acc__ind{transform:rotate(180deg)}
+.acc__a{font:300 20px/28px var(--font-body);padding-right:48px}
+.acc__a p{margin:0}
+.use-rail{display:flex;gap:24px;overflow-x:auto;scrollbar-width:none;align-items:flex-start}
+.use-rail__slide{flex:0 0 352px;background:var(--color-surface);border-radius:24px;overflow:hidden;cursor:pointer;position:relative}
+@media (min-width:1025px){.use-rail__slide{flex-basis:448px}}
+.use-rail__slide[data-open]{flex-basis:100%;cursor:default}
+.use-rail__slide .ph{aspect-ratio:4/3}
+.use-rail__slide[data-open] .ph{aspect-ratio:21/10}
+.use-rail__body{padding:24px;display:flex;flex-direction:column;gap:12px}
+.use-rail__more{display:none}
+.use-rail__slide[data-open] .use-rail__more{display:block}
+.use-rail__close{position:absolute;top:24px;right:24px;display:none}
+.use-rail__slide[data-open] .use-rail__close{display:inline-flex}
+.map{position:relative;height:420px;border-radius:24px;background:var(--palette-teal-50);overflow:hidden}
+.pin{position:absolute;width:96px;height:96px;display:flex;align-items:center;justify-content:center;background:none;border:0;padding:0;cursor:pointer}
+.pin__tile{width:58px;height:58px;border-radius:9px;background:var(--palette-grey-200);box-shadow:var(--ring-pin);transition:width .15s,height .15s,border-radius .15s,box-shadow .15s}
+.pin:hover .pin__tile,.pin.is-hover .pin__tile{width:66px;height:66px;border-radius:13px;box-shadow:0 0 0 3px var(--palette-grey-50)}
+.pin[aria-pressed="true"] .pin__tile{width:88px;height:88px;border-radius:16px;box-shadow:var(--ring-pin-selected)}
+.pin:focus-visible .pin__tile{outline:4px solid var(--color-focus)}
+.timeline{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
+.tl-step{display:flex;flex-direction:column;gap:24px}
+.tl-step__marker{display:flex;align-items:center}
+.tl-step__bullet{width:96px;height:96px;border-radius:999px;background:var(--color-surface);display:flex;align-items:center;justify-content:center;font-family:var(--font-accent);font-stretch:125%;font-weight:700;font-size:32px;color:var(--color-heading);flex:0 0 auto}
+.tl-step__rule{flex:1;border-top:4px solid var(--color-surface);transform-origin:0 50%}
+.tl-step:last-child .tl-step__rule{display:none}
+.tl-step__content{padding-right:48px;display:flex;flex-direction:column;gap:12px}
+.timeline[data-draw] .tl-step__rule{transition:transform var(--timeline-beat) linear var(--cue,0s)}
+.timeline[data-draw] .tl-step__bullet{transition:transform .5s var(--ease-out) var(--cue,0s),opacity .5s var(--ease-out) var(--cue,0s)}
+.timeline[data-draw] .tl-step__content{transition:transform .5s var(--ease-out) var(--cue,0s),opacity .5s var(--ease-out) var(--cue,0s)}
+.timeline[data-draw="idle"] .tl-step__rule{transform:scaleX(0)}
+.timeline[data-draw="idle"] .tl-step__bullet{opacity:0;transform:scale(.9)}
+.timeline[data-draw="idle"] .tl-step__content{opacity:0;transform:translateY(8px)}
+.tl-step:nth-child(2){--cue:calc(1 * var(--timeline-beat))}.tl-step:nth-child(3){--cue:calc(2 * var(--timeline-beat))}.tl-step:nth-child(4){--cue:calc(3 * var(--timeline-beat))}
+@media (max-width:767px){.timeline{grid-auto-flow:row}.tl-step{flex-direction:row}.tl-step__marker{flex-direction:column;align-self:stretch}.tl-step__rule{border-top:0;border-left:4px solid var(--color-surface);transform-origin:50% 0}}
+.dropdown{position:relative;display:inline-block}
+.dropdown__sheet{position:absolute;top:calc(100% + 8px);left:0;min-width:280px;background:var(--color-surface);border-radius:20px;padding:4px;list-style:none;margin:0;animation:dropdown-in .14s var(--ease-standard) both;z-index:var(--z-dropdown)}
+.dropdown__sheet[hidden]{display:none}
+.dropdown__item{display:flex;flex-direction:column;gap:2px;padding:8px 16px;border-radius:16px;cursor:pointer}
+.dropdown__item:hover,.dropdown__item.is-hover{background:var(--palette-birch)}
+.dropdown__item small{font:400 16px/22px var(--font-body);color:var(--color-text-muted)}
+.dialog{border:0;padding:0;border-radius:24px;background:var(--color-bg);max-width:560px;width:calc(100% - 48px);opacity:0;transform:translateY(8px);transition:opacity .18s ease-out,transform .18s ease-out,display .18s allow-discrete,overlay .18s allow-discrete}
+.dialog[open]{opacity:1;transform:none}
+@starting-style{.dialog[open]{opacity:0;transform:translateY(8px)}}
+.dialog::backdrop{background:var(--color-dialog-scrim)}
+</style>
+</head>
+<body>
+
+<div class="demo">
+<section class="carousel" data-carousel data-autoplay>
+  <div class="carousel__head"><h2 class="heading">Karuselli</h2><div class="carousel__arrows"><button class="btn btn--tertiary btn--lg btn--icon" aria-label="Pysäytä" data-carousel-play><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button><button class="btn btn--tertiary btn--lg btn--icon" aria-label="Edellinen" data-carousel-prev><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6"/></svg></button><button class="btn btn--tertiary btn--lg btn--icon" aria-label="Seuraava" data-carousel-next><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div></div>
+  <div class="carousel__track" tabindex="0"><article class="slide"><span class="ph" style="aspect-ratio:4/3;border-radius:24px 24px 0 0"></span><div style="padding:36px"><p class="heading" style="font-size:24px">Kortti 1</p></div></article><article class="slide"><span class="ph" style="aspect-ratio:4/3;border-radius:24px 24px 0 0"></span><div style="padding:36px"><p class="heading" style="font-size:24px">Kortti 2</p></div></article><article class="slide"><span class="ph" style="aspect-ratio:4/3;border-radius:24px 24px 0 0"></span><div style="padding:36px"><p class="heading" style="font-size:24px">Kortti 3</p></div></article><article class="slide"><span class="ph" style="aspect-ratio:4/3;border-radius:24px 24px 0 0"></span><div style="padding:36px"><p class="heading" style="font-size:24px">Kortti 4</p></div></article><article class="slide"><span class="ph" style="aspect-ratio:4/3;border-radius:24px 24px 0 0"></span><div style="padding:36px"><p class="heading" style="font-size:24px">Kortti 5</p></div></article></div>
+  <div class="carousel__nav"><div class="page-indicator" data-indicator></div></div>
+</section>
+<section><p class="demo-label">Käyttötapausrata: klikkaa korttia (View Transitions -morph)</p>
+<div class="use-rail" data-use-rail><article class="use-rail__slide" tabindex="0"><span class="ph"></span><div class="use-rail__body"><p class="eyebrow">Käyttötapaus</p><p class="heading" style="font-size:24px;line-height:28px">Otsikko 1</p><div class="use-rail__more"><p class="body">Laajennettu sisältö: kuvaus, ominaisuudet, lainaus ja todisterivi.</p></div></div><button class="btn btn--tertiary btn--sm btn--icon use-rail__close" aria-label="Sulje"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></article><article class="use-rail__slide" tabindex="0"><span class="ph"></span><div class="use-rail__body"><p class="eyebrow">Käyttötapaus</p><p class="heading" style="font-size:24px;line-height:28px">Otsikko 2</p><div class="use-rail__more"><p class="body">Laajennettu sisältö: kuvaus, ominaisuudet, lainaus ja todisterivi.</p></div></div><button class="btn btn--tertiary btn--sm btn--icon use-rail__close" aria-label="Sulje"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></article><article class="use-rail__slide" tabindex="0"><span class="ph"></span><div class="use-rail__body"><p class="eyebrow">Käyttötapaus</p><p class="heading" style="font-size:24px;line-height:28px">Otsikko 3</p><div class="use-rail__more"><p class="body">Laajennettu sisältö: kuvaus, ominaisuudet, lainaus ja todisterivi.</p></div></div><button class="btn btn--tertiary btn--sm btn--icon use-rail__close" aria-label="Sulje"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></article><article class="use-rail__slide" tabindex="0"><span class="ph"></span><div class="use-rail__body"><p class="eyebrow">Käyttötapaus</p><p class="heading" style="font-size:24px;line-height:28px">Otsikko 4</p><div class="use-rail__more"><p class="body">Laajennettu sisältö: kuvaus, ominaisuudet, lainaus ja todisterivi.</p></div></div><button class="btn btn--tertiary btn--sm btn--icon use-rail__close" aria-label="Sulje"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></article></div></section>
+<section><p class="demo-label">Accordion</p><div class="accordion" style="max-width:720px"><details class="acc" open><summary class="acc__summary"><span class="acc__q">Kysymys yksi?</span><span class="acc__ind"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></span></summary><div class="acc__a"><p>Vastaus placeholderina.</p></div></details><details class="acc"><summary class="acc__summary"><span class="acc__q">Kysymys kaksi?</span><span class="acc__ind"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></span></summary><div class="acc__a"><p>Vastaus.</p></div></details><details class="acc"><summary class="acc__summary"><span class="acc__q">Kysymys kolme?</span><span class="acc__ind"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></span></summary><div class="acc__a"><p>Vastaus.</p></div></details></div></section>
+<section><p class="demo-label">Kartan lainauspinnit</p><div class="map" data-pins><button class="pin" style="left:15%;top:30%" aria-pressed="true"><span class="pin__tile"></span></button><button class="pin" style="left:45%;top:55%" aria-pressed="false"><span class="pin__tile"></span></button><button class="pin is-hover" style="left:70%;top:20%" aria-pressed="false"><span class="pin__tile"></span></button></div></section>
+<section data-theme="asphalt" style="background:var(--color-bg);padding:48px;border-radius:24px"><p class="demo-label">Aikajana (piirtyy näkyviin tullessa)</p>
+<div class="timeline" data-draw="idle"><div class="tl-step"><div class="tl-step__marker"><span class="tl-step__bullet">1</span><span class="tl-step__rule"></span></div><div class="tl-step__content"><p class="heading" style="font-size:28px;line-height:32px">Vaihe 1</p><p class="body muted">Lyhyt kuvaus.</p></div></div><div class="tl-step"><div class="tl-step__marker"><span class="tl-step__bullet">2</span><span class="tl-step__rule"></span></div><div class="tl-step__content"><p class="heading" style="font-size:28px;line-height:32px">Vaihe 2</p><p class="body muted">Lyhyt kuvaus.</p></div></div><div class="tl-step"><div class="tl-step__marker"><span class="tl-step__bullet">3</span><span class="tl-step__rule"></span></div><div class="tl-step__content"><p class="heading" style="font-size:28px;line-height:32px">Vaihe 3</p><p class="body muted">Lyhyt kuvaus.</p></div></div></div></section>
+<section><p class="demo-label">Dropdown + dialogi</p><div class="row"><div class="dropdown"><button class="btn btn--secondary btn--sm" data-dropdown>Valitse <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></button><ul class="dropdown__sheet" hidden><li class="dropdown__item">Vaihtoehto<small>Kuvaus</small></li><li class="dropdown__item is-hover">Vaihtoehto<small>Kuvaus</small></li></ul></div><button class="btn btn--primary btn--sm" onclick="document.getElementById('dlg').showModal()">Avaa dialogi</button></div>
+<dialog class="dialog" id="dlg"><div style="padding:36px;display:flex;flex-direction:column;gap:24px"><p class="heading">Dialogin otsikko</p><p class="body">Sisältö.</p><button class="btn btn--primary btn--sm" onclick="this.closest('dialog').close()">Sulje</button></div></dialog></section>
+</div>
+
+<script src="../motion/motion.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sections · ui-bahnexpress-fi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Figtree:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../motion/motion.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-weight:var(--weight-body);font-size:var(--text-body);line-height:var(--leading-body);font-feature-settings:var(--body-features);-webkit-font-smoothing:antialiased}
+.demo-label{font:600 14px/20px var(--font-mono);color:var(--color-text-muted);margin:0 0 var(--space-4)}
+.demo{padding:var(--space-9) var(--container-pad);display:flex;flex-direction:column;gap:var(--space-9)}
+.row{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center}
+.section{background:var(--color-bg);color:var(--color-text);padding:var(--section-py) 0;overflow-x:clip}
+.container{max-width:var(--container-max);margin:0 auto;padding-inline:var(--container-pad);display:flex;flex-direction:column;gap:var(--section-gap)}
+.display{font-family:var(--font-display);font-stretch:var(--stretch-display);font-size:var(--text-h1);line-height:var(--leading-h1);letter-spacing:var(--tracking-h1);font-weight:var(--weight-h1);text-transform:var(--case-display);color:var(--color-heading);text-wrap:balance;margin:0}
+.heading{font-family:var(--font-heading);font-stretch:var(--stretch-display);font-size:var(--text-h3);line-height:var(--leading-h3);letter-spacing:var(--tracking-h3);font-weight:var(--weight-h3);color:var(--color-heading);text-wrap:balance;margin:0}
+.eyebrow{font-family:var(--font-body);font-weight:var(--weight-caption);font-size:var(--text-caption);line-height:var(--leading-caption);color:var(--color-text-muted);margin:0}
+.lead{font-weight:var(--weight-lead);font-size:var(--text-lead);line-height:var(--leading-lead);color:var(--color-heading);margin:0;text-wrap:balance}
+.body{margin:0;text-wrap:pretty}
+.muted{color:var(--color-text-muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--button-gap);height:var(--button-h);padding:0 var(--button-px);border:0;border-radius:var(--radius-button);font:var(--weight-button) var(--text-button)/var(--leading-button) var(--font-body);white-space:nowrap;cursor:pointer;text-decoration:none;background:transparent;color:inherit;transition:background-color var(--duration-fast),color var(--duration-fast)}
+.btn:focus-visible{outline:4px solid var(--color-focus);outline-offset:0}
+.btn--primary{background:var(--color-accent);color:var(--color-accent-contrast)}
+.btn--primary:hover,.btn--primary.is-hover{background:var(--color-accent-hover)}
+.btn--secondary{background:var(--color-surface);color:var(--color-heading)}
+.btn--secondary:hover,.btn--secondary.is-hover{background:var(--palette-grey-100)}
+.btn--tertiary{background:var(--palette-grey-100);color:var(--palette-asphalt)}
+.btn--tertiary:hover,.btn--tertiary.is-hover{background:var(--palette-grey-200)}
+.btn--ghost{color:var(--color-heading);padding-inline:calc(var(--button-px) - 2px)}
+.btn--ghost:hover,.btn--ghost.is-hover{color:var(--color-link-hover)}
+.btn--xs{--button-h:40px;--button-px:20px;--text-button:16px;--leading-button:16px}
+.btn--sm{--button-h:48px;--button-px:22px;--text-button:18px;--leading-button:18px}
+.btn--lg{--button-h:64px;--button-px:28px;--text-button:22px;--leading-button:22px}
+.btn--xl{--button-h:72px;--button-px:32px;--text-button:24px;--leading-button:24px}
+.btn--icon{width:var(--button-h);padding:0}
+.btn:disabled{background:var(--color-bg-alt);color:var(--color-text-muted);cursor:not-allowed}
+.icon{width:var(--icon-size);height:var(--icon-size);fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linecap:square;stroke-linejoin:miter;flex:0 0 auto}
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;border:1px solid currentColor;border-radius:var(--radius-pill);font:400 16px/16px var(--font-body);color:var(--color-text-muted);white-space:nowrap}
+.ph{background:var(--palette-grey-100);display:block;width:100%}
+
+.section--lead{position:relative;isolation:isolate;background:transparent;margin-top:0;padding-top:calc(var(--header-h) + var(--section-gap))}
+.section__backdrop{position:absolute;inset:0;z-index:-1;overflow:clip}
+.section__backdrop>*{position:absolute;inset:0}
+.bd-media{background:linear-gradient(160deg,#b9ae9c,#e6ddcc 45%,#8d9893);}
+.bd-grain{opacity:.3;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E")}
+.bd-wash{mix-blend-mode:lighten;background:var(--color-hero-wash)}
+.bd-fade{background:linear-gradient(to bottom,transparent 65%,var(--palette-grey-50))}
+.hero-title{margin:0;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
+.hero-title__lines{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:12px;width:100%}
+.hero-title__line{flex:0 0 100%;color:var(--color-heading);hyphens:auto;hyphenate-limit-chars:10 5 5;overflow-wrap:anywhere}
+.l-xwide{font-family:var(--font-accent);font-stretch:125%;font-weight:900;text-transform:uppercase;letter-spacing:calc(-0.3px + .02em);font-size:48px;line-height:48px}
+.l-wide{font-family:var(--font-display);font-stretch:125%;font-weight:900;text-transform:uppercase;letter-spacing:-.3px;font-size:48px;line-height:48px}
+.l-head{font-family:var(--font-heading);font-stretch:125%;font-weight:500;letter-spacing:.3px;font-size:32px;line-height:36px}
+@media (min-width:768px){.l-xwide{font-size:72px;line-height:72px}.l-wide{font-size:56px;line-height:56px}.l-head{font-size:40px;line-height:48px}.hero-title__lines{gap:10px}}
+@media (min-width:1025px){.l-xwide{font-size:96px;line-height:96px}.l-wide{font-size:80px;line-height:80px}.hero-title__lines{gap:12px}}
+.hero-strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);background:var(--color-overlay);border-radius:var(--radius-card);overflow:hidden;container:strip/inline-size}
+.hero-item{display:flex;flex-direction:column;gap:24px;padding:var(--hero-item-pad)}
+.hero-item+.hero-item{border-left:2px solid var(--palette-birch)}
+.hero-item .heading{font-size:32px;line-height:36px;hyphens:auto}
+.hero-item .eyebrow{font-size:20px;line-height:24px}
+@container strip (max-width:1104px){.hero-item{gap:22px;padding:36px}.hero-item .heading{font-size:28px;line-height:32px}}
+@container strip (max-width:828px){.hero-item{gap:16px;padding:28px 24px}.hero-item .heading{font-size:24px;line-height:28px}.hero-item .body{font-size:16px;line-height:22px}}
+@media (max-width:767px){.hero-strip{grid-auto-flow:row}.hero-item+.hero-item{border-left:0;border-top:2px solid var(--palette-birch)}}
+.section-header{display:flex;flex-direction:column;align-items:center;gap:32px;text-align:center}
+.section-header__text{display:flex;flex-direction:column;gap:24px}
+.section-header__sub{max-width:var(--container-narrow);margin-inline:auto}
+.stat{font-family:var(--font-accent);font-stretch:125%;font-weight:var(--weight-stat);font-size:var(--text-stat);line-height:var(--leading-stat);letter-spacing:var(--tracking-stat);font-variant-numeric:var(--numeric-stat);white-space:nowrap;color:var(--color-heading);margin:0}
+.features{display:grid;grid-template-columns:1fr;gap:var(--container-pad)}
+@media (min-width:768px){.features{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:minmax(0,1fr)}}
+.feature{display:flex;flex-direction:column;gap:24px;align-items:flex-start}
+.feature__tile{width:96px;height:96px;border-radius:20px;background:var(--color-surface);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted)}
+.feature__tile .icon{width:56px;height:56px;stroke-width:1.3}
+.logo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;border-radius:24px;overflow:hidden}
+.logo-grid span{background:var(--palette-grey-950);aspect-ratio:320/112;display:flex;align-items:center;justify-content:center;color:var(--palette-grey-400)}
+@media (min-width:1025px){.logo-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.cta-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.faq{display:grid;gap:var(--section-gap)}
+@media (min-width:1025px){.faq{grid-template-columns:1fr 1.4fr;align-items:start}.faq .section-header{align-items:flex-start;text-align:left}}
+.contact{background:var(--color-surface);border-radius:24px;padding:48px;display:flex;gap:32px;align-items:flex-start}
+.contact .portrait{width:128px;height:128px;border-radius:24px;background:var(--palette-grey-200);flex:0 0 auto}
+.contact__actions{display:flex;flex-wrap:wrap;gap:12px}
+@media (max-width:767px){.contact{flex-direction:column;padding:24px;gap:24px}.contact .portrait{width:96px;height:96px;border-radius:20px}}
+</style>
+</head>
+<body>
+
+<section class="section section--lead" data-theme="birch">
+  <div class="section__backdrop"><div class="bd-media"></div><div class="bd-grain"></div><div class="bd-wash"></div><div class="bd-fade"></div></div>
+  <div class="container">
+    <h1 class="hero-title"><span class="hero-title__lines">
+      <span class="hero-title__line l-xwide" data-fit>Sana</span>
+      <span class="hero-title__line l-wide" data-fit>Toinen rivi</span>
+      <span class="hero-title__line l-head">ja lause tavallisella kirjainkoolla</span>
+    </span></h1>
+    <div class="hero-strip" data-theme="asphalt">
+      <div class="hero-item"><p class="eyebrow">Nopea</p><p class="heading">Lyhyt väite yksi</p><p class="body">Selittävä lause placeholderina.</p></div>
+      <div class="hero-item"><p class="eyebrow">Helppo</p><p class="heading">Lyhyt väite kaksi</p><p class="body">Selittävä lause placeholderina.</p></div>
+      <div class="hero-item"><p class="eyebrow">Varma</p><p class="stat" data-roll="4.8">4.8</p><p class="body">Stat-variantti rullaavalla luvulla.</p></div>
+    </div>
+  </div>
+</section>
+<section class="section" data-theme="light-grey"><div class="container">
+  <header class="section-header"><div class="section-header__text"><h2 class="display" data-fit>Osion otsikko</h2><p class="lead section-header__sub muted">Yksi alaotsikko, joka kertoo hyödyn.</p></div></header>
+  <div class="features">
+    <div class="feature"><span class="feature__tile"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><path d="M12 11.5a2.5 2.5 0 1 0 0-5"/></svg></span><h3 class="heading" style="font-size:24px;line-height:28px">Ominaisuus</h3><p class="body muted">Kuvaus.</p></div>
+    <div class="feature"><span class="feature__tile"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4h12l-2 4 2 4H5"/></svg></span><h3 class="heading" style="font-size:24px;line-height:28px">Ominaisuus</h3><p class="body muted">Kuvaus.</p></div>
+    <div class="feature"><span class="feature__tile"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg></span><h3 class="heading" style="font-size:24px;line-height:28px">Ominaisuus</h3><p class="body muted">Kuvaus.</p></div>
+  </div>
+</div></section>
+<section class="section" data-theme="asphalt"><div class="container">
+  <header class="section-header"><h2 class="display" style="font-size:40px;line-height:40px">Logot</h2></header>
+  <div class="logo-grid"><span>logo</span><span>logo</span><span>logo</span><span>logo</span></div>
+</div></section>
+<section class="section" data-theme="green"><div class="container faq">
+  <header class="section-header"><h2 class="display" data-fit>Kysymyksiä</h2><div class="cta-actions"><a class="btn btn--primary btn--sm" href="#">Ota yhteyttä</a></div></header>
+  <div class="accordion"><details class="acc" open><summary class="acc__summary"><span class="acc__q">Kysymys yksi?</span><span class="acc__ind"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></span></summary><div class="acc__a"><p>Vastaus placeholderina.</p></div></details><details class="acc"><summary class="acc__summary"><span class="acc__q">Kysymys kaksi?</span><span class="acc__ind"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></span></summary><div class="acc__a"><p>Vastaus.</p></div></details></div>
+</div></section>
+<section class="section" data-theme="birch"><div class="container">
+  <header class="section-header"><h2 class="display" data-fit>Oikeat ihmiset</h2></header>
+  <div class="contact"><span class="portrait"></span><div style="display:flex;flex-direction:column;gap:24px"><div><p class="heading" style="font-size:28px;line-height:32px">Nimi Sukunimi</p><p class="body muted">Rooli</p></div><div class="contact__actions"><a class="btn btn--tertiary btn--sm" href="#"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg>Soita</a><a class="btn btn--tertiary btn--sm" href="#"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 6l9 7 9-7"/></svg>Sähköposti</a></div></div></div>
+</div></section>
+<section class="section" data-theme="asphalt" style="--section-py:96px"><div class="container">
+  <header class="section-header"><h2 class="display" data-fit>Valmis aloittamaan?</h2><div class="cta-actions"><a class="btn btn--primary btn--sm" href="#">Aloita</a></div></header>
+</div></section>
+
+<script src="../motion/motion.js" defer></script>
+</body>
+</html>
