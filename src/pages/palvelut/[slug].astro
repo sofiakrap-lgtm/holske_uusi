@@ -9,6 +9,7 @@ import CtaOsio from '../../components/CtaOsio.astro';
 import HeroLead from '../../components/HeroLead.astro';
 import Bento from '../../components/Bento.astro';
 import Galleria from '../../components/Galleria.astro';
+import Tiesitko from '../../components/Tiesitko.astro';
 import yritys from '../../data/yritys.json';
 
 export async function getStaticPaths() {
@@ -61,18 +62,27 @@ import { getKuva } from '../../lib/kuvat';
 const lisakuvat = [`${d.kuva}-2`, `${d.kuva}-3`].filter((n) => getKuva(n));
 const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
 const bentoSolut: { otsikko: string; teksti?: string; href?: string }[] = alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: a.teksti }));
+// Kuva tekstiosion viereen: oma <kuva>-3, muuten jokin toinen kuva kuin pääosiossa
+const SIVUKUVA: Record<string, string> = { katot: 'katto-huolto', maalaus: 'etusivu-mobiili' };
+const sivukuva = [`${d.kuva}-3`, SIVUKUVA[palvelu.id] ?? 'etusivu', d.kuva];
+const muutKuva = ['muut-palvelut', d.kuva === 'pihatyot' ? 'painepesu' : 'pihatyot'];
 if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kuntoarvio', teksti: 'Katsomme kohteen ja kerromme, mitä se tarvitsee.', href: '/yhteystiedot/' });
 ---
 
 <BaseLayout title={d.seoTitle} description={d.kuvaus} schema={schema}>
-  <HeroLead rivit={[d.nimi, '', d.otsikko]} kuva={[d.kuva, 'etusivu']} video={palvelu.id} seuraava="var(--p-birch)" />
-
-  <section data-theme="birch" class="murut">
-    <div class="container">
-      <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }, { nimi: d.nimi, href: `/palvelut/${palvelu.id}/` }]} />
-      <p class="ingressi">{d.ingressi}</p>
-    </div>
-  </section>
+  <HeroLead
+    rivit={[d.nimi, '', d.otsikko]}
+    kuva={[d.kuva, 'etusivu']}
+    video={palvelu.id}
+    usva={false}
+    ingressi={d.ingressi}
+  >
+    <Murupolku
+      slot="ylla"
+      vaalea
+      polku={[{ nimi: 'Palvelut', href: '/palvelut/' }, { nimi: d.nimi, href: `/palvelut/${palvelu.id}/` }]}
+    />
+  </HeroLead>
 
   {
     bentoSolut.length > 0 && (
@@ -81,29 +91,45 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
           <div class="osio-otsake">
             <h2 id="sisaltaa-otsikko" data-fit>Mitä teemme</h2>
           </div>
-          <Bento kuva={`${d.kuva}-2`} vara={['etusivu', d.kuva]} solut={bentoSolut} korostus={bentoSolut.length - 1} />
-        </div>
-      </section>
-    )
-  }
-
-  {
-    lisakuvat.length > 0 && (
-      <section class="section--tight" aria-label="Kuvia työstä">
-        <div class="container lisakuvat">
-          {lisakuvat.map((n) => <Kuva nimi={n} ikoni={d.ikoni} variantti="kortti" class="reveal" />)}
+          <Bento
+            kuva={`${d.kuva}-2`}
+            vara={['etusivu', d.kuva]}
+            solut={bentoSolut}
+            korostus={bentoSolut.length - 1}
+            ikoni={d.ikoni}
+          />
         </div>
       </section>
     )
   }
 
   <section data-theme="birch">
-    <div class="container">
+    <div class="container jako">
+      <div class="jako-kuva">
+        <Kuva nimi={sivukuva[0]} vara={sivukuva.slice(1)} variantti="tayta" />
+      </div>
       <div class="prose">
         <Content />
       </div>
     </div>
+    {
+      d.tiesitko && (
+        <div class="container nosto">
+          <Tiesitko {...d.tiesitko} />
+        </div>
+      )
+    }
   </section>
+
+  {
+    lisakuvat.length > 0 && (
+      <section data-theme="birch" class="lisakuvat-osio" aria-label="Kuvia työstä">
+        <div class="container lisakuvat">
+          {lisakuvat.map((n) => <Kuva nimi={n} ikoni={d.ikoni} variantti="kortti" />)}
+        </div>
+      </section>
+    )
+  }
 
   {
     d.ukk.length > 0 && (
@@ -119,16 +145,43 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
     )
   }
 
+  <section data-theme="light-grey" aria-labelledby="kuvat-otsikko">
+    <div class="container">
+      <div class="osio-otsake">
+        <h2 id="kuvat-otsikko" data-fit>Lyhyesti</h2>
+        <p>{d.kortti}</p>
+      </div>
+      <ul class="kohdat">
+        {
+          alapalvelut.map((a) => (
+            <li>
+              <Icon name="check" size={18} />
+              {a.nimi}
+            </li>
+          ))
+        }
+        <li>
+          <Icon name="kuntoarvio" size={18} />
+          Ilmainen kuntoarvio
+        </li>
+      </ul>
+    </div>
+    <Galleria />
+  </section>
+
   <section data-theme="birch" class="muut-osio" aria-labelledby="muut-otsikko">
     <div class="container">
       <h2 id="muut-otsikko" class="pieni-otsikko">Muut palvelut</h2>
+      <div class="muut-kuva">
+        <Kuva nimi={muutKuva[0]} vara={muutKuva.slice(1)} variantti="tayta" />
+      </div>
       <ul class="muut">
         {
           muut.map((p) => (
             <li>
               <a href={`/palvelut/${p.id}/`}>
+                <Icon name={p.data.ikoni} size={18} />
                 {p.data.nimi}
-                <Icon name="nuoli" size={18} />
               </a>
             </li>
           ))
@@ -137,30 +190,41 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
     </div>
   </section>
 
-  <section data-theme="light-grey" aria-label="Kuvia">
-    <Galleria />
-  </section>
-
   <CtaOsio />
 </BaseLayout>
 
 <style>
-  .murut { padding-block: 24px 0; }
-  .ingressi {
-    max-width: var(--measure);
-    margin: 32px auto 0;
-    text-align: center;
-    font-family: var(--font-display);
-    font-stretch: var(--stretch);
-    font-weight: 500;
-    letter-spacing: 0.3px;
-    font-size: clamp(22px, 1rem + 1vw, 32px);
-    line-height: 1.15;
-    color: var(--ink);
-    text-wrap: balance;
+  /* Teksti ja kuva rinnakkain */
+  .jako { display: grid; gap: var(--section-gap); }
+  @media (min-width: 1025px) {
+    .jako { grid-template-columns: 1fr 1fr; align-items: center; }
   }
+  .jako-kuva { position: relative; aspect-ratio: 4 / 3; border-radius: var(--r-md); overflow: hidden; }
+  .jako-kuva :global(.kuvapaikka),
+  .muut-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
+  .nosto { margin-top: var(--section-gap); }
+  .lisakuvat-osio { padding-top: 0; }
   .lisakuvat { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
-  .prose { margin-inline: auto; }
+  .kohdat {
+    list-style: none;
+    margin: 0 0 var(--section-gap);
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .kohdat li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--p-birch);
+    color: var(--p-asphalt);
+    font: 600 16px/1 var(--font-body);
+  }
   .ukk-ruudukko { display: grid; gap: var(--section-gap); }
   @media (min-width: 1025px) {
     .ukk-ruudukko { grid-template-columns: 1fr 1.4fr; align-items: start; }
@@ -171,17 +235,21 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
   }
   .muut-osio { padding-block: 96px; }
   .pieni-otsikko { text-align: center; font-size: clamp(28px, 4vw, 40px); margin-bottom: 32px; }
+  .muut-kuva { position: relative; aspect-ratio: 4 / 3; margin-bottom: 32px; border-radius: var(--r-md); overflow: hidden; }
+  @media (min-width: 768px) {
+    .muut-kuva { aspect-ratio: 21 / 9; }
+  }
   .muut { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
   .muut a {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    height: 48px;
-    padding: 0 22px;
+    height: 44px;
+    padding: 0 20px;
     border-radius: 999px;
     background: var(--p-grey-100);
     color: var(--p-asphalt);
-    font: 600 18px/1 var(--font-body);
+    font: 600 17px/1 var(--font-body);
     text-decoration: none;
     transition: background-color var(--dur-fast) ease;
   }

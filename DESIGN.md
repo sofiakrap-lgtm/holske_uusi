@@ -40,7 +40,15 @@ Holsken visuaalinen järjestelmä. Pohja: Bahnin mitattu tyylijärjestelmä (`.c
 Kontti 1440 px, gutter 24 / 36 / 48. Osion padding 96 / 128 / 144. Otsikosta sisältöön 48 / 56 / 64.
 
 ## Etusivu (teema)
-Hero + tumma kolmen sarakkeen paneeli (koivu, taustakuva/video kohinalla, usvalla ja häivytyksellä) · Katot ja seinät -palvelurata (vaaleanharmaa) · Kaikki kattotyöt (koivu, Bento) · Katon merkit (oliivi, Bento) · Huoltovälit (hiili, rullaavat luvut) · Talon maalaus (vaaleanharmaa, Bento) · Näin työ etenee (koivu, välilehdet) · Katot ja pihat -galleria (vaaleanharmaa) · Perheyritys (koivu) · Kysymyksiä (metsä) · Lopetus (hiili) · Footer (vaaleanharmaa).
+Hero + tumma kolmen sarakkeen paneeli (taustakuva/video tasaisesti tummennettu, hento kohina, ei tekstivarjoa; etusivulla yläusva ja häivytys, palvelusivuilla ei) · Katot ja seinät -palvelurata (vaaleanharmaa) · Kaikki kattotyöt (koivu, Bento) · Katon merkit (oliivi, Bento) · Huoltovälit (hiili, rullaavat luvut) · Kuvanauha · Talon maalaus (vaaleanharmaa, Bento) · Näin työ etenee (koivu, välilehdet) · Katot ja pihat -galleria (vaaleanharmaa) · Perheyritys (koivu) · Kuvanauha · Kysymyksiä (metsä) · Lopetus (hiili) · Footer (vaaleanharmaa).
 
 ## Komponentit
 `HeroLead`, `Bento`, `PalveluKaruselli`, `Huoltovalit` + `RullaLuku`, `TyoVaiheet`, `Galleria`, `Ukk`, `CtaOsio`, `Header` (segmenttinavigaatio, mobiiliarkki), `Footer`, `Kuva` (varakuvat).
+
+## Päivitys: napit, kuvat ja palvelusivut
+
+- Napit matalampia: `.btn` 44 px, `.btn--iso`/`.btn--l` 50 px (56 px desktop), yläpalkin nappi ja navigaatio 36-38 px.
+- Kuvan päällä `.btn--kuvalla`: vaalea pohja 72 % peittävyydellä, tumma teksti 82 %, ei sumennusta.
+- Bento-solut: otsikot ylhäällä samalla tasolla, pyöreä ikonimerkki (Phosphor) jokaisessa solussa, linkkisoluissa nuoli.
+- KuvaNauha: leveä kuva osioiden välissä (`assets/kuvat/nauha-talo.jpg`, `nauha-katto.jpg`, muuten varakuva).
+- Palvelusivu: murupolku ja ingressi pääosiossa, teksti + kuva rinnakkain, Tiesitkö-nosto (frontmatter `tiesitko`), Lyhyesti-osio galleriaan, Muut palvelut -kuva (`muut-palvelut.jpg`).

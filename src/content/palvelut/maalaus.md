@@ -17,6 +17,10 @@ alapalvelut:
     teksti: Korjaamme julkisivun tarvittaessa ennen maalausta, jotta uusi maalipinta kestää.
   - nimi: Katon maalaus
     teksti: Maalaamme myös pelti- ja tiilikatot. Lue lisää kattojen sivulta.
+tiesitko:
+  luku: 5-10 v
+  otsikko: Puutalon maalipinta kannattaa uusia 5-10 vuoden välein.
+  teksti: Hyvin maalattu talo näyttää siistiltä ja viihtyisältä. Maalipinta myös suojaa taloa auringolta, kosteudelta ja saasteilta.
 ukk:
   - k: Kuinka usein puutalo pitää maalata?
     v: Puutalon maalipinta on hyvä uusia 5-10 vuoden välein.
@@ -25,10 +29,6 @@ ukk:
   - k: Mitä työn lopuksi tehdään?
     v: Tarkistamme lopputuloksen yhdessä kanssasi, siivoamme työmaan ja kierrätämme jätteet asianmukaisesti.
 ---
-
-## Tiesitkö, että puutalon maalipinta kannattaa uusia 5-10 vuoden välein?
-
-Hyvin maalattu talo näyttää siistiltä ja viihtyisältä. Maalipinta myös suojaa taloa auringolta, kosteudelta ja saasteilta.
 
 ## Näin maalaustyö etenee
 

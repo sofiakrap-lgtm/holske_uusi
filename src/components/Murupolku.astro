@@ -1,8 +1,10 @@
 ---
 interface Props {
   polku: { nimi: string; href: string }[];
+  /** Vaalea teksti tumman kuvan päällä */
+  vaalea?: boolean;
 }
-const { polku } = Astro.props;
+const { polku, vaalea = false } = Astro.props;
 const site = Astro.site ?? new URL('https://holske.fi');
 const kaikki = [{ nimi: 'Etusivu', href: '/' }, ...polku];
 const schema = {
@@ -17,7 +19,7 @@ const schema = {
 };
 ---
 
-<nav aria-label="Murupolku" class="murupolku">
+<nav aria-label="Murupolku" class:list={['murupolku', { 'murupolku--vaalea': vaalea }]}>
   <ol>
     {
       kaikki.map((k, i) => (
@@ -45,4 +47,9 @@ const schema = {
   a { color: var(--muted); text-decoration: none; display: inline-block; padding-block: 0.6rem; }
   a:hover { color: var(--green); text-decoration: underline; }
   span { display: inline-block; padding-block: 0.6rem; }
+  .murupolku--vaalea { margin-bottom: 0; }
+  .murupolku--vaalea ol,
+  .murupolku--vaalea a { color: rgb(255 254 247 / 0.85); }
+  .murupolku--vaalea a:hover { color: var(--p-birch); }
+  .murupolku--vaalea ol { justify-content: center; }
 </style>

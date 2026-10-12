@@ -134,6 +134,8 @@ const isActive = (href: string) =>
     .site-header:global(.is-scrolled) { background: var(--overlay); }
   }
   .site-header.is-open { animation: none; background: var(--overlay); }
+  /* Palvelusivuilla pääosiossa ei ole yläusvaa, joten palkki on heti umpinainen */
+  :global(body:has(.paaosio--suora)) .site-header { animation: none; background: var(--overlay); }
   .sisus {
     position: relative;
     z-index: 2;
@@ -188,19 +190,19 @@ const isActive = (href: string) =>
     z-index: 1;
     display: flex;
     align-items: center;
-    height: 48px;
-    padding: 0 22px;
+    height: 38px;
+    padding: 0 18px;
     border-radius: 999px;
-    font: 600 18px/1 var(--font-body);
+    font: 600 16px/1 var(--font-body);
     color: var(--ink-2);
     text-decoration: none;
     white-space: nowrap;
   }
   .segmentti a:hover { color: var(--ink); }
   .toiminnot { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 6px; }
-  .btn--toiminto { --btn-h: 40px; --btn-px: 20px; font-size: 16px; }
+  .btn--toiminto { --btn-h: 36px; --btn-px: 16px; font-size: 15px; }
   @media (min-width: 768px) {
-    .btn--toiminto { --btn-h: 48px; --btn-px: 22px; font-size: 18px; }
+    .btn--toiminto { --btn-h: 38px; --btn-px: 18px; font-size: 16px; }
     .toiminnot { gap: 12px; }
   }
   .valikko-nappi {
@@ -256,10 +258,10 @@ const isActive = (href: string) =>
   .arkki a {
     display: flex;
     align-items: center;
-    height: 48px;
-    padding: 0 22px;
+    height: 38px;
+    padding: 0 18px;
     border-radius: 999px;
-    font: 600 18px/1 var(--font-body);
+    font: 600 16px/1 var(--font-body);
     color: var(--ink);
     text-decoration: none;
   }

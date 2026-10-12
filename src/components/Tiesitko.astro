@@ -1,0 +1,63 @@
+---
+/** Nosto: iso luku vasemmalla, otsikko ja teksti oikealla, oliivi pohja. */
+import Icon from './Icon.astro';
+import RullaLuku from './RullaLuku.astro';
+interface Props {
+  luku: string;
+  otsikko: string;
+  teksti: string;
+}
+const { luku, otsikko, teksti } = Astro.props;
+// Lukuväli (esim. 5-10) ei katkea rivinvaihdossa
+const osat = otsikko.split(/(\d+-\d+)/);
+---
+
+<aside class="tiesitko" data-theme="oliivi" aria-label="Tiesitkö">
+  <div class="luku-osa">
+    <p class="merkki"><Icon name="tiesitko" size={22} /> Tiesitkö?</p>
+    <RullaLuku arvo={luku} class="luku" />
+  </div>
+  <div class="teksti-osa">
+    <p class="otsikko">{osat.map((o, i) => (i % 2 ? <span class="nw">{o}</span> : o))}</p>
+    <p class="teksti">{teksti}</p>
+  </div>
+</aside>
+
+<style>
+  .tiesitko {
+    display: grid;
+    gap: 24px;
+    padding: 32px 24px;
+    border-radius: var(--r-md);
+    background: var(--bg);
+    color: var(--ink);
+  }
+  @media (min-width: 768px) {
+    .tiesitko { grid-template-columns: auto 1fr; align-items: end; gap: 48px; padding: 48px; }
+  }
+  .luku-osa { display: grid; gap: 16px; }
+  .merkki { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 17px; color: var(--muted); }
+  .merkki :global(.icon) { color: var(--p-birch); }
+  .luku-osa :global(.luku) {
+    font-family: var(--font-display);
+    font-stretch: var(--stretch);
+    font-weight: 700;
+    font-size: clamp(48px, 2rem + 3vw, 80px);
+    line-height: 1;
+    letter-spacing: 1.8px;
+    white-space: nowrap;
+    color: var(--p-birch);
+  }
+  .teksti-osa { display: grid; gap: 12px; max-width: 36rem; }
+  .otsikko {
+    font-family: var(--font-display);
+    font-stretch: var(--stretch);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    font-size: clamp(20px, 1rem + 0.6vw, 26px);
+    line-height: 1.2;
+    color: var(--p-birch);
+  }
+  .nw { white-space: nowrap; }
+  .teksti { color: var(--p-grey-100); }
+</style>

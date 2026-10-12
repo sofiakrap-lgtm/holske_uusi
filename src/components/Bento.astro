@@ -11,6 +11,7 @@ interface Solu {
   otsikko: string;
   teksti?: string;
   href?: string;
+  ikoni?: string;
 }
 interface Props {
   kuva: string;
@@ -18,8 +19,10 @@ interface Props {
   solut: Solu[];
   korostus?: number;
   vara?: string[];
+  /** Pieni ikoni tekstisolujen yläkulmaan (linkkisoluissa nuoli) */
+  ikoni?: string;
 }
-const { kuva, alt, solut, korostus = -1, vara = [] } = Astro.props;
+const { kuva, alt, solut, korostus = -1, vara = [], ikoni } = Astro.props;
 const onKuva = !!ensimmainenKuva(kuva, ...vara);
 const vasen = Math.ceil(solut.length / 2);
 const rivit = Math.max(vasen, solut.length - vasen);
@@ -41,12 +44,13 @@ const rivit = Math.max(vasen, solut.length - vasen);
       const tyyli = `--rivi:${rivi}`;
       return s.href ? (
         <a href={s.href} class:list={[...luokat, 'solu--linkki']} style={tyyli}>
+          <span class="merkki merkki--nuoli"><Icon name="nuoli" size={22} /></span>
           <h3>{s.otsikko}</h3>
           {s.teksti && <p>{s.teksti}</p>}
-          <Icon name="nuoli" size={22} />
         </a>
       ) : (
         <div class:list={luokat} style={tyyli}>
+          {(s.ikoni ?? ikoni) && <span class="merkki"><Icon name={(s.ikoni ?? ikoni)!} size={22} /></span>}
           <h3>{s.otsikko}</h3>
           {s.teksti && <p>{s.teksti}</p>}
         </div>
@@ -76,7 +80,7 @@ const rivit = Math.max(vasen, solut.length - vasen);
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 12px;
     min-height: 9rem;
     padding: 24px;
@@ -95,8 +99,21 @@ const rivit = Math.max(vasen, solut.length - vasen);
   .solu--korostus { background: var(--korostus, var(--p-asphalt)); }
   .solu--korostus h3 { color: var(--p-birch); }
   .solu--korostus p { color: var(--p-grey-200); }
-  .solu--linkki :global(.icon) { position: absolute; top: 24px; right: 24px; color: var(--p-birch); }
-  .solu--linkki:not(.solu--korostus) :global(.icon) { color: var(--ink); }
+  /* Ikoni samalla paikalla joka solussa, otsikot samalla tasolla */
+  .merkki {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 4px;
+    border-radius: 999px;
+    background: var(--p-grey-100);
+    color: var(--p-asphalt);
+  }
+  .solu--hiekka .merkki { background: var(--p-birch); }
+  .solu--korostus .merkki { background: rgb(255 254 247 / 0.14); color: var(--p-birch); }
+  .solu--linkki .merkki--nuoli { transition: transform var(--dur-fast) ease; }
+  .solu--linkki:hover .merkki--nuoli { transform: translateX(4px); }
   .solu--linkki { transition: background-color 300ms ease; }
   .solu--linkki.solu--korostus:hover { background: var(--p-grey-900); }
   .solu--korostus:focus-visible { outline-color: var(--p-grey-400); }

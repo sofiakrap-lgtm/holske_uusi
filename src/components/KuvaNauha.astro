@@ -1,0 +1,26 @@
+---
+/**
+ * Leveä kuva osioiden välissä (reunasta reunaan desktopilla).
+ * Oma kuva: assets/kuvat/<nimi>.jpg, muuten käytetään varakuvaa.
+ */
+import Kuva from './Kuva.astro';
+interface Props {
+  nimi: string;
+  vara?: string[];
+  alt?: string;
+}
+const { nimi, vara = [], alt } = Astro.props;
+---
+
+<div class="kuvanauha">
+  <Kuva nimi={nimi} vara={vara} alt={alt} variantti="leveä" vainJosOn />
+</div>
+
+<style>
+  /* Aina reunasta reunaan ilman kulmia, jotta osioiden värit eivät jää raidoiksi */
+  .kuvanauha :global(.kuvapaikka) { border-radius: 0; max-width: none; }
+  @media (max-width: 743px) {
+    .kuvanauha :global(.kuvapaikka) { aspect-ratio: 4 / 3; }
+  }
+  .kuvanauha:empty { display: none; }
+</style>

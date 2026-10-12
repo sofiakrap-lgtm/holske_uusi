@@ -10,6 +10,7 @@ import Galleria from '../components/Galleria.astro';
 import Huoltovalit from '../components/Huoltovalit.astro';
 import Ukk from '../components/Ukk.astro';
 import CtaOsio from '../components/CtaOsio.astro';
+import KuvaNauha from '../components/KuvaNauha.astro';
 import yritys from '../data/yritys.json';
 
 const katot = (await getEntry('palvelut', 'katot'))!;
@@ -22,9 +23,9 @@ const ekaLause = (t: string) => {
 };
 
 const lupaukset = [
-  { nimi: 'Ilmainen', vaite: 'Kuntoarvio paikan päällä', teksti: 'Saat selkeän suunnitelman ja hinnan ilman sitoutumista.' },
-  { nimi: 'Kiinteä', vaite: 'Hinta ennen aloitusta', teksti: 'Saat kiinteän hinnan kuntoarvion jälkeen, ja päätät itse, jatketaanko.' },
-  { nimi: 'Siisti', vaite: 'Työmaa kuntoon lopuksi', teksti: 'Tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
+  { ikoni: 'kuntoarvio', nimi: 'Ilmainen', vaite: 'Kuntoarvio paikan päällä', teksti: 'Saat selkeän suunnitelman ja hinnan ilman sitoutumista.' },
+  { ikoni: 'hinta', nimi: 'Kiinteä', vaite: 'Hinta ennen aloitusta', teksti: 'Saat kiinteän hinnan kuntoarvion jälkeen, ja päätät itse, jatketaanko.' },
+  { ikoni: 'siisti', nimi: 'Siisti', vaite: 'Työmaa kuntoon lopuksi', teksti: 'Tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
 ];
 
 type Solu = { otsikko: string; teksti?: string; href?: string };
@@ -74,7 +75,7 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
         <h2 id="katot-otsikko" data-fit>Kaikki kattotyöt</h2>
         <p>{ekaLause(katot.data.ingressi)} {yritys.kokemusLause}</p>
       </div>
-      <Bento kuva="katot" solut={kattoSolut} korostus={5} />
+      <Bento kuva="katot" solut={kattoSolut} korostus={5} ikoni="katto" />
     </div>
   </section>
 
@@ -84,7 +85,7 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
         <h2 id="merkit-otsikko" data-fit>Katon merkit</h2>
         <p>Mistä tiedät, että katto tarvitsee huoltoa? Tikkaille ei tarvitse kiivetä itse.</p>
       </div>
-      <Bento kuva="katto-huolto" solut={merkit} korostus={5} />
+      <Bento kuva="katto-huolto" solut={merkit} korostus={5} ikoni="varoitus" />
     </div>
   </section>
 
@@ -98,13 +99,15 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
     </div>
   </section>
 
+  <KuvaNauha nimi="nauha-talo" vara={['etusivu-mobiili']} />
+
   <section data-theme="light-grey" aria-labelledby="maalaus-otsikko">
     <div class="container">
       <div class="osio-otsake">
         <h2 id="maalaus-otsikko" data-fit>Talon maalaus</h2>
         <p>{maalaus.data.ingressi}</p>
       </div>
-      <Bento kuva="maalaus" solut={maalausSolut} korostus={3} />
+      <Bento kuva="maalaus" solut={maalausSolut} korostus={3} ikoni="maalaus" />
     </div>
   </section>
 
@@ -131,7 +134,7 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
   <section data-theme="birch" id="meista" aria-labelledby="meista-otsikko">
     <div class="container meista">
       <div class="meista-kuva">
-        <Kuva nimi="perheyritys" vara={['etusivu-mobiili', 'etusivu']} variantti="tayta" />
+        <Kuva nimi="perheyritys" vara={['muut-korjaukset', 'etusivu']} variantti="tayta" />
       </div>
       <div class="meista-teksti">
         <p class="eyebrow">Meistä</p>
@@ -144,6 +147,8 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
       </div>
     </div>
   </section>
+
+  <KuvaNauha nimi="nauha-katto" vara={['katot']} />
 
   <section data-theme="metsa" id="ukk" aria-labelledby="ukk-otsikko">
     <div class="container ukk-ruudukko">
@@ -178,8 +183,8 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
     font-stretch: var(--stretch);
     font-weight: 500;
     letter-spacing: 0.3px;
-    font-size: clamp(22px, 1rem + 1vw, 32px);
-    line-height: 1.15;
+    font-size: clamp(20px, 1rem + 0.7vw, 28px);
+    line-height: 1.2;
     color: var(--ink);
   }
   .meista-tiedot { color: var(--muted); font-size: 16px; }

@@ -19,6 +19,7 @@ const palvelut = defineCollection({
       .array(z.object({ nimi: z.string(), teksti: z.string(), ikoni: z.string().optional() }))
       .default([]),
     ukk: z.array(z.object({ k: z.string(), v: z.string() })).default([]),
+    tiesitko: z.object({ luku: z.string(), otsikko: z.string(), teksti: z.string() }).optional(),
   }),
 });
 
