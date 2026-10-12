@@ -25,10 +25,6 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
         </p>
       </div>
 
-      <div class="otsakekuva">
-        <Kuva nimi="palvelut" vara={['etusivu']} variantti="tayta" eager />
-      </div>
-
       <ul class="ydin">
         {
           ydin.map((p) => (
@@ -49,7 +45,12 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
       </ul>
 
       <div class="kaksi">
-        <h2 class="pieni-otsikko">Muut palvelut</h2>
+        <div class="kaksi-vasen">
+          <h2 class="pieni-otsikko">Muut palvelut</h2>
+          <div class="muut-kuva">
+            <Kuva nimi="muut-palvelut" vara={['pihatyot']} variantti="tayta" />
+          </div>
+        </div>
         <ul class="linkkirivit">
           {
             lisat.map((p) => (
@@ -74,11 +75,6 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
 
 <style>
   .alku { padding-top: clamp(1.5rem, 4vw, 3rem); padding-bottom: var(--section); }
-  .otsakekuva { position: relative; aspect-ratio: 4 / 3; margin-bottom: var(--section-gap); border-radius: var(--r-md); overflow: hidden; }
-  @media (min-width: 768px) {
-    .otsakekuva { aspect-ratio: 21 / 9; }
-  }
-  .otsakekuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
   .otsake { display: grid; gap: 1rem; max-width: 46rem; margin-bottom: clamp(2.5rem, 6vw, 4rem); }
   .ydin {
     list-style: none;
@@ -109,6 +105,12 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
   @media (min-width: 60rem) {
     .kaksi { grid-template-columns: 0.85fr 1.15fr; gap: 5rem; }
   }
+  .kaksi-vasen { display: grid; gap: 24px; align-self: stretch; grid-template-rows: auto 1fr; }
+  .muut-kuva { position: relative; aspect-ratio: 4 / 3; border-radius: var(--r-md); overflow: hidden; }
+  @media (min-width: 60rem) {
+    .muut-kuva { aspect-ratio: auto; min-height: 16rem; }
+  }
+  .muut-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
   .pieni-otsikko { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); }
   .linkkirivit { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
   .linkkirivit a {

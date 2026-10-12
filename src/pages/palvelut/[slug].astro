@@ -116,7 +116,8 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
     )
   }
 
-  <section data-theme="birch">
+  <section data-theme="birch" class="liitos" aria-labelledby="tieto-otsikko">
+    <h2 id="tieto-otsikko" class="liitos-otsikko">Hyvä tietää</h2>
     <div class="container jako">
       <div class="jako-kuvat">
         {
@@ -226,6 +227,34 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
 </BaseLayout>
 
 <style>
+  /* Pilleriotsikko osioiden rajalla sitoo osiot yhteen */
+  .liitos { position: relative; }
+  .liitos-otsikko {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: min(20rem, calc(100vw - 48px));
+    height: 52px;
+    padding: 0 36px;
+    border-radius: 999px;
+    background: var(--p-olive);
+    color: var(--p-birch);
+    font-family: var(--font-body);
+    font-stretch: 100%;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+  }
+  @media (min-width: 768px) {
+    .liitos-otsikko { min-width: 24rem; height: 56px; padding: 0 48px; font-size: 19px; }
+  }
   /* Teksti ja kuva rinnakkain */
   .jako { display: grid; gap: var(--section-gap); }
   @media (min-width: 1025px) {
@@ -292,6 +321,7 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
   .muu-kuva { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
   .muu-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; transition: transform 400ms var(--ease-out); }
   .muu:hover .muu-kuva :global(.kuvapaikka) { transform: scale(1.03); }
+  .muu-nimi :global(.icon) { flex: none; }
   .muu-nimi { display: flex; align-items: center; gap: 10px; padding: 18px 20px; font: 600 17px/1.2 var(--font-body); }
   .muu-nimi :global(.muu-nuoli) { margin-left: auto; transition: transform var(--dur-fast) ease; }
   .muu:hover .muu-nimi :global(.muu-nuoli) { transform: translateX(4px); }
