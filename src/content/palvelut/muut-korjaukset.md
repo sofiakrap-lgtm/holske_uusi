@@ -11,10 +11,13 @@ kuva: muut-korjaukset
 kuvaAlt: Omakotitalon julkisivun korjaustyö
 alapalvelut:
   - nimi: Julkisivun korjaus
+    ikoni: seina
     teksti: Korjaamme julkisivun vauriot, jotta talo pysyy kunnossa ja uusi maalipinta kestää.
   - nimi: Piha-alueiden kunnostus
+    ikoni: piha
     teksti: Kunnostamme piha-alueita osana kiinteistön ulkotöitä.
   - nimi: Pienet ja isot korjaukset
+    ikoni: korjaus
     teksti: Hoidamme sekä pienet korjaukset että laajemmat remontit.
 ukk:
   - k: Teettekö myös muita kuin listattuja töitä?

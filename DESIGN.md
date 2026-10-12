@@ -40,7 +40,7 @@ Holsken visuaalinen järjestelmä. Pohja: Bahnin mitattu tyylijärjestelmä (`.c
 Kontti 1440 px, gutter 24 / 36 / 48. Osion padding 96 / 128 / 144. Otsikosta sisältöön 48 / 56 / 64.
 
 ## Etusivu (teema)
-Hero + tumma kolmen sarakkeen paneeli (taustakuva/video tasaisesti tummennettu, hento kohina, ei tekstivarjoa; etusivulla yläusva ja häivytys, palvelusivuilla ei) · Katot ja seinät -palvelurata (vaaleanharmaa) · Kaikki kattotyöt (koivu, Bento) · Katon merkit (oliivi, Bento) · Huoltovälit (hiili, rullaavat luvut) · Kuvanauha · Talon maalaus (vaaleanharmaa, Bento) · Näin työ etenee (koivu, välilehdet) · Katot ja pihat -galleria (vaaleanharmaa) · Perheyritys (koivu) · Kuvanauha · Kysymyksiä (metsä) · Lopetus (hiili) · Footer (vaaleanharmaa).
+Hero + tumma kolmen sarakkeen paneeli (taustakuva/video tasaisesti tummennettu, hento kohina, ei tekstivarjoa; etusivulla yläusva ja häivytys, palvelusivuilla ei) · Katot ja seinät -palvelurata (vaaleanharmaa) · Kaikki kattotyöt (koivu, Bento) · Katon merkit (oliivi, Bento) · Huoltovälit (hiili, rullaavat luvut) · Talon maalaus (vaaleanharmaa, Bento) · Näin työ etenee (koivu, välilehdet) · Katot ja pihat -galleria (vaaleanharmaa) · Kysymyksiä (metsä) · Lopetus (hiili) · Footer (vaaleanharmaa).
 
 ## Komponentit
 `HeroLead`, `Bento`, `PalveluKaruselli`, `Huoltovalit` + `RullaLuku`, `TyoVaiheet`, `Galleria`, `Ukk`, `CtaOsio`, `Header` (segmenttinavigaatio, mobiiliarkki), `Footer`, `Kuva` (varakuvat).
@@ -50,5 +50,7 @@ Hero + tumma kolmen sarakkeen paneeli (taustakuva/video tasaisesti tummennettu, 
 - Napit matalampia: `.btn` 44 px, `.btn--iso`/`.btn--l` 50 px (56 px desktop), yläpalkin nappi ja navigaatio 36-38 px.
 - Kuvan päällä `.btn--kuvalla`: vaalea pohja 72 % peittävyydellä, tumma teksti 82 %, ei sumennusta.
 - Bento-solut: otsikot ylhäällä samalla tasolla, pyöreä ikonimerkki (Phosphor) jokaisessa solussa, linkkisoluissa nuoli.
-- KuvaNauha: leveä kuva osioiden välissä (`assets/kuvat/nauha-talo.jpg`, `nauha-katto.jpg`, muuten varakuva).
-- Palvelusivu: murupolku ja ingressi pääosiossa, teksti + kuva rinnakkain, Tiesitkö-nosto (frontmatter `tiesitko`), Lyhyesti-osio galleriaan, Muut palvelut -kuva (`muut-palvelut.jpg`).
+- Palvelusivu: ingressi pääosiossa (kuva hieman sumeana, ei näkyvää murupolkua, BreadcrumbList vain schemassa), teksti + kaksi kuvaa pinossa (`<kuva>-3`, `<kuva>-4`), Tiesitkö-nosto (frontmatter `tiesitko`), Näin työ etenee, Lyhyesti-osio galleriaan, Muut palvelut kuvakortteina.
+- Ikonit: Phosphor, ikonilaatat pyöristettyinä neliöinä (12-16 px) light-painolla. Alapalvelun ikoni frontmatterissa (`alapalvelut[].ikoni`).
+- Näin työ etenee (`Vaiheet.astro`): neljä korttia, välissä nuoli (mobiilissa alas). Etusivu, palvelusivut, yhteystiedot.
+- Huoltovälit: luvut oliivipohjalla. Header-logo tekstin värinen. Hero-paneelin jakajat 1 px, 12 % peittävyys.

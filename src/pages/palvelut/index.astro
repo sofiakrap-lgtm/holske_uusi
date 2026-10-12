@@ -4,7 +4,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Kuva from '../../components/Kuva.astro';
 import CtaOsio from '../../components/CtaOsio.astro';
-import Murupolku from '../../components/Murupolku.astro';
 import { getKuva } from '../../lib/kuvat';
 
 const palvelut = (await getCollection('palvelut')).sort((a, b) => a.data.jarjestys - b.data.jarjestys);
@@ -18,13 +17,16 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
 >
   <section class="section--tight alku">
     <div class="container">
-      <Murupolku polku={[{ nimi: 'Palvelut', href: '/palvelut/' }]} />
       <div class="otsake">
         <h1 data-fit>Palvelut</h1>
         <p class="lead">
           Erikoisalaamme ovat kattoremontit, katon maalaus ja talon maalaus. Hoidamme samalla myös muut omakotitalon
           ulkotyöt.
         </p>
+      </div>
+
+      <div class="otsakekuva">
+        <Kuva nimi="palvelut" vara={['etusivu']} variantti="tayta" eager />
       </div>
 
       <ul class="ydin">
@@ -72,6 +74,11 @@ const lisat = palvelut.filter((p) => !p.data.ydin);
 
 <style>
   .alku { padding-top: clamp(1.5rem, 4vw, 3rem); padding-bottom: var(--section); }
+  .otsakekuva { position: relative; aspect-ratio: 4 / 3; margin-bottom: var(--section-gap); border-radius: var(--r-md); overflow: hidden; }
+  @media (min-width: 768px) {
+    .otsakekuva { aspect-ratio: 21 / 9; }
+  }
+  .otsakekuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
   .otsake { display: grid; gap: 1rem; max-width: 46rem; margin-bottom: clamp(2.5rem, 6vw, 4rem); }
   .ydin {
     list-style: none;

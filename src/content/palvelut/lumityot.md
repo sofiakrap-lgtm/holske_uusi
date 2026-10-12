@@ -11,10 +11,13 @@ kuva: lumityot
 kuvaAlt: Lumista katolta pudotetaan lunta talvella
 alapalvelut:
   - nimi: Katon lumenpudotus
+    ikoni: lumi
     teksti: Pudotamme lumet turvallisesti pelti-, huopa- ja tiilikatoilta niin, että katto pysyy kunnossa.
   - nimi: Pihan lumityöt
+    ikoni: lapio
     teksti: Pidämme pihan ja kulkuväylät lumettomina.
   - nimi: Kertakäynti tai sopimus
+    ikoni: kalenteri
     teksti: Valitse yksittäinen käynti tai säännöllinen huoltosopimus koko talveksi.
 ukk:
   - k: Miksi katolta pitää pudottaa lumet?

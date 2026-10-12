@@ -160,7 +160,10 @@ const isActive = (href: string) =>
     color: var(--ink);
     text-decoration: none;
   }
-  .brand :global(.logo) { --logo-h: 1.6rem; }
+  .brand :global(.logo) { --logo-h: 1.9rem; color: var(--ink); }
+  @media (min-width: 768px) {
+    .brand :global(.logo) { --logo-h: 2.1rem; }
+  }
   .nav { margin-inline-start: 24px; }
   @media (max-width: 819px) {
     .nav { display: none; }

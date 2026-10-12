@@ -1,6 +1,5 @@
 ---
 /** Nosto: iso luku vasemmalla, otsikko ja teksti oikealla, oliivi pohja. */
-import Icon from './Icon.astro';
 import RullaLuku from './RullaLuku.astro';
 interface Props {
   luku: string;
@@ -14,7 +13,7 @@ const osat = otsikko.split(/(\d+-\d+)/);
 
 <aside class="tiesitko" data-theme="oliivi" aria-label="Tiesitkö">
   <div class="luku-osa">
-    <p class="merkki"><Icon name="tiesitko" size={22} /> Tiesitkö?</p>
+    <p class="merkki">Tiesitkö?</p>
     <RullaLuku arvo={luku} class="luku" />
   </div>
   <div class="teksti-osa">
@@ -37,7 +36,6 @@ const osat = otsikko.split(/(\d+-\d+)/);
   }
   .luku-osa { display: grid; gap: 16px; }
   .merkki { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 17px; color: var(--muted); }
-  .merkki :global(.icon) { color: var(--p-birch); }
   .luku-osa :global(.luku) {
     font-family: var(--font-display);
     font-stretch: var(--stretch);

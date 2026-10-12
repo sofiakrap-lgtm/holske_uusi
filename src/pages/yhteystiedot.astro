@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Murupolku from '../components/Murupolku.astro';
 import Vaiheet from '../components/Vaiheet.astro';
 import Icon from '../components/Icon.astro';
 import yritys from '../data/yritys.json';
@@ -14,7 +13,6 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
 >
   <section class="alku">
     <div class="container">
-      <Murupolku polku={[{ nimi: 'Yhteystiedot', href: '/yhteystiedot/' }]} />
       <div class="sisus">
         <div class="teksti">
           <h1 data-fit>Ota yhteyttä</h1>
@@ -24,12 +22,20 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
         </div>
         <div class="kanavat">
           <a href={tel} class="kanava">
-            <span class="tyyppi"><Icon name="puhelin" size={20} /> Puhelin</span>
-            <span class="arvo">{yritys.puhelinNaytto}</span>
+            <span class="laatta"><Icon name="puhelin" size={30} paino="light" /></span>
+            <span class="kanava-teksti">
+              <span class="tyyppi">Soita</span>
+              <span class="arvo">{yritys.puhelinNaytto}</span>
+            </span>
+            <span class="kanava-nuoli"><Icon name="nuoli" size={20} /></span>
           </a>
           <a href={`mailto:${yritys.sahkoposti}`} class="kanava">
-            <span class="tyyppi"><Icon name="sahkoposti" size={20} /> Sähköposti</span>
-            <span class="arvo">{yritys.sahkoposti}</span>
+            <span class="laatta"><Icon name="sahkoposti" size={30} paino="light" /></span>
+            <span class="kanava-teksti">
+              <span class="tyyppi">Lähetä sähköpostia</span>
+              <span class="arvo">{yritys.sahkoposti}</span>
+            </span>
+            <span class="kanava-nuoli"><Icon name="nuoli" size={20} /></span>
           </a>
         </div>
       </div>
@@ -48,9 +54,12 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
     </div>
   </section>
 
-  <section class="section section--sand" aria-labelledby="vaiheet-otsikko">
+  <section data-theme="light-grey" aria-labelledby="vaiheet-otsikko">
     <div class="container">
-      <h2 id="vaiheet-otsikko" class="osion-otsikko">Näin työ etenee</h2>
+      <div class="osio-otsake">
+        <h2 id="vaiheet-otsikko" data-fit>Näin työ etenee</h2>
+        <p>Neljä vaihetta yhteydenotosta valmiiseen työhön.</p>
+      </div>
       <Vaiheet />
     </div>
   </section>
@@ -61,8 +70,8 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
   .sisus {
     display: grid;
     gap: clamp(2.5rem, 6vw, 5rem);
-    margin: clamp(2rem, 5vw, 4rem) 0 clamp(3rem, 7vw, 5rem);
-    align-items: end;
+    margin: 0 0 clamp(3rem, 7vw, 5rem);
+    align-items: start;
   }
   @media (min-width: 64rem) {
     .sisus { grid-template-columns: 7fr 5fr; }
@@ -70,27 +79,55 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
   .teksti { display: grid; gap: 1.5rem; }
   .kanavat { display: grid; gap: 0.75rem; }
   .kanava {
-    display: grid;
-    gap: 0.5rem;
-    padding: clamp(1.4rem, 2.5vw, 1.9rem);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
     border-radius: var(--r-md);
     background: var(--surface);
     color: var(--ink);
     text-decoration: none;
-    transition: background-color 200ms ease, transform 150ms var(--ease-out);
+    transition: background-color 200ms ease;
+  }
+  @media (min-width: 768px) {
+    .kanava { padding: 24px 28px; }
   }
   .kanava:hover { background: var(--sand); color: var(--ink); }
-  .tyyppi { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: var(--fs-sm); }
+  .laatta {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: var(--p-olive);
+    color: var(--p-birch);
+  }
+  .kanava-teksti { display: grid; gap: 4px; min-width: 0; }
+  .tyyppi { color: var(--muted); font-size: 16px; font-weight: 600; }
   .arvo {
     font-family: var(--font-display);
     font-stretch: var(--stretch);
-    font-size: clamp(24px, 1rem + 2vw, 40px);
+    font-size: clamp(18px, 0.9rem + 1vw, 26px);
     font-weight: 700;
-    letter-spacing: 1px;
-    line-height: 1.1;
+    letter-spacing: 0.5px;
+    line-height: 1.15;
     font-variant-numeric: tabular-nums;
     overflow-wrap: anywhere;
   }
+  .kanava-nuoli {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+    border-radius: 999px;
+    background: var(--p-grey-100);
+    color: var(--p-asphalt);
+    transition: transform var(--dur-fast) ease;
+  }
+  .kanava:hover .kanava-nuoli { transform: translateX(4px); }
   .tiedot { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
   .tiedot div { display: grid; gap: 0.25rem; padding: 1.25rem 0; }
   .tiedot div + div { border-top: 1px solid var(--line); }
@@ -100,5 +137,4 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
   dt { color: var(--muted); }
   dd { margin: 0; font-weight: 500; color: var(--ink); display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
   .kartta { font-weight: 500; }
-  .osion-otsikko { margin-bottom: clamp(2rem, 5vw, 3rem); }
 </style>

@@ -1,16 +1,14 @@
 ---
 import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Kuva from '../components/Kuva.astro';
 import HeroLead from '../components/HeroLead.astro';
 import Bento from '../components/Bento.astro';
 import PalveluKaruselli from '../components/PalveluKaruselli.astro';
-import TyoVaiheet from '../components/TyoVaiheet.astro';
+import Vaiheet from '../components/Vaiheet.astro';
 import Galleria from '../components/Galleria.astro';
 import Huoltovalit from '../components/Huoltovalit.astro';
 import Ukk from '../components/Ukk.astro';
 import CtaOsio from '../components/CtaOsio.astro';
-import KuvaNauha from '../components/KuvaNauha.astro';
 import yritys from '../data/yritys.json';
 
 const katot = (await getEntry('palvelut', 'katot'))!;
@@ -28,25 +26,25 @@ const lupaukset = [
   { ikoni: 'siisti', nimi: 'Siisti', vaite: 'Työmaa kuntoon lopuksi', teksti: 'Tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
 ];
 
-type Solu = { otsikko: string; teksti?: string; href?: string };
+type Solu = { otsikko: string; teksti?: string; href?: string; ikoni?: string };
 
 const kattoSolut: Solu[] = [
-  ...katot.data.alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: ekaLause(a.teksti) })),
+  ...katot.data.alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: ekaLause(a.teksti), ikoni: a.ikoni })),
   { otsikko: 'Lue lisää kattotöistä', href: '/palvelut/katot/' },
 ];
 
 // Vanhan sivun kattosisällöstä
 const merkit: Solu[] = [
-  'Katolla kasvaa sammalta',
-  'Peltikatossa näkyy ruostetta',
-  'Katto vuotaa',
-  'Tiilen pinta on kulunut tai hapristunut',
-  'Katon väri on selvästi haalistunut',
-].map((m) => ({ otsikko: m }));
+  { otsikko: 'Katolla kasvaa sammalta', ikoni: 'sammal' },
+  { otsikko: 'Peltikatossa näkyy ruostetta', ikoni: 'ruoste' },
+  { otsikko: 'Katto vuotaa', ikoni: 'vuoto' },
+  { otsikko: 'Tiilen pinta on kulunut tai hapristunut', ikoni: 'tiili' },
+  { otsikko: 'Katon väri on selvästi haalistunut', ikoni: 'aurinko' },
+];
 merkit.push({ otsikko: 'Huomasitko jonkin näistä? Ota yhteyttä', href: '/yhteystiedot/' });
 
 const maalausSolut: Solu[] = [
-  ...maalaus.data.alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: a.teksti })),
+  ...maalaus.data.alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: a.teksti, ikoni: a.ikoni })),
   { otsikko: 'Lue lisää talon maalauksesta', href: '/palvelut/maalaus/' },
 ];
 
@@ -75,7 +73,7 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
         <h2 id="katot-otsikko" data-fit>Kaikki kattotyöt</h2>
         <p>{ekaLause(katot.data.ingressi)} {yritys.kokemusLause}</p>
       </div>
-      <Bento kuva="katot" solut={kattoSolut} korostus={5} ikoni="katto" />
+      <Bento kuva="katot" solut={kattoSolut} korostus={5} />
     </div>
   </section>
 
@@ -85,7 +83,7 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
         <h2 id="merkit-otsikko" data-fit>Katon merkit</h2>
         <p>Mistä tiedät, että katto tarvitsee huoltoa? Tikkaille ei tarvitse kiivetä itse.</p>
       </div>
-      <Bento kuva="katto-huolto" solut={merkit} korostus={5} ikoni="varoitus" />
+      <Bento kuva="katto-huolto" solut={merkit} korostus={5} />
     </div>
   </section>
 
@@ -99,15 +97,13 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
     </div>
   </section>
 
-  <KuvaNauha nimi="nauha-talo" vara={['etusivu-mobiili']} />
-
   <section data-theme="light-grey" aria-labelledby="maalaus-otsikko">
     <div class="container">
       <div class="osio-otsake">
         <h2 id="maalaus-otsikko" data-fit>Talon maalaus</h2>
         <p>{maalaus.data.ingressi}</p>
       </div>
-      <Bento kuva="maalaus" solut={maalausSolut} korostus={3} ikoni="maalaus" />
+      <Bento kuva="maalaus" solut={maalausSolut} korostus={3} />
     </div>
   </section>
 
@@ -115,9 +111,9 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
     <div class="container">
       <div class="osio-otsake">
         <h2 id="vaiheet-otsikko" data-fit>Näin työ etenee</h2>
-        <p>Kolme vaihetta yhteydenotosta valmiiseen työhön.</p>
+        <p>Neljä vaihetta yhteydenotosta valmiiseen työhön.</p>
       </div>
-      <TyoVaiheet />
+      <Vaiheet />
     </div>
   </section>
 
@@ -130,25 +126,6 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
     </div>
     <Galleria />
   </section>
-
-  <section data-theme="birch" id="meista" aria-labelledby="meista-otsikko">
-    <div class="container meista">
-      <div class="meista-kuva">
-        <Kuva nimi="perheyritys" vara={['muut-korjaukset', 'etusivu']} variantti="tayta" />
-      </div>
-      <div class="meista-teksti">
-        <p class="eyebrow">Meistä</p>
-        <h2 id="meista-otsikko" data-fit>Perheyritys</h2>
-        <p class="meista-lause">
-          Olemme suomalainen perheyritys pääkaupunkiseudulta. {yritys.kokemusLause} Asiakkaan tarpeet ovat meille
-          ensisijaisia, ja muokkaamme työn sinun kohteesi mukaan.
-        </p>
-        <p class="meista-tiedot">{yritys.nimi}, Y-tunnus {yritys.ytunnus}, {yritys.kaupunki}</p>
-      </div>
-    </div>
-  </section>
-
-  <KuvaNauha nimi="nauha-katto" vara={['katot']} />
 
   <section data-theme="metsa" id="ukk" aria-labelledby="ukk-otsikko">
     <div class="container ukk-ruudukko">
@@ -166,28 +143,6 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
 
 <style>
   [data-theme='oliivi'] { --korostus: var(--p-asphalt); }
-
-  /* Meistä: kuva ja sisältö rinnakkain */
-  .meista { display: grid; gap: var(--section-gap); align-items: center; }
-  @media (min-width: 1025px) {
-    .meista { grid-template-columns: 1fr 1fr; }
-  }
-  .meista-kuva { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-md); overflow: hidden; }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    .meista-kuva { aspect-ratio: 4 / 3; }
-  }
-  .meista-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
-  .meista-teksti { display: grid; gap: 24px; justify-items: start; }
-  .meista-lause {
-    font-family: var(--font-display);
-    font-stretch: var(--stretch);
-    font-weight: 500;
-    letter-spacing: 0.3px;
-    font-size: clamp(20px, 1rem + 0.7vw, 28px);
-    line-height: 1.2;
-    color: var(--ink);
-  }
-  .meista-tiedot { color: var(--muted); font-size: 16px; }
 
   /* Kysymyksiä: otsikko ja nappi vasemmalla, haitari oikealla */
   .ukk-ruudukko { display: grid; gap: var(--section-gap); }

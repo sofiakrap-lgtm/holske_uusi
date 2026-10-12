@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Murupolku from '../../components/Murupolku.astro';
+import Vaiheet from '../../components/Vaiheet.astro';
 import Kuva from '../../components/Kuva.astro';
 import Icon from '../../components/Icon.astro';
 import Ukk from '../../components/Ukk.astro';
@@ -46,6 +46,16 @@ const schema: Record<string, unknown>[] = [
     },
   },
 ];
+// Murupolku vain hakukoneille (näkyvä murupolku poistettu pääosiosta)
+schema.push({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { nimi: 'Etusivu', href: '/' },
+    { nimi: 'Palvelut', href: '/palvelut/' },
+    { nimi: d.nimi, href: `/palvelut/${palvelu.id}/` },
+  ].map((k, i) => ({ '@type': 'ListItem', position: i + 1, name: k.nimi, item: new URL(k.href, site).href })),
+});
 if (d.ukk.length) {
   schema.push({
     '@context': 'https://schema.org',
@@ -61,11 +71,21 @@ import { getKuva } from '../../lib/kuvat';
 // Lisäkuvat näytetään vain, jos ne on lisätty kansioon (esim. katot-2.jpg, katot-3.jpg)
 const lisakuvat = [`${d.kuva}-2`, `${d.kuva}-3`].filter((n) => getKuva(n));
 const alapalvelut = d.alapalvelut.filter((a) => !a.teksti.startsWith('TODO'));
-const bentoSolut: { otsikko: string; teksti?: string; href?: string }[] = alapalvelut.map((a) => ({ otsikko: a.nimi, teksti: a.teksti }));
+const bentoSolut: { otsikko: string; teksti?: string; href?: string; ikoni?: string }[] = alapalvelut.map((a) => ({
+  otsikko: a.nimi,
+  teksti: a.teksti,
+  ikoni: a.ikoni ?? d.ikoni,
+}));
 // Kuva tekstiosion viereen: oma <kuva>-3, muuten jokin toinen kuva kuin pääosiossa
-const SIVUKUVA: Record<string, string> = { katot: 'katto-huolto', maalaus: 'etusivu-mobiili' };
-const sivukuva = [`${d.kuva}-3`, SIVUKUVA[palvelu.id] ?? 'etusivu', d.kuva];
-const muutKuva = ['muut-palvelut', d.kuva === 'pihatyot' ? 'painepesu' : 'pihatyot'];
+const SIVUKUVAT: Record<string, [string, string]> = {
+  katot: ['katto-huolto', 'etusivu-mobiili'],
+  maalaus: ['etusivu-mobiili', 'etusivu'],
+};
+const [sk1, sk2] = SIVUKUVAT[palvelu.id] ?? ['etusivu', 'etusivu-mobiili'];
+const sivukuvat = [
+  [`${d.kuva}-3`, sk1, d.kuva],
+  [`${d.kuva}-4`, sk2, d.kuva],
+];
 if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kuntoarvio', teksti: 'Katsomme kohteen ja kerromme, mitä se tarvitsee.', href: '/yhteystiedot/' });
 ---
 
@@ -76,13 +96,7 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
     video={palvelu.id}
     usva={false}
     ingressi={d.ingressi}
-  >
-    <Murupolku
-      slot="ylla"
-      vaalea
-      polku={[{ nimi: 'Palvelut', href: '/palvelut/' }, { nimi: d.nimi, href: `/palvelut/${palvelu.id}/` }]}
-    />
-  </HeroLead>
+  />
 
   {
     bentoSolut.length > 0 && (
@@ -96,7 +110,6 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
             vara={['etusivu', d.kuva]}
             solut={bentoSolut}
             korostus={bentoSolut.length - 1}
-            ikoni={d.ikoni}
           />
         </div>
       </section>
@@ -105,8 +118,14 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
 
   <section data-theme="birch">
     <div class="container jako">
-      <div class="jako-kuva">
-        <Kuva nimi={sivukuva[0]} vara={sivukuva.slice(1)} variantti="tayta" />
+      <div class="jako-kuvat">
+        {
+          sivukuvat.map(([nimi, ...vara]) => (
+            <div class="jako-kuva">
+              <Kuva nimi={nimi} vara={vara} variantti="tayta" />
+            </div>
+          ))
+        }
       </div>
       <div class="prose">
         <Content />
@@ -130,6 +149,16 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
       </section>
     )
   }
+
+  <section data-theme="light-grey" aria-labelledby="vaiheet-otsikko">
+    <div class="container">
+      <div class="osio-otsake">
+        <h2 id="vaiheet-otsikko" data-fit>Näin työ etenee</h2>
+        <p>Neljä vaihetta yhteydenotosta valmiiseen työhön.</p>
+      </div>
+      <Vaiheet />
+    </div>
+  </section>
 
   {
     d.ukk.length > 0 && (
@@ -172,16 +201,19 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
   <section data-theme="birch" class="muut-osio" aria-labelledby="muut-otsikko">
     <div class="container">
       <h2 id="muut-otsikko" class="pieni-otsikko">Muut palvelut</h2>
-      <div class="muut-kuva">
-        <Kuva nimi={muutKuva[0]} vara={muutKuva.slice(1)} variantti="tayta" />
-      </div>
       <ul class="muut">
         {
           muut.map((p) => (
             <li>
-              <a href={`/palvelut/${p.id}/`}>
-                <Icon name={p.data.ikoni} size={18} />
-                {p.data.nimi}
+              <a href={`/palvelut/${p.id}/`} class="muu on-light">
+                <span class="muu-kuva">
+                  <Kuva nimi={p.data.kuva} vara={['etusivu']} alt={p.data.kuvaAlt} variantti="tayta" />
+                </span>
+                <span class="muu-nimi">
+                  <Icon name={p.data.ikoni} size={22} />
+                  {p.data.nimi}
+                  <Icon name="nuoli" size={20} class="muu-nuoli" />
+                </span>
               </a>
             </li>
           ))
@@ -199,9 +231,15 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
   @media (min-width: 1025px) {
     .jako { grid-template-columns: 1fr 1fr; align-items: center; }
   }
-  .jako-kuva { position: relative; aspect-ratio: 4 / 3; border-radius: var(--r-md); overflow: hidden; }
-  .jako-kuva :global(.kuvapaikka),
-  .muut-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
+  .jako-kuvat { display: grid; gap: 24px; grid-template-columns: 1fr 1fr; }
+  .jako-kuva { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-md); overflow: hidden; }
+  /* Desktopilla kuvat pinossa, yhteensä yhtä korkeat kuin teksti */
+  @media (min-width: 1025px) {
+    .jako { align-items: stretch; }
+    .jako-kuvat { grid-template-columns: 1fr; grid-auto-rows: minmax(14rem, 1fr); }
+    .jako-kuva { aspect-ratio: auto; }
+  }
+  .jako-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; }
   .nosto { margin-top: var(--section-gap); }
   .lisakuvat-osio { padding-top: 0; }
   .lisakuvat { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
@@ -235,23 +273,26 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
   }
   .muut-osio { padding-block: 96px; }
   .pieni-otsikko { text-align: center; font-size: clamp(28px, 4vw, 40px); margin-bottom: 32px; }
-  .muut-kuva { position: relative; aspect-ratio: 4 / 3; margin-bottom: 32px; border-radius: var(--r-md); overflow: hidden; }
-  @media (min-width: 768px) {
-    .muut-kuva { aspect-ratio: 21 / 9; }
+  .muut {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
   }
-  .muut { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-  .muut a {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    height: 44px;
-    padding: 0 20px;
-    border-radius: 999px;
-    background: var(--p-grey-100);
-    color: var(--p-asphalt);
-    font: 600 17px/1 var(--font-body);
+  .muu {
+    display: grid;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    background: var(--p-grey-50);
+    color: var(--ink);
     text-decoration: none;
-    transition: background-color var(--dur-fast) ease;
   }
-  .muut a:hover { background: var(--p-grey-200); }
+  .muu-kuva { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+  .muu-kuva :global(.kuvapaikka) { position: absolute; inset: 0; height: 100%; min-height: 0; border-radius: 0; transition: transform 400ms var(--ease-out); }
+  .muu:hover .muu-kuva :global(.kuvapaikka) { transform: scale(1.03); }
+  .muu-nimi { display: flex; align-items: center; gap: 10px; padding: 18px 20px; font: 600 17px/1.2 var(--font-body); }
+  .muu-nimi :global(.muu-nuoli) { margin-left: auto; transition: transform var(--dur-fast) ease; }
+  .muu:hover .muu-nimi :global(.muu-nuoli) { transform: translateX(4px); }
 </style>

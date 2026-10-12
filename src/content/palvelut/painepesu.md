@@ -11,10 +11,13 @@ kuva: painepesu
 kuvaAlt: Kivetyksen painepesu, puhdas ja likainen pinta rinnakkain
 alapalvelut:
   - nimi: Katon pesu
+    ikoni: painepesu
     teksti: Kostea sammal vahingoittaa kattomateriaaleja. Pesun jälkeen katto voidaan käsitellä suoja-aineella, joka estää kasvustoa ja muita vaurioita.
   - nimi: Julkisivun pesu
+    ikoni: pesu
     teksti: Puhdas julkisivu estää epäpuhtauksien imeytymistä ja torjuu sieni- ja sammalkasvustoa. Säännöllinen pesu vähentää korjaustarvetta.
   - nimi: Laatoitukset ja kivetykset
+    ikoni: laatta
     teksti: Pesemme pihan laatoitukset ja kivetykset, jotta ne pysyvät siisteinä ja kestävinä.
 ukk:
   - k: Mitä suoja-aine tekee?

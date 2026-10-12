@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Murupolku from '../components/Murupolku.astro';
 import yritys from '../data/yritys.json';
 ---
 
@@ -10,7 +9,6 @@ import yritys from '../data/yritys.json';
 >
   <section class="section--tight alku">
     <div class="container">
-      <Murupolku polku={[{ nimi: 'Tietosuojaseloste', href: '/tietosuojaseloste/' }]} />
       <article class="prose seloste">
         <h1 data-fit>Tietosuojaseloste</h1>
         <p class="paivitetty">Viimeksi päivitetty 9.10.2026</p>

@@ -12,10 +12,13 @@ kuva: maalaus
 kuvaAlt: Puutalon seinää maalataan siveltimellä
 alapalvelut:
   - nimi: Ulkoseinien maalaus
+    ikoni: sivellin
     teksti: Maalaamme rakennuksen yhteen tai kahteen kertaan kohteen ja pinnan kunnon mukaan.
   - nimi: Julkisivun korjaus ja maalaus
+    ikoni: seina
     teksti: Korjaamme julkisivun tarvittaessa ennen maalausta, jotta uusi maalipinta kestää.
   - nimi: Katon maalaus
+    ikoni: katto
     teksti: Maalaamme myös pelti- ja tiilikatot. Lue lisää kattojen sivulta.
 tiesitko:
   luku: 5-10 v

@@ -11,8 +11,10 @@ kuva: pihatyot
 kuvaAlt: Vastaleikattu nurmikko omakotitalon pihalla
 alapalvelut:
   - nimi: Ruohonleikkuu
+    ikoni: piha
     teksti: Leikkaamme nurmikon siististi ja tasaisesti.
   - nimi: Pihan kunnossapito
+    ikoni: puu
     teksti: Hoidamme pihatyöt tarpeesi mukaan.
 ukk: []
 ---

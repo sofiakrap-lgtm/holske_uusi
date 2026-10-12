@@ -28,10 +28,10 @@ const valit = [
   @media (min-width: 768px) {
     .valit { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
-  @media (min-width: 1200px) {
+  @media (min-width: 1280px) {
     .valit { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
-  li { display: flex; flex-direction: column; gap: 16px; padding: 36px 24px; background: var(--surface); }
+  li { display: flex; flex-direction: column; gap: 16px; padding: 36px 24px; background: var(--p-olive); }
   @media (min-width: 1025px) {
     li { padding: 48px 36px; }
   }
@@ -39,14 +39,14 @@ const valit = [
     font-family: var(--font-display);
     font-stretch: var(--stretch);
     font-weight: 700;
-    font-size: clamp(40px, 1.6rem + 2.4vw, 56px);
-    line-height: 1;
+    font-size: clamp(36px, 1.4rem + 1.8vw, 52px);
+    line-height: 1.15;
+    color: var(--p-birch);
     letter-spacing: 1.8px;
-    color: var(--ink);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
   .selite { display: grid; gap: 4px; }
-  .kohde { font-weight: 600; font-size: 20px; line-height: 24px; color: var(--ink); }
-  .mita { color: var(--muted); }
+  .kohde { font-weight: 600; font-size: 19px; line-height: 24px; color: var(--p-birch); }
+  .mita { color: var(--p-grey-100); }
 </style>

@@ -44,13 +44,13 @@ const rivit = Math.max(vasen, solut.length - vasen);
       const tyyli = `--rivi:${rivi}`;
       return s.href ? (
         <a href={s.href} class:list={[...luokat, 'solu--linkki']} style={tyyli}>
-          <span class="merkki merkki--nuoli"><Icon name="nuoli" size={22} /></span>
+          <span class="merkki merkki--nuoli"><Icon name="nuoli" size={26} paino="light" /></span>
           <h3>{s.otsikko}</h3>
           {s.teksti && <p>{s.teksti}</p>}
         </a>
       ) : (
         <div class:list={luokat} style={tyyli}>
-          {(s.ikoni ?? ikoni) && <span class="merkki"><Icon name={(s.ikoni ?? ikoni)!} size={22} /></span>}
+          {(s.ikoni ?? ikoni) && <span class="merkki"><Icon name={(s.ikoni ?? ikoni)!} size={28} paino="light" /></span>}
           <h3>{s.otsikko}</h3>
           {s.teksti && <p>{s.teksti}</p>}
         </div>
@@ -103,10 +103,10 @@ const rivit = Math.max(vasen, solut.length - vasen);
   .merkki {
     display: grid;
     place-items: center;
-    width: 40px;
-    height: 40px;
-    margin-bottom: 4px;
-    border-radius: 999px;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 8px;
+    border-radius: 12px;
     background: var(--p-grey-100);
     color: var(--p-asphalt);
   }

@@ -12,14 +12,19 @@ kuva: katot
 kuvaAlt: Omakotitalon katto kunnostuksen jälkeen
 alapalvelut:
   - nimi: Tiilikattoremontti
+    ikoni: tiili
     teksti: Tiilikatto on kestävä, mutta tarvitsee ajoittain huoltoa tai uusimista. Teemme tiilikattoremontit tarkasti, siististi ja oikeilla materiaaleilla, jotta katto kestää vuosikymmeniä eteenpäin.
   - nimi: Peltikattoremontti
+    ikoni: pelti
     teksti: Peltikatto on kevyt ja pitkäikäinen, kun se pidetään kunnossa. Teemme peltikattoremontit huolellisesti ja varmistamme, että katto on tiivis, toimiva ja näyttää hyvältä.
   - nimi: Huopakattoremontti
+    ikoni: huopa
     teksti: Huopakatto sopii erityisesti loiville katoille, mutta ajan myötä sekin kaipaa uusimista. Teemme huopakattoremontit laadukkailla materiaaleilla ja varmoilla menetelmillä.
   - nimi: Katon pinnoitus
+    ikoni: pinnoitus
     teksti: Pinnoitus on edullinen tapa pidentää katon käyttöikää ja parantaa sen ulkonäköä. Pinnoitamme tiili- ja peltikatot, jolloin katto saa uuden suojan ja siistin ilmeen.
   - nimi: Peltikaton maalaus
+    ikoni: maalaus
     teksti: Uusi sinkitty peltikatto maalataan ensimmäisen kerran noin 2-3 vuotta asennuksen jälkeen. Aiemmin maalattu katto tarvitsee uuden maalikerroksen noin 15-20 vuoden välein.
 ukk:
   - k: Mistä tiedän, tarvitseeko kattoni huoltoa?

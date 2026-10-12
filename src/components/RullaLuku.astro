@@ -46,20 +46,24 @@ let n = 0;
       r.classList.add('odottaa');
       io.observe(r);
     });
+    // Varmistus: luvut paikalleen viimeistään 4 s kuluttua, vaikka tarkkailija ei laukeaisi
+    setTimeout(() => rullat.forEach((r) => r.classList.remove('odottaa')), 4000);
   }
 </script>
 
 <style>
   .rulla { display: inline-flex; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .paikka { display: inline-block; height: 1em; line-height: 1; overflow: hidden; }
+  /* Rivikorkeus 1.15em, ettei numeroiden ylä- tai alareuna leikkaudu */
+  .rulla { --rk: 1.15em; }
+  .paikka { display: inline-block; height: var(--rk); line-height: var(--rk); overflow: hidden; }
   .nauha {
     display: flex;
     flex-direction: column;
-    transform: translateY(calc(var(--d) * -1em));
+    transform: translateY(calc(var(--d) * var(--rk) * -1));
     transition: transform 1000ms cubic-bezier(0, 0, 0.2, 1);
     transition-delay: calc(var(--n) * 90ms);
   }
-  .nauha > span { display: block; height: 1em; line-height: 1; }
+  .nauha > span { display: block; height: var(--rk); line-height: var(--rk); }
   .rulla:global(.odottaa) .nauha { transform: translateY(0); transition: none; }
-  .muu { display: inline-block; line-height: 1; }
+  .muu { display: inline-block; line-height: var(--rk); }
 </style>

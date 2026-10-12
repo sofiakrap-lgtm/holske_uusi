@@ -1,18 +1,21 @@
 ---
 /**
- * Ikonit Phosphor-kirjastosta (@phosphor-icons/core, paino regular).
+ * Ikonit Phosphor-kirjastosta (@phosphor-icons/core, paino regular tai light).
  * Käyttö: <Icon name="puhelin" size={24} />
  */
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
 
 interface Props {
   name: string;
   size?: number;
   class?: string;
   label?: string;
+  /** Viivan paino: regular (oletus) tai light (isot ikonilaatat) */
+  paino?: 'regular' | 'light';
 }
-const { name, size = 24, class: className, label } = Astro.props;
+const { name, size = 24, class: className, label, paino = 'regular' } = Astro.props;
 
 const NIMET: Record<string, string> = {
   katto: 'house-line',
@@ -40,10 +43,33 @@ const NIMET: Record<string, string> = {
   siisti: 'broom',
   tiesitko: 'lightbulb',
   kalenteri: 'calendar-check',
+  // Palvelukohtaiset
+  tiili: 'squares-four',
+  pelti: 'columns',
+  huopa: 'stack',
+  pinnoitus: 'shield-check',
+  sivellin: 'paint-brush-broad',
+  seina: 'wall',
+  lapio: 'shovel',
+  pesu: 'spray-bottle',
+  laatta: 'grid-four',
+  puu: 'tree',
+  // Katon merkit
+  sammal: 'leaf',
+  ruoste: 'drop-half',
+  vuoto: 'cloud-rain',
+  aurinko: 'sun',
+  // Yhteydenotto ja vaiheet
+  viesti: 'chat-circle-text',
+  sopimus: 'handshake',
+  sinetti: 'seal-check',
 };
 
 const require = createRequire(import.meta.url);
-const tiedosto = require.resolve(`@phosphor-icons/core/assets/regular/${NIMET[name] ?? 'info'}.svg`);
+const kuvake = NIMET[name] ?? 'info';
+// assets-kansio paketin viedystä polusta (package.json ei ole viety)
+const juuri = dirname(dirname(dirname(require.resolve('@phosphor-icons/core/assets/regular/info.svg'))));
+const tiedosto = join(juuri, 'assets', paino, paino === 'light' ? `${kuvake}-light.svg` : `${kuvake}.svg`);
 const body = readFileSync(tiedosto, 'utf8')
   .replace(/^<svg[^>]*>/, '')
   .replace(/<\/svg>\s*$/, '');
