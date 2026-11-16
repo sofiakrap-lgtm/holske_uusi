@@ -3,13 +3,13 @@
 Holsken visuaalinen järjestelmä. Pohja: Bahnin mitattu tyylijärjestelmä (`.claude/skills/ui-bahnexpress-fi/`, poimittu bahnexpress.fi:n CSS:stä 10/2026) Holsken paletilla ja sisällöllä. Lähteet: `src/styles/global.css`, `src/components/`.
 
 ## Periaatteet
-- Jokainen osio on yksi teema koko leveydeltä (`data-theme`). Etusivulla vuorottelevat vain koivu ja vaaleanharmaa; tumma metsä vain Kysymyksiä-osiossa. Ei korostussoluja eikä vuorottelevia korttisävyjä.
+- Jokainen osio on yksi teema koko leveydeltä (`data-theme`). Etusivulla vuorottelevat koivu ja vaaleanharmaa; oliivi Katon merkit -osiossa ja palvelusivujen Tiesitkö-nostossa, tumma metsä Kysymyksiä-osiossa. Ei korostussoluja eikä vuorottelevia korttisävyjä.
 - Display-otsikot: Archivo leveänä (font-stretch 125 %), paino 900, versaalit, keskitetty, rivikorkeus = koko. 2-4 sanaa. Liian pitkä sana pienennetään askel kerrallaan (`data-fit`).
 - Leipäteksti Figtree 300, alaotsikot ja selitteet Figtree 600.
 - Ei varjoja, ei sumennusta, ei gradientteja napeissa. Syvyys sävyaskelilla ja 2 px raoilla.
 - Napit pillereitä (xs 40, s 48, m 56, l 64, xl 72 px), kortit ja media 24 px.
 - Liike on toiminnallista: liukuva valintapilleri navigaatiossa, haitari, karusellin nuolet. Ei rullaavia numeroita, ei automaattisesti liikkuvaa galleriaa, ei koristeellisia vieritysilmestymisiä.
-- Puhelinnumero näkyy kaikkialla `tel:`-linkkinä: yläpalkki (desktop), pääosio, lopetusosio, footer ja puhelimen kiinteä alapalkki (Soita + Ota yhteyttä).
+- Puhelinnumero näkyy Yhteystiedot-sivulla ja footerissa. Puhelimella kiinteä alapalkki (Soita + Ota yhteyttä). Ei numeroa yläpalkissa, pääosiossa eikä lopetusosiossa.
 - Kuva keskellä -ruudukko (`Bento`) on Holsken oma tunnusmerkki.
 
 ## Paletti
@@ -64,6 +64,6 @@ Hero + tumma kolmen sarakkeen paneeli (taustakuva/video tasaisesti tummennettu, 
 - Galleria pyyhkäistävä nauha ilman automaattista liikettä ja ilman toistoa.
 - Bahn-tyylijärjestelmä (`.claude/skills/ui-bahnexpress-fi/`) säilyy pohjana: typografia, napit, teemat ja asettelu sen mukaan.
 - Napit vähintään 48 px korkeita, lomakekentät 18 px, mobiilivalikon linkit 52 px ja näkyvä sana "Valikko".
-- Palvelusivuilla pääkuva ilman sumennusta, vain tummennus. Tiesitkö-nosto vaalealla pohjalla, staattinen luku.
+- Palvelusivuilla pääkuva ilman sumennusta, vain tummennus. Tiesitkö-nosto oliivipohjalla, staattinen luku.
 - Jakokuva (og:image) muodostetaan automaattisesti `etusivu.jpg`:stä (1200 × 630). `og-holske.png` on varalla.
 - `BaseLayout`-prop `piilotaMobiiliCta` piilottaa puhelimen alapalkin sivulta.

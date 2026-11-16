@@ -7,7 +7,6 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import Kuva from './Kuva.astro';
-import yritys from '../data/yritys.json';
 import { ensimmainenKuva } from '../lib/kuvat';
 
 interface Kohta {
@@ -74,10 +73,7 @@ const taustakuva = ensimmainenKuva(...kuva);
       <span class="r r3">{rivit[2]}</span>
     </h1>
     {ingressi && <p class="ingressi">{ingressi}</p>}
-    <div class="napit">
-      <a href={nappi.href} class="btn btn--iso btn--paa">{nappi.teksti}</a>
-      <a href={`tel:${yritys.puhelinE164}`} class="btn btn--iso btn--kuvalla">Soita {yritys.puhelinNaytto}</a>
-    </div>
+    <a href={nappi.href} class="btn btn--iso btn--paa">{nappi.teksti}</a>
 
     {
       kohdat.length > 0 && (
@@ -192,13 +188,8 @@ const taustakuva = ensimmainenKuva(...kuva);
   @media (min-width: 1200px) {
     .kohta { padding: 48px; gap: 24px; }
   }
-  .napit { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
   .btn--paa { --btn-bg: var(--p-birch); --btn-fg: var(--p-asphalt); }
   .btn--paa:hover { --btn-bg: var(--p-grey-100); --btn-fg: var(--p-asphalt); }
-  @media (max-width: 479px) {
-    .napit { flex-direction: column; width: 100%; }
-    .napit .btn { width: 100%; }
-  }
   .kohta-vaite {
     font-family: var(--font-display);
     font-stretch: var(--stretch);

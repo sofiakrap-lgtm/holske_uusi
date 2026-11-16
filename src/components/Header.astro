@@ -33,7 +33,6 @@ const isActive = (href: string) =>
     </nav>
 
     <div class="toiminnot">
-      <a href={`tel:${yritys.puhelinE164}`} class="puhelin">{yritys.puhelinNaytto}</a>
       <a href="/yhteystiedot/" class="btn btn--toiminto">Ota yhteyttä</a>
       <button type="button" class="valikko-nappi" aria-expanded="false" aria-controls="mobiilivalikko" data-menu-toggle>
         <span class="valikko-teksti" data-menu-label>Valikko</span>
@@ -51,7 +50,6 @@ const isActive = (href: string) =>
         ))}
         <li><a href="/yhteystiedot/" aria-current={path === '/yhteystiedot/' ? 'page' : undefined}>Yhteystiedot</a></li>
       </ul>
-      <a href={`tel:${yritys.puhelinE164}`} class="arkki-puhelin">Soita {yritys.puhelinNaytto}</a>
     </div>
   </div>
   <div class="scrim" data-scrim aria-hidden="true"></div>
@@ -210,17 +208,8 @@ const isActive = (href: string) =>
     .btn--toiminto { --btn-h: 38px; --btn-px: 18px; font-size: 16px; }
     .toiminnot { gap: 12px; }
   }
-  .puhelin {
-    font: 600 16px/1 var(--font-body);
-    color: var(--ink);
-    text-decoration: none;
-    white-space: nowrap;
-    padding: 12px 4px;
-  }
-  .puhelin:hover { color: var(--muted); }
   /* Puhelimella yhteydenotto ja soitto ovat alapalkissa */
   @media (max-width: 819px) {
-    .puhelin,
     .btn--toiminto { display: none; }
   }
   .valikko-nappi {
@@ -285,7 +274,6 @@ const isActive = (href: string) =>
     text-decoration: none;
   }
   .arkki a[aria-current='page'] { background: var(--p-grey-100); }
-  .arkki .arkki-puhelin { margin-top: 12px; justify-content: center; background: var(--p-asphalt); color: var(--p-birch); }
   .scrim {
     position: fixed;
     inset: 0;

@@ -1,5 +1,4 @@
 ---
-import yritys from '../data/yritys.json';
 interface Props {
   otsikko?: string;
   teksti?: string;
@@ -11,10 +10,7 @@ const { otsikko = 'Katsotaanko kattosi?', teksti = 'Kuntoarvio on ilmainen ja il
   <div class="container sisus">
     <h2 id="yhteys-otsikko" data-fit>{otsikko}</h2>
     <p>{teksti}</p>
-    <div class="btn-row">
-      <a href="/yhteystiedot/" class="btn btn--l">Ota yhteyttä</a>
-      <a href={`tel:${yritys.puhelinE164}`} class="btn btn--l btn--tertiary">Soita {yritys.puhelinNaytto}</a>
-    </div>
+    <a href="/yhteystiedot/" class="btn btn--l">Ota yhteyttä</a>
   </div>
 </section>
 
@@ -22,5 +18,5 @@ const { otsikko = 'Katsotaanko kattosi?', teksti = 'Kuntoarvio on ilmainen ja il
   .cta { padding-block: 96px; }
   .sisus { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
   p { color: var(--muted); font-weight: 600; font-size: clamp(18px, 1rem + 0.4vw, 24px); }
-  .btn-row { margin-top: 8px; }
+  .btn { margin-top: 8px; }
 </style>
