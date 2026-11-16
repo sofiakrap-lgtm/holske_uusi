@@ -1,7 +1,7 @@
 {
   "_ohje": "Kuvien alt-tekstit ja rajauksen kohta. Kuvaile, mitä kuvassa oikeasti näkyy (esim. 'Vastamaalattu punainen tiilikatto omakotitalossa'). fokus = kohta, joka pysyy näkyvissä rajattaessa (vaaka% pysty%).",
   "etusivu": {
-    "alt": "Omakotitalo, jossa tumma peltikatto ja koivuja pihalla",
+    "alt": "Punainen puutalo, jossa tumma saumapeltikatto, koivuja ja kuusia pihalla syksyllä",
     "fokus": "50% 50%"
   },
   "katto-huolto": {
@@ -21,7 +21,7 @@
     "fokus": "50% 40%"
   },
   "katot": {
-    "alt": "Tumma saumapeltikatto, tiilinen savupiippu ja lumiesteet, syksyn lehtiä räystäskourussa",
+    "alt": "Tumma saumapeltikatto läheltä, tiilinen savupiippu, lunta lumiesteillä ja lehtiä räystäskourussa",
     "fokus": "50% 50%"
   },
   "katot-2": {
