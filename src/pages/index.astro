@@ -21,9 +21,9 @@ const ekaLause = (t: string) => {
 };
 
 const lupaukset = [
-  { ikoni: 'kuntoarvio', nimi: 'Ilmainen', vaite: 'Kuntoarvio paikan päällä', teksti: 'Saat selkeän suunnitelman ja hinnan ilman sitoutumista.' },
-  { ikoni: 'hinta', nimi: 'Kiinteä', vaite: 'Hinta ennen aloitusta', teksti: 'Saat kiinteän hinnan kuntoarvion jälkeen, ja päätät itse, jatketaanko.' },
-  { ikoni: 'siisti', nimi: 'Siisti', vaite: 'Työmaa kuntoon lopuksi', teksti: 'Tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
+  { nimi: 'Ilmainen', vaite: 'Ilmainen kuntoarvio paikan päällä', teksti: 'Saat selkeän suunnitelman ja hinnan ilman sitoutumista.' },
+  { nimi: 'Kiinteä', vaite: 'Kiinteä hinta ennen aloitusta', teksti: 'Saat kiinteän hinnan kuntoarvion jälkeen, ja päätät itse, jatketaanko.' },
+  { nimi: 'Siisti', vaite: 'Siisti työmaa lopuksi', teksti: 'Tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
 ];
 
 type Solu = { otsikko: string; teksti?: string; href?: string; ikoni?: string };
@@ -73,21 +73,21 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
         <h2 id="katot-otsikko" data-fit>Kaikki kattotyöt</h2>
         <p>{ekaLause(katot.data.ingressi)} {yritys.kokemusLause}</p>
       </div>
-      <Bento kuva="katot" solut={kattoSolut} korostus={5} />
+      <Bento kuva="katot" solut={kattoSolut} />
     </div>
   </section>
 
-  <section data-theme="oliivi" aria-labelledby="merkit-otsikko">
+  <section data-theme="light-grey" aria-labelledby="merkit-otsikko">
     <div class="container">
       <div class="osio-otsake">
         <h2 id="merkit-otsikko" data-fit>Katon merkit</h2>
         <p>Mistä tiedät, että katto tarvitsee huoltoa? Tikkaille ei tarvitse kiivetä itse.</p>
       </div>
-      <Bento kuva="katto-huolto" solut={merkit} korostus={5} />
+      <Bento kuva="katto-huolto" solut={merkit} />
     </div>
   </section>
 
-  <section data-theme="asphalt" aria-labelledby="huolto-otsikko">
+  <section data-theme="birch" aria-labelledby="huolto-otsikko">
     <div class="container">
       <div class="osio-otsake">
         <h2 id="huolto-otsikko" data-fit>Huoltovälit</h2>
@@ -103,7 +103,7 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
         <h2 id="maalaus-otsikko" data-fit>Talon maalaus</h2>
         <p>{maalaus.data.ingressi}</p>
       </div>
-      <Bento kuva="maalaus" solut={maalausSolut} korostus={3} />
+      <Bento kuva="maalaus" solut={maalausSolut} />
     </div>
   </section>
 
@@ -111,7 +111,6 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
     <div class="container">
       <div class="osio-otsake">
         <h2 id="vaiheet-otsikko" data-fit>Näin työ etenee</h2>
-        <p>Neljä vaihetta yhteydenotosta valmiiseen työhön.</p>
       </div>
       <Vaiheet />
     </div>
@@ -121,7 +120,7 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
     <div class="container">
       <div class="osio-otsake">
         <h2 id="galleria-otsikko" data-fit>Katot ja pihat</h2>
-        <p>{yritys.palvelualue.join(', ')}. Tulemme kohteeseen ja teemme työn alusta loppuun.</p>
+        <p>Teemme töitä Helsingissä, Espoossa, Vantaalla ja Kauniaisissa.</p>
       </div>
     </div>
     <Galleria />
@@ -142,8 +141,6 @@ const ukk = [...katot.data.ukk, ...maalaus.data.ukk].slice(0, 6);
 </BaseLayout>
 
 <style>
-  [data-theme='oliivi'] { --korostus: var(--p-asphalt); }
-
   /* Kysymyksiä: otsikko ja nappi vasemmalla, haitari oikealla */
   .ukk-ruudukko { display: grid; gap: var(--section-gap); }
   @media (min-width: 1025px) {

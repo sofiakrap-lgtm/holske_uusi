@@ -1,0 +1,35 @@
+---
+/**
+ * Puhelimen kiinteä alapalkki: Soita ja Ota yhteyttä aina peukalon ulottuvilla.
+ * Näkyy vain alle 820 px leveillä näytöillä. Piiloutuu, kun lomakekenttä on aktiivinen (näppäimistö auki).
+ */
+import yritys from '../data/yritys.json';
+---
+
+<nav class="mobiilipalkki" aria-label="Yhteydenotto">
+  <a href={`tel:${yritys.puhelinE164}`} class="btn btn--l">Soita</a>
+  <a href="/yhteystiedot/" class="btn btn--l btn--tertiary">Ota yhteyttä</a>
+</nav>
+
+<style>
+  .mobiilipalkki { display: none; }
+  @media (max-width: 819px) {
+    .mobiilipalkki {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 35;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: rgb(255 254 247 / 0.97);
+      border-top: 1px solid var(--p-grey-200);
+    }
+    .mobiilipalkki .btn { width: 100%; }
+    :global(body) { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+    :global(body:has(input:focus, textarea:focus, select:focus)) .mobiilipalkki { display: none; }
+    :global(html.menu-open) .mobiilipalkki { display: none; }
+  }
+</style>

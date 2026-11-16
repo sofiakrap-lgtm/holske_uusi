@@ -33,9 +33,10 @@ const isActive = (href: string) =>
     </nav>
 
     <div class="toiminnot">
+      <a href={`tel:${yritys.puhelinE164}`} class="puhelin">{yritys.puhelinNaytto}</a>
       <a href="/yhteystiedot/" class="btn btn--toiminto">Ota yhteyttä</a>
       <button type="button" class="valikko-nappi" aria-expanded="false" aria-controls="mobiilivalikko" data-menu-toggle>
-        <span class="visually-hidden" data-menu-label>Avaa valikko</span>
+        <span class="valikko-teksti" data-menu-label>Valikko</span>
         <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
       </button>
     </div>
@@ -43,7 +44,6 @@ const isActive = (href: string) =>
 
   <div class="arkki" id="mobiilivalikko" data-nav>
     <div class="arkki-sisus">
-      <p class="ryhma">Sivut</p>
       <ul>
         <li><a href="/" aria-current={path === '/' ? 'page' : undefined}>Etusivu</a></li>
         {nav.map((item) => (
@@ -51,6 +51,7 @@ const isActive = (href: string) =>
         ))}
         <li><a href="/yhteystiedot/" aria-current={path === '/yhteystiedot/' ? 'page' : undefined}>Yhteystiedot</a></li>
       </ul>
+      <a href={`tel:${yritys.puhelinE164}`} class="arkki-puhelin">Soita {yritys.puhelinNaytto}</a>
     </div>
   </div>
   <div class="scrim" data-scrim aria-hidden="true"></div>
@@ -66,7 +67,7 @@ const isActive = (href: string) =>
     if (!header || !toggle) return;
     header.classList.toggle('is-open', open);
     toggle.setAttribute('aria-expanded', String(open));
-    if (label) label.textContent = open ? 'Sulje valikko' : 'Avaa valikko';
+    if (label) label.textContent = open ? 'Sulje' : 'Valikko';
     document.documentElement.classList.toggle('menu-open', open);
   };
   toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
@@ -209,10 +210,25 @@ const isActive = (href: string) =>
     .btn--toiminto { --btn-h: 38px; --btn-px: 18px; font-size: 16px; }
     .toiminnot { gap: 12px; }
   }
+  .puhelin {
+    font: 600 16px/1 var(--font-body);
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 12px 4px;
+  }
+  .puhelin:hover { color: var(--muted); }
+  /* Puhelimella yhteydenotto ja soitto ovat alapalkissa */
+  @media (max-width: 819px) {
+    .puhelin,
+    .btn--toiminto { display: none; }
+  }
   .valikko-nappi {
     display: none;
-    width: 48px;
+    gap: 10px;
     height: 48px;
+    padding: 0 12px;
+    font: 600 17px/1 var(--font-body);
     border: 0;
     border-radius: 999px;
     background: transparent;
@@ -221,7 +237,7 @@ const isActive = (href: string) =>
     place-items: center;
   }
   @media (max-width: 819px) {
-    .valikko-nappi { display: grid; }
+    .valikko-nappi { display: inline-flex; align-items: center; }
   }
   .menu-icon { position: relative; display: block; width: 22px; height: 12px; }
   .menu-icon span {
@@ -257,19 +273,19 @@ const isActive = (href: string) =>
     transition: transform 240ms var(--ease-standard), visibility 0s;
   }
   .arkki-sisus { padding: 12px 24px 24px; }
-  .ryhma { padding: 0 22px; font: 600 16px/22px var(--font-body); color: var(--muted); margin-bottom: 8px; }
   .arkki ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
   .arkki a {
     display: flex;
     align-items: center;
-    height: 38px;
+    height: 52px;
     padding: 0 18px;
     border-radius: 999px;
-    font: 600 16px/1 var(--font-body);
+    font: 600 19px/1 var(--font-body);
     color: var(--ink);
     text-decoration: none;
   }
   .arkki a[aria-current='page'] { background: var(--p-grey-100); }
+  .arkki .arkki-puhelin { margin-top: 12px; justify-content: center; background: var(--p-asphalt); color: var(--p-birch); }
   .scrim {
     position: fixed;
     inset: 0;

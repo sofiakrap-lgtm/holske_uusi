@@ -7,7 +7,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import Kuva from './Kuva.astro';
-import Icon from './Icon.astro';
+import yritys from '../data/yritys.json';
 import { ensimmainenKuva } from '../lib/kuvat';
 
 interface Kohta {
@@ -74,14 +74,16 @@ const taustakuva = ensimmainenKuva(...kuva);
       <span class="r r3">{rivit[2]}</span>
     </h1>
     {ingressi && <p class="ingressi">{ingressi}</p>}
-    <a href={nappi.href} class="btn btn--iso btn--kuvalla">{nappi.teksti}</a>
+    <div class="napit">
+      <a href={nappi.href} class="btn btn--iso btn--paa">{nappi.teksti}</a>
+      <a href={`tel:${yritys.puhelinE164}`} class="btn btn--iso btn--kuvalla">Soita {yritys.puhelinNaytto}</a>
+    </div>
 
     {
       kohdat.length > 0 && (
         <div class="kaista" data-theme="asphalt">
           {kohdat.map((k) => (
             <div class="kohta">
-              <p class="kohta-nimi">{k.ikoni && <Icon name={k.ikoni} size={22} />}{k.nimi}</p>
               <p class="kohta-vaite">{k.vaite}</p>
               <p class="kohta-teksti">{k.teksti}</p>
             </div>
@@ -181,7 +183,7 @@ const taustakuva = ensimmainenKuva(...kuva);
   @media (min-width: 768px) {
     .kaista { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
   }
-  .kohta { display: flex; flex-direction: column; gap: 16px; padding: 28px 24px; }
+  .kohta { display: flex; flex-direction: column; gap: 12px; padding: 28px 24px; }
   .kohta + .kohta { border-top: 1px solid rgb(255 254 247 / 0.12); }
   @media (min-width: 768px) {
     .kohta + .kohta { border-top: 0; border-left: 1px solid rgb(255 254 247 / 0.12); }
@@ -190,8 +192,13 @@ const taustakuva = ensimmainenKuva(...kuva);
   @media (min-width: 1200px) {
     .kohta { padding: 48px; gap: 24px; }
   }
-  .kohta-nimi { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 18px; line-height: 24px; color: var(--muted); }
-  .kohta-nimi :global(.icon) { color: var(--muted); }
+  .napit { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .btn--paa { --btn-bg: var(--p-birch); --btn-fg: var(--p-asphalt); }
+  .btn--paa:hover { --btn-bg: var(--p-grey-100); --btn-fg: var(--p-asphalt); }
+  @media (max-width: 479px) {
+    .napit { flex-direction: column; width: 100%; }
+    .napit .btn { width: 100%; }
+  }
   .kohta-vaite {
     font-family: var(--font-display);
     font-stretch: var(--stretch);

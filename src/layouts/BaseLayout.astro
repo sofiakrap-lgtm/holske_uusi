@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import KampanjaBanneri from '../components/KampanjaBanneri.astro';
 import Evasteet from '../components/Evasteet.astro';
+import MobiiliPalkki from '../components/MobiiliPalkki.astro';
 import yritys from '../data/yritys.json';
 
 interface Props {
@@ -94,6 +95,7 @@ import figtreeFontti from '@fontsource-variable/figtree/files/figtree-latin-wght
       <slot />
     </main>
     <Footer />
+    <MobiiliPalkki />
     <Evasteet />
     <script>
       // Fit-to-width: jos display-otsikon pisin sana ei mahdu, pienennetään kokoa askel kerrallaan

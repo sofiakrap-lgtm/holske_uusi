@@ -1,15 +1,13 @@
 ---
 /**
- * Työn vaiheet nuolilla: neljä korttia rinnakkain, välissä nuoli seuraavaan vaiheeseen.
- * Mobiilissa kortit allekkain ja nuoli osoittaa alas.
+ * Työn vaiheet: numeroitu lista, neljä saraketta desktopissa, mobiilissa allekkain.
  */
-import Icon from './Icon.astro';
 
 const vaiheet = [
-  { ikoni: 'viesti', otsikko: 'Ota yhteyttä', teksti: 'Soita tai lähetä sähköpostia ja kerro lyhyesti, mitä kohteessa pitäisi tehdä.' },
-  { ikoni: 'kuntoarvio', otsikko: 'Ilmainen kuntoarvio', teksti: 'Katsomme kohteen paikan päällä ja teemme selkeän suunnitelman.' },
-  { ikoni: 'hinta', otsikko: 'Kiinteä hinta', teksti: 'Saat kiinteän hinnan ennen aloitusta ja päätät itse, jatketaanko.' },
-  { ikoni: 'sinetti', otsikko: 'Työ ja tarkastus', teksti: 'Teemme työn siististi, tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
+  { otsikko: 'Ota yhteyttä', teksti: 'Soita tai lähetä sähköpostia ja kerro lyhyesti, mitä kohteessa pitäisi tehdä.' },
+  { otsikko: 'Ilmainen kuntoarvio', teksti: 'Katsomme kohteen paikan päällä ja teemme selkeän suunnitelman.' },
+  { otsikko: 'Kiinteä hinta', teksti: 'Saat kiinteän hinnan ennen aloitusta ja päätät itse, jatketaanko.' },
+  { otsikko: 'Työ ja tarkastus', teksti: 'Teemme työn siististi, tarkistamme tuloksen kanssasi ja kierrätämme jätteet.' },
 ];
 ---
 
@@ -17,15 +15,8 @@ const vaiheet = [
   {
     vaiheet.map((v, i) => (
       <li class="on-light">
-        <div class="ylarivi">
-          <span class="laatta"><Icon name={v.ikoni} size={30} paino="light" /></span>
-          <span class="nro">{i + 1}/{vaiheet.length}</span>
-        </div>
-        <h3>{v.otsikko}</h3>
+        <h3><span class="nro">{i + 1}.</span> {v.otsikko}</h3>
         <p>{v.teksti}</p>
-        {i < vaiheet.length - 1 && (
-          <span class="nuoli" aria-hidden="true"><Icon name="nuoli" size={20} /></span>
-        )}
       </li>
     ))
   }
@@ -37,7 +28,7 @@ const vaiheet = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 24px;
+    gap: 12px;
   }
   @media (min-width: 768px) {
     .vaiheet { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -57,40 +48,8 @@ const vaiheet = [
   @media (min-width: 768px) {
     li { padding: 32px; }
   }
-  .ylarivi { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
-  .laatta {
-    display: grid;
-    place-items: center;
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
-    background: var(--p-grey-100);
-    color: var(--p-asphalt);
-  }
-  .nro { font: 600 16px/1 var(--font-body); color: var(--muted); font-variant-numeric: tabular-nums; }
+  .nro { color: var(--muted); font-variant-numeric: tabular-nums; }
   h3 { font-size: clamp(20px, 1rem + 0.4vw, 24px); line-height: 1.15; }
   p { color: var(--muted); font-size: 17px; line-height: 24px; }
 
-  /* Nuoli seuraavaan vaiheeseen: mobiilissa alas, leveämmällä oikealle */
-  .nuoli {
-    position: absolute;
-    z-index: 1;
-    left: 50%;
-    bottom: -32px;
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 999px;
-    background: var(--p-asphalt);
-    color: var(--p-birch);
-    transform: translateX(-50%) rotate(90deg);
-  }
-  @media (min-width: 768px) {
-    .nuoli { left: auto; right: -32px; bottom: auto; top: 46px; transform: none; }
-    li:nth-child(2) .nuoli { display: none; }
-  }
-  @media (min-width: 1025px) {
-    li:nth-child(2) .nuoli { display: grid; }
-  }
 </style>

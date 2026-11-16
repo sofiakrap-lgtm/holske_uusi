@@ -1,5 +1,4 @@
 ---
-import RullaLuku from './RullaLuku.astro';
 /** Huoltovälit vanhan sivun tiedoista: iso väli, alla mihin se koskee. */
 const valit = [
   { vali: '2-3 v', kohde: 'Uusi sinkitty peltikatto', mita: 'ensimmäinen maalaus' },
@@ -13,7 +12,7 @@ const valit = [
   {
     valit.map((v) => (
       <li>
-        <RullaLuku arvo={v.vali} class="vali" />
+        <span class="vali">{v.vali}</span>
         <span class="selite">
           <span class="kohde">{v.kohde}</span>
           <span class="mita">{v.mita}</span>
@@ -31,22 +30,22 @@ const valit = [
   @media (min-width: 1280px) {
     .valit { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
-  li { display: flex; flex-direction: column; gap: 16px; padding: 36px 24px; background: var(--p-olive); }
+  li { display: flex; flex-direction: column; gap: 16px; padding: 36px 24px; background: var(--p-grey-50); }
   @media (min-width: 1025px) {
     li { padding: 48px 36px; }
   }
-  li :global(.vali) {
+  .vali {
     font-family: var(--font-display);
     font-stretch: var(--stretch);
     font-weight: 700;
     font-size: clamp(36px, 1.4rem + 1.8vw, 52px);
     line-height: 1.15;
-    color: var(--p-birch);
-    letter-spacing: 1.8px;
+    color: var(--ink);
+    letter-spacing: 0.5px;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
   .selite { display: grid; gap: 4px; }
-  .kohde { font-weight: 600; font-size: 19px; line-height: 24px; color: var(--p-birch); }
-  .mita { color: var(--p-grey-100); }
+  .kohde { font-weight: 600; font-size: 19px; line-height: 24px; color: var(--ink); }
+  .mita { color: var(--muted); }
 </style>

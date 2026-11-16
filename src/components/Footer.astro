@@ -19,6 +19,7 @@ const vuosi = new Date().getFullYear();
     <div class="col">
       <h2 class="col-title">Yhteystiedot</h2>
       <ul class="list">
+        <li><Icon name="puhelin" size={20} /><a href={`tel:${yritys.puhelinE164}`}>{yritys.puhelinNaytto}</a></li>
         <li><Icon name="sahkoposti" size={20} /><a href={`mailto:${yritys.sahkoposti}`}>{yritys.sahkoposti}</a></li>
         <li>
           <Icon name="sijainti" size={20} />

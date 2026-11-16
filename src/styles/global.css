@@ -351,7 +351,7 @@ section[data-theme] {
 .btn {
   --btn-bg: var(--accent);
   --btn-fg: var(--accent-ink);
-  --btn-h: 44px;
+  --btn-h: 48px;
   --btn-px: 22px;
   display: inline-flex;
   align-items: center;
@@ -374,7 +374,7 @@ section[data-theme] {
 .btn:focus-visible { outline: 4px solid var(--focus); outline-offset: 0; }
 .btn--xs { --btn-h: 36px; --btn-px: 18px; font-size: 15px; }
 .btn--iso,
-.btn--l { --btn-h: 50px; --btn-px: 24px; font-size: 18px; }
+.btn--l { --btn-h: 52px; --btn-px: 24px; font-size: 18px; }
 @media (min-width: 1025px) {
   .btn--iso { --btn-h: 56px; --btn-px: 28px; font-size: 19px; }
 }
@@ -419,6 +419,7 @@ textarea {
   background: var(--surface);
   color: var(--ink);
   font: inherit;
+  font-size: max(18px, 1em);
 }
 input:focus-visible,
 select:focus-visible,

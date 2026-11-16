@@ -3,13 +3,13 @@
 Holsken visuaalinen järjestelmä. Pohja: Bahnin mitattu tyylijärjestelmä (`.claude/skills/ui-bahnexpress-fi/`, poimittu bahnexpress.fi:n CSS:stä 10/2026) Holsken paletilla ja sisällöllä. Lähteet: `src/styles/global.css`, `src/components/`.
 
 ## Periaatteet
-- Jokainen osio on yksi teema koko leveydeltä (`data-theme`): koivu, vaaleanharmaa, oliivi, metsä, hiili. Teemat vuorottelevat.
+- Jokainen osio on yksi teema koko leveydeltä (`data-theme`). Etusivulla vuorottelevat vain koivu ja vaaleanharmaa; tumma metsä vain Kysymyksiä-osiossa. Ei korostussoluja eikä vuorottelevia korttisävyjä.
 - Display-otsikot: Archivo leveänä (font-stretch 125 %), paino 900, versaalit, keskitetty, rivikorkeus = koko. 2-4 sanaa. Liian pitkä sana pienennetään askel kerrallaan (`data-fit`).
 - Leipäteksti Figtree 300, alaotsikot ja selitteet Figtree 600.
 - Ei varjoja, ei sumennusta, ei gradientteja napeissa. Syvyys sävyaskelilla ja 2 px raoilla.
 - Napit pillereitä (xs 40, s 48, m 56, l 64, xl 72 px), kortit ja media 24 px.
-- Liike on toiminnallista: liukuva valintapilleri navigaatiossa, rullaavat numerot, haitari, karusellin nuolet. Ei koristeellisia vieritysilmestymisiä.
-- Puhelinnumero vain Yhteystiedot-sivulla. Muualla "Ota yhteyttä".
+- Liike on toiminnallista: liukuva valintapilleri navigaatiossa, haitari, karusellin nuolet. Ei rullaavia numeroita, ei automaattisesti liikkuvaa galleriaa, ei koristeellisia vieritysilmestymisiä.
+- Puhelinnumero näkyy kaikkialla `tel:`-linkkinä: yläpalkki (desktop), pääosio, lopetusosio, footer ja puhelimen kiinteä alapalkki (Soita + Ota yhteyttä).
 - Kuva keskellä -ruudukko (`Bento`) on Holsken oma tunnusmerkki.
 
 ## Paletti
@@ -54,3 +54,12 @@ Hero + tumma kolmen sarakkeen paneeli (taustakuva/video tasaisesti tummennettu, 
 - Ikonit: Phosphor, ikonilaatat pyöristettyinä neliöinä (12-16 px) light-painolla. Alapalvelun ikoni frontmatterissa (`alapalvelut[].ikoni`).
 - Näin työ etenee (`Vaiheet.astro`): neljä korttia, välissä nuoli (mobiilissa alas). Etusivu, palvelusivut, yhteystiedot.
 - Huoltovälit: luvut oliivipohjalla. Header-logo tekstin värinen. Hero-paneelin jakajat 1 px, 12 % peittävyys.
+
+## Päivitys 11/2026: mobiili ja vähemmän template-ilmettä
+
+- Ei ikonimerkkejä tekstisoluissa, vaiheissa eikä pääosion paneelissa. Ikoneja vain toiminnallisissa kohdissa (footerin yhteystiedot, haitarin nuoli, karusellin nuolet).
+- Ei yläotsikoita (eyebrow) otsikoiden yllä, ei "1/4"-laskureita. Vaiheet tavallisena numeroituna listana.
+- Alaotsikkorivi osio-otsikon alle vain, kun se kertoo jotain uutta.
+- Huoltovälit staattisina lukuina vaalealla pohjalla.
+- Galleria pyyhkäistävä nauha ilman automaattista liikettä ja ilman toistoa.
+- Napit vähintään 48 px korkeita, lomakekentät 18 px, mobiilivalikon linkit 52 px ja näkyvä sana "Valikko".
