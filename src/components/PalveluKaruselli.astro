@@ -22,16 +22,12 @@ const kohdat = (p: (typeof palvelut)[number]) =>
               <Kuva nimi={p.data.kuva} vara={['etusivu']} alt={p.data.kuvaAlt} variantti="tayta" />
             </span>
             <span class="kortti-sisalto">
-              <span class="eyebrow">{p.data.nimi}</span>
-              <span class="kortti-otsikko">{p.data.otsikko}</span>
+              <span class="kortti-otsikko">{p.data.nimi}</span>
               <span class="kortti-teksti">{p.data.kortti}</span>
               {kohdat(p).length > 0 && (
                 <span class="kohdat">
                   {kohdat(p).map((k) => (
-                    <span class="kohta">
-                      <Icon name="check" size={20} />
-                      {k}
-                    </span>
+                    <span class="kohta">{k}</span>
                   ))}
                 </span>
               )}
@@ -119,7 +115,6 @@ const kohdat = (p: (typeof palvelut)[number]) =>
   .kortti-teksti { font-size: 18px; line-height: 24px; color: var(--ink-2); }
   .kohdat { display: grid; gap: 8px; padding-top: 16px; border-top: 1px solid var(--p-grey-200); margin-top: auto; }
   .kohta { display: flex; align-items: center; gap: 10px; font-size: 18px; line-height: 24px; color: var(--ink); }
-  .kohta :global(.icon) { flex: none; color: var(--p-olive); }
   .napit { display: flex; gap: 12px; margin-top: var(--sub-gap); }
   .pyorea {
     display: grid;

@@ -5,6 +5,8 @@ import Footer from '../components/Footer.astro';
 import KampanjaBanneri from '../components/KampanjaBanneri.astro';
 import Evasteet from '../components/Evasteet.astro';
 import MobiiliPalkki from '../components/MobiiliPalkki.astro';
+import { getImage } from 'astro:assets';
+import { getKuva } from '../lib/kuvat';
 import yritys from '../data/yritys.json';
 
 interface Props {
@@ -16,11 +18,14 @@ interface Props {
   piilotaMobiiliCta?: boolean;
 }
 
-const { title, description, ogImage = '/og-holske.png', schema = [], noindex = false, piilotaMobiiliCta = false } =
-  Astro.props;
+const { title, description, ogImage, schema = [], noindex = false, piilotaMobiiliCta = false } = Astro.props;
 const site = Astro.site ?? new URL('https://holske.fi');
 const canonical = new URL(Astro.url.pathname, site).href;
-const ogUrl = new URL(ogImage, site).href;
+// Jakokuva (Facebook, WhatsApp ym.): etusivun pääkuvasta 1200 x 630, joten se vaihtuu kuvan mukana.
+// Jos pääkuvaa ei ole, käytetään logografiikkaa.
+const paakuva = getKuva('etusivu');
+const ogKuva = !ogImage && paakuva ? await getImage({ src: paakuva, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 82 }) : null;
+const ogUrl = new URL(ogImage ?? ogKuva?.src ?? '/og-holske.png', site).href;
 
 const localBusiness = {
   '@context': 'https://schema.org',
@@ -52,16 +57,16 @@ const localBusiness = {
   knowsLanguage: 'fi',
   ...(yritys.sameAs?.length ? { sameAs: yritys.sameAs } : {}),
 };
-import archivoFontti from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
-import figtreeFontti from '@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url';
+import otsikkoFontti from '@fontsource-variable/finlandica/files/finlandica-latin-wght-normal.woff2?url';
+import leipaFontti from '@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2?url';
 ---
 
 <!doctype html>
 <html lang="fi">
   <head>
     <meta charset="utf-8" />
-    <link rel="preload" href={archivoFontti} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={figtreeFontti} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={otsikkoFontti} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={leipaFontti} as="font" type="font/woff2" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -95,7 +100,7 @@ import figtreeFontti from '@fontsource-variable/figtree/files/figtree-latin-wght
       <slot />
     </main>
     <Footer />
-    <MobiiliPalkki />
+    {!piilotaMobiiliCta && <MobiiliPalkki />}
     <Evasteet />
     <script>
       // Fit-to-width: jos display-otsikon pisin sana ei mahdu, pienennetään kokoa askel kerrallaan

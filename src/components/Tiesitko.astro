@@ -1,6 +1,5 @@
 ---
 /** Nosto: iso luku vasemmalla, otsikko ja teksti oikealla, oliivi pohja. */
-import RullaLuku from './RullaLuku.astro';
 interface Props {
   luku: string;
   otsikko: string;
@@ -11,10 +10,9 @@ const { luku, otsikko, teksti } = Astro.props;
 const osat = otsikko.split(/(\d+-\d+)/);
 ---
 
-<aside class="tiesitko" data-theme="oliivi" aria-label="Tiesitkö">
+<aside class="tiesitko" aria-label="Tiesitkö">
   <div class="luku-osa">
-    <p class="merkki">Tiesitkö?</p>
-    <RullaLuku arvo={luku} class="luku" />
+    <span class="luku">{luku}</span>
   </div>
   <div class="teksti-osa">
     <p class="otsikko">{osat.map((o, i) => (i % 2 ? <span class="nw">{o}</span> : o))}</p>
@@ -28,14 +26,13 @@ const osat = otsikko.split(/(\d+-\d+)/);
     gap: 24px;
     padding: 32px 24px;
     border-radius: var(--r-md);
-    background: var(--bg);
+    background: var(--p-grey-50);
     color: var(--ink);
   }
   @media (min-width: 768px) {
     .tiesitko { grid-template-columns: auto 1fr; align-items: end; gap: 48px; padding: 48px; }
   }
   .luku-osa { display: grid; gap: 16px; }
-  .merkki { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 17px; color: var(--muted); }
   .luku-osa :global(.luku) {
     font-family: var(--font-display);
     font-stretch: var(--stretch);
@@ -44,7 +41,7 @@ const osat = otsikko.split(/(\d+-\d+)/);
     line-height: 1;
     letter-spacing: 1.8px;
     white-space: nowrap;
-    color: var(--p-birch);
+    color: var(--ink);
   }
   .teksti-osa { display: grid; gap: 12px; max-width: 36rem; }
   .otsikko {
@@ -54,8 +51,8 @@ const osat = otsikko.split(/(\d+-\d+)/);
     letter-spacing: 0.3px;
     font-size: clamp(20px, 1rem + 0.6vw, 26px);
     line-height: 1.2;
-    color: var(--p-birch);
+    color: var(--ink);
   }
   .nw { white-space: nowrap; }
-  .teksti { color: var(--p-grey-100); }
+  .teksti { color: var(--muted); }
 </style>

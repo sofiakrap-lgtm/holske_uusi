@@ -1,9 +1,10 @@
 /* Holske, Bahn-tyylijärjestelmä (ui-bahnexpress-fi, mitatut arvot) Holsken paletilla.
    Jokainen osio on yksi teema koko leveydeltä: koivu, vaaleanharmaa, oliivi, metsä tai hiili.
    Ei varjoja, ei sumennusta: syvyys sävyaskelilla. Napit pillereitä, kortit 24 px.
-   Otsikot: Archivo leveänä (125 %) paino 900 versaaleina. Leipäteksti: Figtree 300. */
-@import '@fontsource-variable/archivo/wdth.css';
-@import '@fontsource-variable/figtree';
+   Otsikot: Finlandica 700 (Suomen virallinen kirjasin, avoin lisenssi), ei versaaleja.
+   Leipäteksti: Source Sans 3 400, hyvin luettava myös vanhemmille lukijoille. */
+@import '@fontsource-variable/finlandica';
+@import '@fontsource-variable/source-sans-3';
 
 :root {
   /* Paletti (Bahnin lämmin neutraali + Holsken oliivi, ruoste ja hiili) */
@@ -52,9 +53,9 @@
   --ok: var(--p-olive);
 
   /* Typografia */
-  --font-display: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
-  --font-body: 'Figtree Variable', 'Figtree', system-ui, sans-serif;
-  --stretch: 125%;
+  --font-display: 'Finlandica Variable', 'Finlandica', system-ui, sans-serif;
+  --font-body: 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif;
+  --stretch: 100%;
   --fs-sm: 16px;
   --fs-base: 20px;
   --fs-lg: 24px;
@@ -181,9 +182,9 @@ body {
   background: var(--p-birch);
   color: var(--ink-2);
   font-family: var(--font-body);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 18px;
-  line-height: 1.4;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -214,20 +215,19 @@ h2,
 .display {
   font-family: var(--font-display);
   font-stretch: var(--stretch);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: -0.3px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
   hyphens: manual;
   overflow-wrap: break-word;
 }
-h1 { font-size: clamp(30px, 7vw, 60px); line-height: 1; }
-h2 { font-size: clamp(28px, 6vw, 56px); line-height: 1; }
+h1 { font-size: clamp(34px, 8vw, 64px); line-height: 1.05; }
+h2 { font-size: clamp(30px, 6.5vw, 56px); line-height: 1.05; }
 h3,
 .heading {
   font-family: var(--font-display);
   font-stretch: var(--stretch);
-  font-weight: 500;
-  letter-spacing: 0.3px;
+  font-weight: 600;
+  letter-spacing: 0;
   font-size: clamp(20px, 1.2rem + 0.6vw, 28px);
   line-height: 1.15;
   color: var(--ink);
@@ -347,7 +347,7 @@ section[data-theme] {
 .prose h2:first-child { margin-top: 0; }
 .prose ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.4rem; }
 
-/* Napit: pilleri, Figtree 600, ei varjoa eikä skaalausta */
+/* Napit: pilleri, Source Sans 3 600, ei varjoa eikä skaalausta */
 .btn {
   --btn-bg: var(--accent);
   --btn-fg: var(--accent-ink);

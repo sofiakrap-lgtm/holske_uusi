@@ -22,7 +22,6 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
         </div>
         <div class="kanavat">
           <a href={tel} class="kanava">
-            <span class="laatta"><Icon name="puhelin" size={30} paino="light" /></span>
             <span class="kanava-teksti">
               <span class="tyyppi">Soita</span>
               <span class="arvo">{yritys.puhelinNaytto}</span>
@@ -30,7 +29,6 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
             <span class="kanava-nuoli"><Icon name="nuoli" size={20} /></span>
           </a>
           <a href={`mailto:${yritys.sahkoposti}`} class="kanava">
-            <span class="laatta"><Icon name="sahkoposti" size={30} paino="light" /></span>
             <span class="kanava-teksti">
               <span class="tyyppi">Lähetä sähköpostia</span>
               <span class="arvo">{yritys.sahkoposti}</span>
@@ -58,7 +56,6 @@ const kartta = `https://www.google.com/maps/search/?api=1&query=${encodeURICompo
     <div class="container">
       <div class="osio-otsake">
         <h2 id="vaiheet-otsikko" data-fit>Näin työ etenee</h2>
-        <p>Neljä vaihetta yhteydenotosta valmiiseen työhön.</p>
       </div>
       <Vaiheet />
     </div>

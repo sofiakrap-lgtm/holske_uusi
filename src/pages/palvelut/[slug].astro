@@ -109,7 +109,6 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
             kuva={`${d.kuva}-2`}
             vara={['etusivu', d.kuva]}
             solut={bentoSolut}
-            korostus={bentoSolut.length - 1}
           />
         </div>
       </section>
@@ -117,7 +116,7 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
   }
 
   <section data-theme="birch" class="liitos" aria-labelledby="tieto-otsikko">
-    <h2 id="tieto-otsikko" class="liitos-otsikko">Hyvä tietää</h2>
+    <div class="container"><div class="osio-otsake"><h2 id="tieto-otsikko" data-fit>Hyvä tietää</h2></div></div>
     <div class="container jako">
       <div class="jako-kuvat">
         {
@@ -155,7 +154,6 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
     <div class="container">
       <div class="osio-otsake">
         <h2 id="vaiheet-otsikko" data-fit>Näin työ etenee</h2>
-        <p>Neljä vaihetta yhteydenotosta valmiiseen työhön.</p>
       </div>
       <Vaiheet />
     </div>
@@ -175,7 +173,7 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
     )
   }
 
-  <section data-theme="light-grey" aria-labelledby="kuvat-otsikko">
+  <section data-theme="birch" aria-labelledby="kuvat-otsikko">
     <div class="container">
       <div class="osio-otsake">
         <h2 id="kuvat-otsikko" data-fit>Lyhyesti</h2>
@@ -184,22 +182,16 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
       <ul class="kohdat">
         {
           alapalvelut.map((a) => (
-            <li>
-              <Icon name="check" size={18} />
-              {a.nimi}
-            </li>
+            <li>{a.nimi}</li>
           ))
         }
-        <li>
-          <Icon name="kuntoarvio" size={18} />
-          Ilmainen kuntoarvio
-        </li>
+        <li>Ilmainen kuntoarvio</li>
       </ul>
     </div>
     <Galleria />
   </section>
 
-  <section data-theme="birch" class="muut-osio" aria-labelledby="muut-otsikko">
+  <section data-theme="light-grey" class="muut-osio" aria-labelledby="muut-otsikko">
     <div class="container">
       <h2 id="muut-otsikko" class="pieni-otsikko">Muut palvelut</h2>
       <ul class="muut">
@@ -211,7 +203,6 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
                   <Kuva nimi={p.data.kuva} vara={['etusivu']} alt={p.data.kuvaAlt} variantti="tayta" />
                 </span>
                 <span class="muu-nimi">
-                  <Icon name={p.data.ikoni} size={22} />
                   {p.data.nimi}
                   <Icon name="nuoli" size={20} class="muu-nuoli" />
                 </span>
@@ -227,34 +218,7 @@ if (bentoSolut.length % 2 === 1) bentoSolut.push({ otsikko: 'Pyydä ilmainen kun
 </BaseLayout>
 
 <style>
-  /* Pilleriotsikko osioiden rajalla sitoo osiot yhteen */
   .liitos { position: relative; }
-  .liitos-otsikko {
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: min(20rem, calc(100vw - 48px));
-    height: 52px;
-    padding: 0 36px;
-    border-radius: 999px;
-    background: var(--p-olive);
-    color: var(--p-birch);
-    font-family: var(--font-body);
-    font-stretch: 100%;
-    font-weight: 600;
-    font-size: 18px;
-    letter-spacing: 0;
-    text-transform: none;
-    white-space: nowrap;
-  }
-  @media (min-width: 768px) {
-    .liitos-otsikko { min-width: 24rem; height: 56px; padding: 0 48px; font-size: 19px; }
-  }
   /* Teksti ja kuva rinnakkain */
   .jako { display: grid; gap: var(--section-gap); }
   @media (min-width: 1025px) {
