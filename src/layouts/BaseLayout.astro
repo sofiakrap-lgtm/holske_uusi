@@ -57,16 +57,16 @@ const localBusiness = {
   knowsLanguage: 'fi',
   ...(yritys.sameAs?.length ? { sameAs: yritys.sameAs } : {}),
 };
-import otsikkoFontti from '@fontsource-variable/finlandica/files/finlandica-latin-wght-normal.woff2?url';
-import leipaFontti from '@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2?url';
+import archivoFontti from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import figtreeFontti from '@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url';
 ---
 
 <!doctype html>
 <html lang="fi">
   <head>
     <meta charset="utf-8" />
-    <link rel="preload" href={otsikkoFontti} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={leipaFontti} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={archivoFontti} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={figtreeFontti} as="font" type="font/woff2" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />

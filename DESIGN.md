@@ -4,8 +4,8 @@ Holsken visuaalinen järjestelmä. Pohja: Bahnin mitattu tyylijärjestelmä (`.c
 
 ## Periaatteet
 - Jokainen osio on yksi teema koko leveydeltä (`data-theme`). Etusivulla vuorottelevat vain koivu ja vaaleanharmaa; tumma metsä vain Kysymyksiä-osiossa. Ei korostussoluja eikä vuorottelevia korttisävyjä.
-- Otsikot: Finlandica 700 (Suomen virallinen kirjasin), ei versaaleja, keskitetty. 2-4 sanaa. Liian pitkä sana pienennetään askel kerrallaan (`data-fit`).
-- Leipäteksti Source Sans 3 400, alaotsikot ja selitteet Source Sans 3 600. Ei ohuita (300) painoja: kohderyhmä on 35-80-vuotiaat.
+- Display-otsikot: Archivo leveänä (font-stretch 125 %), paino 900, versaalit, keskitetty, rivikorkeus = koko. 2-4 sanaa. Liian pitkä sana pienennetään askel kerrallaan (`data-fit`).
+- Leipäteksti Figtree 300, alaotsikot ja selitteet Figtree 600.
 - Ei varjoja, ei sumennusta, ei gradientteja napeissa. Syvyys sävyaskelilla ja 2 px raoilla.
 - Napit pillereitä (xs 40, s 48, m 56, l 64, xl 72 px), kortit ja media 24 px.
 - Liike on toiminnallista: liukuva valintapilleri navigaatiossa, haitari, karusellin nuolet. Ei rullaavia numeroita, ei automaattisesti liikkuvaa galleriaa, ei koristeellisia vieritysilmestymisiä.
@@ -27,14 +27,14 @@ Holsken visuaalinen järjestelmä. Pohja: Bahnin mitattu tyylijärjestelmä (`.c
 ## Typografia
 | Rooli | Desktop / tabletti / mobiili |
 |---|---|
-| Hero rivi 1 (Finlandica 700) | 96 / 72 / 48 px, sovitetaan |
+| Hero rivi 1 (Archivo 900 versaali) | 96 / 72 / 48 px, sovitetaan |
 | Hero rivi 2 | 80 / 56 / 48 px |
-| Hero rivi 3 (Finlandica 500) | 34 / 30 / 22 px |
+| Hero rivi 3 (Archivo 500) | 44 / 40 / 26 px |
 | Osio-otsikko H2 | 72 px asti, clamp ja sovitus |
-| Kortin otsikko (Finlandica 600) | 24-28 px |
-| Leipä (Source Sans 3 400) | 20 / 20 / 18 px |
-| Alaotsikko (Source Sans 3 600) | 24 / 20 / 18 px |
-| Luku (Finlandica 700, tabular) | 56 / 48 / 40 px |
+| Kortin otsikko (Archivo 500) | 24-28 px |
+| Leipä (Figtree 300) | 20 / 20 / 18 px |
+| Alaotsikko (Figtree 600) | 24 / 20 / 18 px |
+| Luku (Archivo 700, +1.8px, tabular) | 56 / 48 / 40 px |
 
 ## Asettelu
 Kontti 1440 px, gutter 24 / 36 / 48. Osion padding 96 / 128 / 144. Otsikosta sisältöön 48 / 56 / 64.
@@ -62,6 +62,7 @@ Hero + tumma kolmen sarakkeen paneeli (taustakuva/video tasaisesti tummennettu, 
 - Alaotsikkorivi osio-otsikon alle vain, kun se kertoo jotain uutta.
 - Huoltovälit staattisina lukuina vaalealla pohjalla.
 - Galleria pyyhkäistävä nauha ilman automaattista liikettä ja ilman toistoa.
+- Bahn-tyylijärjestelmä (`.claude/skills/ui-bahnexpress-fi/`) säilyy pohjana: typografia, napit, teemat ja asettelu sen mukaan.
 - Napit vähintään 48 px korkeita, lomakekentät 18 px, mobiilivalikon linkit 52 px ja näkyvä sana "Valikko".
 - Palvelusivuilla pääkuva ilman sumennusta, vain tummennus. Tiesitkö-nosto vaalealla pohjalla, staattinen luku.
 - Jakokuva (og:image) muodostetaan automaattisesti `etusivu.jpg`:stä (1200 × 630). `og-holske.png` on varalla.

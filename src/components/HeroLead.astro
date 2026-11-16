@@ -138,8 +138,8 @@ const taustakuva = ensimmainenKuva(...kuva);
     .r2 { white-space: nowrap; }
   }
   .r1 { hyphens: manual; }
-  .r1 { font-size: 48px; line-height: 1; letter-spacing: -0.5px; }
-  .r2 { font-size: 48px; line-height: 1; }
+  .r1 { font-size: 40px; line-height: 1; letter-spacing: calc(-0.3px + 0.02em); }
+  .r2 { font-size: 40px; line-height: 1; }
   .r3 {
     font-weight: 500;
     text-transform: none;
@@ -150,14 +150,14 @@ const taustakuva = ensimmainenKuva(...kuva);
   }
   @media (min-width: 768px) {
     .otsikko { gap: 10px; }
-    .r1 { font-size: 72px; }
-    .r2 { font-size: 60px; }
+    .r1 { font-size: 60px; }
+    .r2 { font-size: 48px; }
     .r3 { font-size: 30px; }
   }
   @media (min-width: 1025px) {
     .otsikko { gap: 12px; }
-    .r1 { font-size: 96px; }
-    .r2 { font-size: 76px; }
+    .r1 { font-size: 76px; }
+    .r2 { font-size: 60px; }
     .r3 { font-size: 34px; }
   }
   .ingressi {
